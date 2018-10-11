@@ -6,6 +6,11 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using Ninject.Modules;
+using ProjectManagement.Util;
+using BLL.Infrastructure;
+using Ninject;
+using Ninject.Web.Mvc;
 
 namespace ProjectManagement
 {
@@ -18,6 +23,11 @@ namespace ProjectManagement
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            NinjectModule employeeModule = new EmployeeModule();
+            NinjectModule serviceModule = new ServiceModule("ManagementContext");
+            var kernel = new StandardKernel(employeeModule, serviceModule);
+            DependencyResolver.SetResolver(new NinjectDependencyResolver(kernel));
         }
     }
 }
