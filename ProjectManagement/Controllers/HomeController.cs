@@ -44,8 +44,7 @@ namespace ProjectManagement.Controllers
         {
             try
             {
-                var employeeDTO = new EmployeeDTO
-                {
+                var employeeDTO = new EmployeeDTO {
                     Id = employee.Id,
                     EmployeeName = employee.EmployeeName,
                     EmployeeSurname = employee.EmployeeSurname,
