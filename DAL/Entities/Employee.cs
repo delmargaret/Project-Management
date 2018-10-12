@@ -15,6 +15,7 @@ namespace DAL.Entities
         public string Email { get; set; }
         public string GitLink { get; set; }
         public string PhoneNumber { get; set; }
+        public int RoleId { get; set; }
         public Role Role { get; set; }
     }
 }

@@ -23,19 +23,29 @@ namespace ConsoleApp
         {
             IUnitOfWork uow = new ContextUnitOfWork("ManagementContext");
             Service service=new Service(uow);
+            Console.WriteLine("введите id роли");
+            int id = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("введите фамилию");
+            string surname = Console.ReadLine();
+            Console.WriteLine("введите имя");
+            string name = Console.ReadLine();
+            Console.WriteLine("введите отчество");
+            string patronymic = Console.ReadLine();
 
+            RoleDTO role = service.GetRole(id);
             EmployeeDTO employee1 = new EmployeeDTO
             {
-                EmployeeName = "Екатерина",
-                EmployeePatronymic = "Сергеевна",
-                EmployeeSurname = "Потапова",
-                RoleId = 1
+                EmployeeName = name,
+                EmployeeSurname = surname,
+                EmployeePatronymic = patronymic,
+                RoleId = role.Id
             };
             service.CreateEmployee(employee1);
+
             var employees = service.GetEmployees();
             foreach(var employee in employees)
             {
-                Console.WriteLine("{0} {1}  Роль: {2}", employee.EmployeeName, employee.EmployeeSurname, employee.RoleId);
+                Console.WriteLine("{0} Роль: {1}", employee.EmployeeSurname, employee.RoleId);
             }
         }
     }

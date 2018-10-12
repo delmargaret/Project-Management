@@ -52,7 +52,7 @@ namespace ProjectManagement.Controllers
                     Email = employee.Email,
                     GitLink = employee.GitLink,
                     PhoneNumber = employee.PhoneNumber,
-                    RoleId= employee.RoleId
+                    //RoleId= employee.RoleId
                 };
                 service.CreateEmployee(employeeDTO);
             }
