@@ -17,5 +17,6 @@ namespace DAL.Entities
         public string PhoneNumber { get; set; }
         public int RoleId { get; set; }
         public Role Role { get; set; }
+        public ICollection<ProjectWork> Projects { get; set; }
     }
 }
