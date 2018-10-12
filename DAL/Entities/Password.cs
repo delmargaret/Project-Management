@@ -10,6 +10,7 @@ namespace DAL.Entities
     {
         public int Id { get; set; }
         public string PasswordString { get; set; }
+        public int EmployeeId { get; set; }
         public Employee Employee { get; set; }
     }
 }
