@@ -16,6 +16,5 @@ namespace DAL.Entities
         public string GitLink { get; set; }
         public string PhoneNumber { get; set; }
         public Role Role { get; set; }
-        public ICollection<ProjectWork> Projects { get; set; }
     }
 }
