@@ -87,7 +87,7 @@ namespace BLL.Services
             if (employee == null)
                 Console.WriteLine("сотрудник не найден");
             return new EmployeeDTO { Id = employee.Id, EmployeeName = employee.EmployeeName, EmployeeSurname = employee.EmployeeSurname, EmployeePatronymic = employee.EmployeePatronymic,
-            Email=employee.Email, GitLink=employee.GitLink, PhoneNumber=employee.PhoneNumber, RoleId = employee.Role.Id, RoleName=employee.Role.RoleName};
+            Email=employee.Email, GitLink=employee.GitLink, PhoneNumber=employee.PhoneNumber, RoleId=employee.Role.Id};
         }
 
         public IEnumerable<EmployeeDTO> GetEmployees()

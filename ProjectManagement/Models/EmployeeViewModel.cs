@@ -15,6 +15,5 @@ namespace ProjectManagement.Models
         public string GitLink { get; set; }
         public string PhoneNumber { get; set; }
         public int RoleId { get; set; }
-        public string RoleName { get; set; }
     }
 }
