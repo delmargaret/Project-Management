@@ -35,13 +35,18 @@ namespace DAL.DataContext
     {
         protected override void Seed(ManagementContext db)
         {
-            //db.ProjectRoles.Add(new ProjectRole { ProjectRoleName = "designer" });
-            //db.ProjectRoles.Add(new ProjectRole { ProjectRoleName = "programmer" });
-            //db.ProjectRoles.Add(new ProjectRole { ProjectRoleName = "manager" });
+            db.ProjectRoles.Add(new ProjectRole { ProjectRoleName = "фронтенд разработчик" });
+            db.ProjectRoles.Add(new ProjectRole { ProjectRoleName = "бэкенд разработчик" });
+            db.ProjectRoles.Add(new ProjectRole { ProjectRoleName = "фулстек" });
+            db.ProjectRoles.Add(new ProjectRole { ProjectRoleName = "дизайнер" });
+            db.ProjectRoles.Add(new ProjectRole { ProjectRoleName = "проектный менеджер" });
 
             db.Roles.Add(new Role { RoleName = "Ресурсный менеджер" });
             db.Roles.Add(new Role { RoleName = "Проектный менеджер" });
             db.Roles.Add(new Role { RoleName = "Сотрудник" });
+
+            db.ProjectStatuses.Add(new ProjectStatus { ProjectStatusName = "Открыт" });
+            db.ProjectStatuses.Add(new ProjectStatus { ProjectStatusName = "Закрыт" });
             db.SaveChanges();
         }
     }

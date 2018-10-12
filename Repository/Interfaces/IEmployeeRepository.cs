@@ -9,11 +9,27 @@ namespace Repository.Interfaces
 {
     public interface IEmployeeRepository
     {
-        IEnumerable<Employee> GetAll();
-        Employee Get(int id);
-        IEnumerable<Employee> Find(Func<Employee, Boolean> predicate);
-        void Create(Employee item);
-        void Update(Employee item);
-        void Delete(int id);
+        IEnumerable<Employee> GetAllEmployees();
+        IEnumerable<Employee> GetEmployeesByRole(int roleId);
+        IEnumerable<Employee> GetEmployeesBySurname(string surname);
+        Employee GetEmployeeById(int id);
+        Employee GetEmployeeByEmail(string email);
+        IEnumerable<Employee> FindEmployee(Func<Employee, Boolean> predicate);
+        void CreateEmployee(Employee item);
+        void UpdateEmployee(Employee item);
+        void DeleteEmployeeById(int id);
+        void DeleteEmployeeBySurname(string surname);
+        void DeleteEmployeeByEmail(string email);
+        void AddGitLink(int employeeId, string gitlink);
+        void DeleteGitLinkByEmployeeId(int id);
+        void AddPhoneNumber(int employeeId, string phoneNumber);
+        void DeletePhoneNumberByEmployeeId(int id);
+        void ChangeName(int employeeId, string newName);
+        void ChangeSurname(int employeeId, string newSurname);
+        void ChangePatronymic(int employeeId, string newPatronymic);
+        void ChangeEmail(int employeeId, string newEmail);
+        void ChangeGitLink(int employeeId, string newGitLink);
+        void ChangePhoneNumber(int employeeId, string newPhoneNumber);
+        void ChangeRole(int employeeId, int RoleId);
     }
 }

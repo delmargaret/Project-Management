@@ -9,11 +9,15 @@ namespace Repository.Interfaces
 {
     public interface IParticipationHistoryRepository
     {
-        IEnumerable<ParticipationHistory> GetAll();
-        ParticipationHistory Get(int id);
-        IEnumerable<ParticipationHistory> Find(Func<ParticipationHistory, Boolean> predicate);
-        void Create(ParticipationHistory item);
-        void Update(ParticipationHistory item);
-        void Delete(int id);
+        IEnumerable<ParticipationHistory> GetAllHistories();
+        IEnumerable<ParticipationHistory> GetAllEmployeesHistoriesOnProject(int projectWorkId);
+        ParticipationHistory GetHistoryById(int id);
+        ParticipationHistory GetLastEmployeesHistory(int projectWorkId);
+        IEnumerable<ParticipationHistory> FindHistory(Func<ParticipationHistory, Boolean> predicate);
+        void CreateHistory(ParticipationHistory item);
+        void UpdateHistory(ParticipationHistory item);
+        void DeleteHistory(int id);
+        void ChangeHistoryStartDate(int id, DateTimeOffset start);
+        void ChangeHistoryEndDate(int id, DateTimeOffset end);
     }
 }

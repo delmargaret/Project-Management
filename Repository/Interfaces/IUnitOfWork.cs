@@ -14,7 +14,6 @@ namespace Repository.Interfaces
         IPasswordRepository Passwords { get; }
         IProjectRepository Projects { get; }
         IProjectRoleRepository ProjectRoles { get; }
-        IProjectStatusRepository ProjectStatuses { get; }
         IProjectWorkRepository ProjectWorks { get; }
         IRoleRepository Roles { get; }
         void Save();

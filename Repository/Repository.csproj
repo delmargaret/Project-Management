@@ -53,7 +53,6 @@
     <Compile Include="Interfaces\IPasswordRepository.cs" />
     <Compile Include="Interfaces\IProjectRepository.cs" />
     <Compile Include="Interfaces\IProjectRoleRepository.cs" />
-    <Compile Include="Interfaces\IProjectStatusRepository.cs" />
     <Compile Include="Interfaces\IProjectWorkRepository.cs" />
     <Compile Include="Interfaces\IRoleRepository.cs" />
     <Compile Include="Interfaces\IUnitOfWork.cs" />
@@ -64,7 +63,6 @@
     <Compile Include="Repositories\PasswordRepository.cs" />
     <Compile Include="Repositories\ProjectRepository.cs" />
     <Compile Include="Repositories\ProjectRoleRepository.cs" />
-    <Compile Include="Repositories\ProjectStatusRepository.cs" />
     <Compile Include="Repositories\ProjectWorkRepository.cs" />
     <Compile Include="Repositories\RoleRepository.cs" />
   </ItemGroup>

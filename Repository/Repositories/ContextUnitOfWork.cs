@@ -17,7 +17,6 @@ namespace Repository.Repositories
         private PasswordRepository passwordRepository;
         private ProjectRepository projectRepository;
         private ProjectRoleRepository projectRoleRepository;
-        private ProjectStatusRepository projectStatusRepository;
         private ProjectWorkRepository projectWorkRepository;
         private RoleRepository roleRepository;
 
@@ -73,16 +72,6 @@ namespace Repository.Repositories
                 if (projectRoleRepository == null)
                     projectRoleRepository = new ProjectRoleRepository(db);
                 return projectRoleRepository;
-            }
-        }
-
-        public IProjectStatusRepository ProjectStatuses
-        {
-            get
-            {
-                if (projectStatusRepository == null)
-                    projectStatusRepository = new ProjectStatusRepository(db);
-                return projectStatusRepository;
             }
         }
 

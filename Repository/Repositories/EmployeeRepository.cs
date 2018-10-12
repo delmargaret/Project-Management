@@ -19,36 +19,145 @@ namespace Repository.Repositories
             this.db = context;
         }
 
-        public IEnumerable<Employee> GetAll()
+        public void AddGitLink(int employeeId, string gitlink)
         {
-            return db.Employees;
+            Employee employee = db.Employees.Find(employeeId);
+            if (employee != null)
+                employee.GitLink = gitlink;
         }
 
-        public Employee Get(int id)
+        public void AddPhoneNumber(int employeeId, string phoneNumber)
         {
-            return db.Employees.Find(id);
+            Employee employee = db.Employees.Find(employeeId);
+            if (employee != null)
+                employee.PhoneNumber = phoneNumber;
         }
 
-        public void Create(Employee employee)
+        public void ChangeEmail(int employeeId, string newEmail)
         {
-            db.Employees.Add(employee);
+            Employee employee = db.Employees.Find(employeeId);
+            if (employee != null)
+                employee.Email = newEmail;
         }
 
-        public void Update(Employee employee)
+        public void ChangeGitLink(int employeeId, string newGitLink)
         {
-            db.Entry(employee).State = EntityState.Modified;
+            Employee employee = db.Employees.Find(employeeId);
+            if (employee != null)
+                employee.GitLink = newGitLink;
         }
 
-        public IEnumerable<Employee> Find(Func<Employee, Boolean> predicate)
+        public void ChangeName(int employeeId, string newName)
         {
-            return db.Employees.Where(predicate).ToList();
+            Employee employee = db.Employees.Find(employeeId);
+            if (employee != null)
+                employee.EmployeeName = newName;
         }
 
-        public void Delete(int id)
+        public void ChangePatronymic(int employeeId, string newPatronymic)
+        {
+            Employee employee = db.Employees.Find(employeeId);
+            if (employee != null)
+                employee.EmployeePatronymic = newPatronymic;
+        }
+
+        public void ChangePhoneNumber(int employeeId, string newPhoneNumber)
+        {
+            Employee employee = db.Employees.Find(employeeId);
+            if (employee != null)
+                employee.PhoneNumber = newPhoneNumber;
+        }
+
+        public void ChangeSurname(int employeeId, string newSurname)
+        {
+            Employee employee = db.Employees.Find(employeeId);
+            if (employee != null)
+                employee.EmployeeSurname = newSurname;
+        }
+
+        public void ChangeRole(int employeeId, int roleId)
+        {
+            Employee employee = db.Employees.Find(employeeId);
+            if (employee != null)
+            {
+                employee.RoleId = roleId;
+                employee.Role = db.Roles.Find(roleId);
+            }
+        }
+
+        public void CreateEmployee(Employee item)
+        {
+            db.Employees.Add(item);
+        }
+
+        public void DeleteEmployeeByEmail(string email)
+        {
+            Employee employee = db.Employees.First(item => item.Email == email);
+            if (employee != null)
+                db.Employees.Remove(employee);
+        }
+
+        public void DeleteEmployeeById(int id)
         {
             Employee employee = db.Employees.Find(id);
             if (employee != null)
                 db.Employees.Remove(employee);
+        }
+
+        public void DeleteEmployeeBySurname(string surname)
+        {
+            Employee employee = db.Employees.First(item => item.EmployeeSurname == surname);
+            if (employee != null)
+                db.Employees.Remove(employee);
+        }
+
+        public void DeleteGitLinkByEmployeeId(int id)
+        {
+            Employee employee = db.Employees.Find(id);
+            if (employee != null)
+                employee.GitLink = null;
+        }
+
+        public void DeletePhoneNumberByEmployeeId(int id)
+        {
+            Employee employee = db.Employees.Find(id);
+            if (employee != null)
+                employee.PhoneNumber = null;
+        }
+
+        public IEnumerable<Employee> FindEmployee(Func<Employee, bool> predicate)
+        {
+            return db.Employees.Where(predicate).ToList();
+        }
+
+        public IEnumerable<Employee> GetAllEmployees()
+        {
+            return db.Employees;
+        }
+
+        public Employee GetEmployeeByEmail(string email)
+        {
+            return db.Employees.Where(item => item.Email == email).First();
+        }
+
+        public Employee GetEmployeeById(int id)
+        {
+            return db.Employees.Find(id);
+        }
+
+        public IEnumerable<Employee> GetEmployeesBySurname(string surname)
+        {
+            return db.Employees.Where(item=>item.EmployeeSurname==surname);
+        }
+
+        public IEnumerable<Employee> GetEmployeesByRole(int roleId)
+        {
+            return db.Employees.Where(item => item.RoleId == roleId);
+        }
+
+        public void UpdateEmployee(Employee item)
+        {
+            db.Entry(item).State = EntityState.Modified;
         }
     }
 }

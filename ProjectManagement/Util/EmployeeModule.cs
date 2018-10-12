@@ -12,7 +12,10 @@ namespace ProjectManagement.Util
     {
         public override void Load()
         {
-            Bind<IService>().To<Service>();
+            Bind<IEmployeeService>().To<EmployeeService>();
+            Bind<IParticipationHistoryService>().To<PartisipationHistoryService>();
+            Bind<IProjectRoleService>().To<IProjectRoleService>();
+            Bind<IRoleService>().To<RoleService>();
         }
     }
 }

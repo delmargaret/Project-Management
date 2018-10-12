@@ -9,11 +9,11 @@ namespace Repository.Interfaces
 {
     public interface IProjectRoleRepository
     {
-        IEnumerable<ProjectRole> GetAll();
-        ProjectRole Get(int id);
-        IEnumerable<ProjectRole> Find(Func<ProjectRole, Boolean> predicate);
-        void Create(ProjectRole item);
-        void Update(ProjectRole item);
-        void Delete(int id);
+        IEnumerable<ProjectRole> GetAllProjectRoles();
+        ProjectRole GetProjectRoleById(int id);
+        IEnumerable<ProjectRole> FindProjectRole(Func<ProjectRole, Boolean> predicate);
+        void CreateProjectRole(ProjectRole item);
+        void UpdateProjectRole(ProjectRole item);
+        void DeleteProjectRole(int id);
     }
 }

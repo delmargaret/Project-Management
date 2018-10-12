@@ -13,19 +13,17 @@ namespace ProjectManagement.Controllers
 {
     public class HomeController : Controller
     {
-        IService service;
-        public HomeController(IService serv)
+        IEmployeeService employeeService;
+        IRoleService roleService;
+        public HomeController(IEmployeeService empserv, IRoleService roleserv)
         {
-            service = serv;
+            employeeService = empserv;
+            roleService = roleserv;
         }
         public ActionResult Index()
         {
 
-            //service.CreateRole("Resource manager");
-            //service.CreateRole("Project manager");
-            //service.CreateRole("Worker");
-
-            IEnumerable<RoleDTO> roleDTOs = service.GetRoles();
+            IEnumerable<RoleDTO> roleDTOs = roleService.GetRoles();
             var mapper = new MapperConfiguration(cfg => cfg.CreateMap<RoleDTO, RoleViewModel>()).CreateMapper();
             var roles = mapper.Map<IEnumerable<RoleDTO>, List<RoleViewModel>>(roleDTOs);
             return View(roles);
@@ -33,7 +31,7 @@ namespace ProjectManagement.Controllers
 
         public ActionResult CreateEmployee(int? id)
         {
-            RoleDTO role = service.GetRole(id);
+            RoleDTO role = roleService.GetRoleById(id);
             var employee = new EmployeeViewModel { RoleId = role.Id};
 
             return View(employee);
@@ -54,7 +52,7 @@ namespace ProjectManagement.Controllers
                     PhoneNumber = employee.PhoneNumber,
                     RoleId = employee.RoleId
                 };
-                service.CreateEmployee(employeeDTO);
+                employeeService.CreateEmployee(employeeDTO);
             }
             catch (Exception ex)
             {
@@ -66,7 +64,7 @@ namespace ProjectManagement.Controllers
 
         public ActionResult ShowEmployee()
         {
-            IEnumerable<EmployeeDTO> employeeDTOs = service.GetEmployees();
+            IEnumerable<EmployeeDTO> employeeDTOs = employeeService.GetAllEmployees();
             var mapper = new MapperConfiguration(cfg => cfg.CreateMap<EmployeeDTO, EmployeeViewModel>()).CreateMapper();
             var employees = mapper.Map<IEnumerable<EmployeeDTO>, List<EmployeeViewModel>>(employeeDTOs);
             return View(employees);
@@ -74,7 +72,8 @@ namespace ProjectManagement.Controllers
 
         protected override void Dispose(bool disposing)
         {
-            service.Dispose();
+            employeeService.Dispose();
+            roleService.Dispose();
             base.Dispose(disposing);
         }
     }

@@ -19,32 +19,56 @@ namespace Repository.Repositories
             this.db = context;
         }
 
-        public IEnumerable<ParticipationHistory> GetAll()
+        public IEnumerable<ParticipationHistory> GetAllHistories()
         {
             return db.ParticipationHistories;
         }
 
-        public ParticipationHistory Get(int id)
+        public IEnumerable<ParticipationHistory> GetAllEmployeesHistoriesOnProject(int projectWorkId)
+        {
+            return db.ParticipationHistories.Where(item => item.ProjectWorkId == projectWorkId);
+        }
+
+        public ParticipationHistory GetLastEmployeesHistory(int projectWorkId)
+        {
+            return db.ParticipationHistories.Where(item => item.ProjectWorkId == projectWorkId).Last();
+        }
+
+        public void ChangeHistoryStartDate(int id, DateTimeOffset start)
+        {
+            ParticipationHistory history = db.ParticipationHistories.Find(id);
+            if (history != null)
+                history.StartDate = start;
+        }
+
+        public void ChangeHistoryEndDate(int id, DateTimeOffset end)
+        {
+            ParticipationHistory history = db.ParticipationHistories.Find(id);
+            if (history != null)
+                history.EndDate = end;
+        }
+
+        public ParticipationHistory GetHistoryById(int id)
         {
             return db.ParticipationHistories.Find(id);
         }
 
-        public void Create(ParticipationHistory participationHistory)
+        public void CreateHistory(ParticipationHistory participationHistory)
         {
             db.ParticipationHistories.Add(participationHistory);
         }
 
-        public void Update(ParticipationHistory participationHistory)
+        public void UpdateHistory(ParticipationHistory participationHistory)
         {
             db.Entry(participationHistory).State = EntityState.Modified;
         }
 
-        public IEnumerable<ParticipationHistory> Find(Func<ParticipationHistory, Boolean> predicate)
+        public IEnumerable<ParticipationHistory> FindHistory(Func<ParticipationHistory, Boolean> predicate)
         {
             return db.ParticipationHistories.Where(predicate).ToList();
         }
 
-        public void Delete(int id)
+        public void DeleteHistory(int id)
         {
             ParticipationHistory participation = db.ParticipationHistories.Find(id);
             if (participation != null)

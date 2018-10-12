@@ -19,32 +19,32 @@ namespace Repository.Repositories
             this.db = context;
         }
 
-        public IEnumerable<ProjectRole> GetAll()
+        public IEnumerable<ProjectRole> GetAllProjectRoles()
         {
             return db.ProjectRoles;
         }
 
-        public ProjectRole Get(int id)
+        public ProjectRole GetProjectRoleById(int id)
         {
             return db.ProjectRoles.Find(id);
         }
 
-        public void Create(ProjectRole projectrole)
+        public void CreateProjectRole(ProjectRole projectrole)
         {
             db.ProjectRoles.Add(projectrole);
         }
 
-        public void Update(ProjectRole projectrole)
+        public void UpdateProjectRole(ProjectRole projectrole)
         {
             db.Entry(projectrole).State = EntityState.Modified;
         }
 
-        public IEnumerable<ProjectRole> Find(Func<ProjectRole, Boolean> predicate)
+        public IEnumerable<ProjectRole> FindProjectRole(Func<ProjectRole, Boolean> predicate)
         {
             return db.ProjectRoles.Where(predicate).ToList();
         }
 
-        public void Delete(int id)
+        public void DeleteProjectRole(int id)
         {
             ProjectRole projectrole = db.ProjectRoles.Find(id);
             if (projectrole != null)

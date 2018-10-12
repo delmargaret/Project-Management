@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BLL.DTO
 {
-    class ProjectRoleDTO
+    public class ProjectRoleDTO
     {
         public int Id { get; set; }
         public string ProjectRoleName { get; set; }
