@@ -13,6 +13,7 @@ namespace DAL.Entities
         public string ProjectDescription { get; set; }
         public DateTimeOffset ProjectStartDate { get; set; }
         public DateTimeOffset ProjectEndDate { get; set; }
+        public int ProjectStatusId { get; set; }
         public ProjectStatus ProjectStatus { get; set; }
         public ICollection<Employee> Employees { get; set; }
     }
