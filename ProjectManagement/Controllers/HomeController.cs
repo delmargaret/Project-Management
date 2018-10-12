@@ -42,21 +42,26 @@ namespace ProjectManagement.Controllers
         [HttpPost]
         public ActionResult CreateEmployee(EmployeeViewModel employee)
         {
-            var employeeDTO = new EmployeeDTO
+            try
             {
-                Id = employee.Id,
-                EmployeeName = employee.EmployeeName,
-                EmployeeSurname = employee.EmployeeSurname,
-                EmployeePatronymic = employee.EmployeePatronymic,
-                Email = employee.Email,
-                GitLink = employee.GitLink,
-                PhoneNumber = employee.PhoneNumber,
-                RoleId = employee.RoleId
-            };
-            service.CreateEmployee(employeeDTO);
-            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<EmployeeDTO, EmployeeViewModel>()).CreateMapper();
-            var employees = mapper.Map<EmployeeDTO, EmployeeViewModel>(employeeDTO);
-            return View(employees);
+                var employeeDTO = new EmployeeDTO
+                {
+                    Id = employee.Id,
+                    EmployeeName = employee.EmployeeName,
+                    EmployeeSurname = employee.EmployeeSurname,
+                    EmployeePatronymic = employee.EmployeePatronymic,
+                    Email = employee.Email,
+                    GitLink = employee.GitLink,
+                    PhoneNumber = employee.PhoneNumber,
+                    RoleId = employee.RoleId
+                };
+                service.CreateEmployee(employeeDTO);
+            }
+            catch (Exception ex)
+            {
+                var exstring = ex.Message;
+            }
+            return View(employee);
         }
 
 
