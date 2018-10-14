@@ -92,7 +92,9 @@ namespace Repository.Repositories
 
         public void DeleteEmployeeByEmail(string email)
         {
-            Employee employee = db.Employees.First(item => item.Email == email);
+            List<Employee> list = new List<Employee>();
+            list = db.Employees.Where(item => item.Email == email).ToList();
+            Employee employee = list.First();
             if (employee != null)
                 db.Employees.Remove(employee);
         }
@@ -106,7 +108,9 @@ namespace Repository.Repositories
 
         public void DeleteEmployeeBySurname(string surname)
         {
-            Employee employee = db.Employees.First(item => item.EmployeeSurname == surname);
+            List<Employee> list = new List<Employee>();
+            list = db.Employees.Where(item => item.EmployeeSurname == surname).ToList();
+            Employee employee = list.First();
             if (employee != null)
                 db.Employees.Remove(employee);
         }
@@ -137,7 +141,9 @@ namespace Repository.Repositories
 
         public Employee GetEmployeeByEmail(string email)
         {
-            return db.Employees.Where(item => item.Email == email).First();
+            List<Employee> list = new List<Employee>();
+            list = db.Employees.Where(item => item.Email == email).ToList();
+            return list.First();
         }
 
         public Employee GetEmployeeById(int id)

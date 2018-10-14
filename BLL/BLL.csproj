@@ -63,14 +63,16 @@
     <Compile Include="Interfaces\IEmployeeService.cs" />
     <Compile Include="Interfaces\IParticipationHistoryService.cs" />
     <Compile Include="Interfaces\IProjectRoleService.cs" />
+    <Compile Include="Interfaces\IProjectService.cs" />
+    <Compile Include="Interfaces\IProjectWorkService.cs" />
     <Compile Include="Interfaces\IRoleService.cs" />
-    <Compile Include="Interfaces\IService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\EmployeeService.cs" />
     <Compile Include="Services\PartisipationHistoryService.cs" />
     <Compile Include="Services\ProjectRoleService.cs" />
+    <Compile Include="Services\ProjectService.cs" />
+    <Compile Include="Services\ProjectWorkService.cs" />
     <Compile Include="Services\RoleService.cs" />
-    <Compile Include="Services\Service.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DAL\DAL.csproj">

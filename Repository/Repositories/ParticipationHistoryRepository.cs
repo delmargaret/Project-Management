@@ -31,7 +31,9 @@ namespace Repository.Repositories
 
         public ParticipationHistory GetLastEmployeesHistory(int projectWorkId)
         {
-            return db.ParticipationHistories.Where(item => item.ProjectWorkId == projectWorkId).Last();
+            List<ParticipationHistory> list = new List<ParticipationHistory>();
+            list = db.ParticipationHistories.Where(item => item.ProjectWorkId == projectWorkId).ToList();
+            return list.Last();
         }
 
         public void ChangeHistoryStartDate(int id, DateTimeOffset start)

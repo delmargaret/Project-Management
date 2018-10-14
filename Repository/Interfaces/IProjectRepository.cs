@@ -9,11 +9,20 @@ namespace Repository.Interfaces
 {
     public interface IProjectRepository
     {
-        IEnumerable<Project> GetAll();
-        Project Get(int id);
-        IEnumerable<Project> Find(Func<Project, Boolean> predicate);
-        void Create(Project item);
-        void Update(Project item);
-        void Delete(int id);
+        IEnumerable<Project> GetAllProjects();
+        IEnumerable<Project> GetAllClosedProjects();
+        IEnumerable<Project> GetAllOpenedProjects();
+        List<Project> GetProjectsEndingInNDays(int numberOfDays);
+        Project GetProjectById(int id);
+        IEnumerable<Project> FindProject(Func<Project, Boolean> predicate);
+        void CreateProject(Project item);
+        void UpdateProject(Project item);
+        void DeleteProjectById(int id);
+        void ChangeProjectName(int projectId, string newProjectName);
+        void ChangeProjectDescription(int projectId, string newProjectDescription);
+        void ChangeProjectStartDate(int projectId, DateTimeOffset newStartDate);
+        void ChangeProjectEndDate(int projectId, DateTimeOffset newEndDate);
+        void ChangeProjectStatus(int projectId, int projectStatusId);
+
     }
 }

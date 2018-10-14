@@ -27,7 +27,7 @@ namespace BLL.Services
 
         public void CreateHistory(ParticipationHistoryDTO historyDTO)
         {
-            ProjectWork work = Database.ProjectWorks.Get(historyDTO.ProjectWorkId);
+            ProjectWork work = Database.ProjectWorks.GetProjectWorkById(historyDTO.ProjectWorkId);
 
             if (work == null)
                 Console.WriteLine("история участия в проекте не создана");

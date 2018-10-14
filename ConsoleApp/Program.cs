@@ -26,6 +26,8 @@ namespace ConsoleApp
             RoleService roleService = new RoleService(uow);
             ProjectRoleService projectRoleService = new ProjectRoleService(uow);
             PartisipationHistoryService historyService = new PartisipationHistoryService(uow);
+            ProjectService projectService = new ProjectService(uow);
+            ProjectWorkService projectWorkService = new ProjectWorkService(uow);
 
             #region Employee
             //Console.WriteLine("введите фамилию:");
@@ -141,8 +143,181 @@ namespace ConsoleApp
             //Console.WriteLine("{0}", projectRole1.ProjectRoleName);
             #endregion
 
-            #region ParticipationHistory
+            #region Project
+            //ProjectDTO project1 = new ProjectDTO
+            //{
+            //    ProjectName = "проект 1",
+            //    ProjectDescription = "проект номер один",
+            //    ProjectStartDate = new DateTimeOffset(2018, 10, 6, 10, 15, 35, new TimeSpan(3, 0, 0)),
+            //    ProjectEndDate = new DateTimeOffset(2018, 10, 21, 10, 15, 35, new TimeSpan(3, 0, 0)),
+            //    ProjectStatusId = 1
+            //};
+            //ProjectDTO project2 = new ProjectDTO
+            //{
+            //    ProjectName = "проект 2",
+            //    ProjectDescription = "проект номер два",
+            //    ProjectStartDate = new DateTimeOffset(2018, 11, 1, 10, 15, 35, new TimeSpan(3, 0, 0)),
+            //    ProjectEndDate = new DateTimeOffset(2018, 12, 11, 10, 15, 35, new TimeSpan(3, 0, 0)),
+            //    ProjectStatusId = 1
+            //};
+            //projectService.CreateProject(project1);
+            //projectService.CreateProject(project2);
+            //var projects = projectService.GetAllProjects();
+            //foreach(var proj in projects)
+            //{
+            //    Console.WriteLine("{0}", proj.ProjectName);
+            //}
+            //Console.WriteLine();
 
+            //var projects2 = projectService.GetAllOpenedProjects();
+            //foreach (var proj in projects2)
+            //{
+            //    Console.WriteLine("{0}", proj.ProjectName);
+            //}
+            //Console.WriteLine();
+
+            //projectService.ChangeProjectName(1, "Проектик");
+            //Console.WriteLine("{0}", projectService.GetProjectById(1).ProjectName);
+            //Console.WriteLine();
+
+            //projectService.ChangeProjectStatus(2, 2);
+            //var projects4 = projectService.GetAllClosedProjects();
+            //foreach (var proj in projects4)
+            //{
+            //    Console.WriteLine("{0}", proj.ProjectName);
+            //}
+
+            //var pr = projectService.GetProjectsEndingInNDays(6);
+            //foreach (var proj in pr)
+            //{
+            //    Console.WriteLine("{0}", proj.ProjectName);
+            //}
+
+            #endregion
+
+            #region ProjectWork
+            //ProjectWorkDTO work1 = new ProjectWorkDTO
+            //{
+            //    EmployeeId = 3,
+            //    ProjectId = 1,
+            //    ProjectRoleId = 2,
+            //    WorkLoad = 30
+            //};
+
+            //ProjectWorkDTO work2 = new ProjectWorkDTO
+            //{
+            //    EmployeeId = 4,
+            //    ProjectId = 1,
+            //    ProjectRoleId = 4,
+            //    WorkLoad = 50
+            //};
+
+            //ProjectWorkDTO work3 = new ProjectWorkDTO
+            //{
+            //    EmployeeId = 4,
+            //    ProjectId = 1,
+            //    ProjectRoleId = 1,
+            //    WorkLoad = 50
+            //};
+
+            //ProjectWorkDTO work4 = new ProjectWorkDTO
+            //{
+            //    EmployeeId = 4,
+            //    ProjectId = 2,
+            //    ProjectRoleId = 3,
+            //    WorkLoad = 20
+            //};
+
+            //projectWorkService.CreateProjectWork(work1);
+            //projectWorkService.CreateProjectWork(work2);
+            //projectWorkService.CreateProjectWork(work3);
+            //projectWorkService.CreateProjectWork(work4);
+
+            //var works = projectWorkService.GetAllProjectWorks();
+            //foreach (var work in works)
+            //{
+            //    Console.WriteLine("{0} {1} {2} {3}", work.ProjectId, work.EmployeeId, work.ProjectRoleId, work.WorkLoad);
+            //}
+            //Console.WriteLine();
+
+            //var works2 = projectWorkService.GetEmployeesProjects(4);
+            //foreach (var work in works2)
+            //{
+            //    Console.WriteLine("{0} {1} {2} ", work.ProjectId, work.ProjectRoleId, work.WorkLoad);
+            //}
+            //Console.WriteLine();
+
+            //var works3 = projectWorkService.GetNamesAndLoadOnProject(2);
+            //foreach (var work in works3)
+            //{
+            //    Console.WriteLine("{0} {1} {2} ", work.EmployeeId, work.ProjectRoleId, work.WorkLoad);
+            //}
+            //Console.WriteLine();
+
+            //var works4 = projectWorkService.GetNamesOnProject(2);
+            //foreach (var work in works4)
+            //{
+            //    Console.WriteLine("{0} {1}", work.name, work.role);
+            //}
+            //Console.WriteLine();
+
+            //ProjectWorkDTO work5 = new ProjectWorkDTO
+            //{
+            //    EmployeeId = 4,
+            //    ProjectId = 2,
+            //    ProjectRoleId = 3,
+            //    WorkLoad = 20
+            //};
+
+            //projectWorkService.CreateProjectWork(work5);
+            //var works5 = projectWorkService.GetAllProjectWorks();
+            //foreach (var work in works5)
+            //{
+            //    Console.WriteLine("{0} {1} {2} {3}", work.ProjectId, work.EmployeeId, work.ProjectRoleId, work.WorkLoad);
+            //}
+            //Console.WriteLine();
+
+            //projectWorkService.ChangeEmployeesProjectRole(1, 4);
+            //var works6 = projectWorkService.GetAllProjectWorks();
+            //foreach (var work in works6)
+            //{
+            //    Console.WriteLine("{0} {1} {2} {3}", work.ProjectId, work.EmployeeId, work.ProjectRoleId, work.WorkLoad);
+            //}
+
+            #endregion
+
+            #region ParticipationHistory
+            //ParticipationHistoryDTO history = new ParticipationHistoryDTO
+            //{
+            //    ProjectWorkId = 2,
+            //    StartDate = new DateTimeOffset(2018, 10, 6, 10, 15, 35, new TimeSpan(3, 0, 0)),
+            //    EndDate = new DateTimeOffset(2018, 10, 21, 10, 15, 35, new TimeSpan(3, 0, 0))
+            //};
+            //historyService.CreateHistory(history);
+
+            //foreach (var hist in historyService.GetAllEmployeesHistoriesOnProject(2))
+            //{
+            //    Console.WriteLine("{0}", hist.Id);
+            //}
+
+            //Console.WriteLine();
+            //historyService.ChangeHistoryEndDate(1, new DateTimeOffset(2018, 10, 15, 10, 15, 35, new TimeSpan(3, 0, 0)));
+
+            //foreach (var hist in historyService.GetAllEmployeesHistoriesOnProject(2))
+            //{
+            //    Console.WriteLine("{0}", hist.Id);
+            //}
+            //Console.WriteLine();
+
+            //ParticipationHistoryDTO history2 = new ParticipationHistoryDTO
+            //{
+            //    ProjectWorkId = 2,
+            //    StartDate = new DateTimeOffset(2018, 10, 16, 10, 15, 35, new TimeSpan(3, 0, 0)),
+            //    EndDate = new DateTimeOffset(2018, 10, 21, 10, 15, 35, new TimeSpan(3, 0, 0))
+            //};
+
+            //historyService.CreateHistory(history2);
+            //Console.WriteLine("{0}", historyService.GetLastEmployeesHistory(2).Id);
             #endregion
 
 

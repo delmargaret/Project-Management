@@ -57,6 +57,8 @@
     <Compile Include="Entities\ProjectStatus.cs" />
     <Compile Include="Entities\ProjectWork.cs" />
     <Compile Include="Entities\Role.cs" />
+    <Compile Include="Entities\Schedule.cs" />
+    <Compile Include="Entities\ScheduleDay.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
