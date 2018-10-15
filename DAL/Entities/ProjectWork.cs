@@ -15,6 +15,6 @@ namespace DAL.Entities
         public Employee Employee { get; set; }
         public int ProjectRoleId { get; set; }
         public ProjectRole ProjectRole { get; set; }
-        public int WorkLoad { get; set; }
+        public int? WorkLoad { get; set; }
     }
 }

@@ -54,11 +54,14 @@
     <Compile Include="DTO\EmployeeDTO.cs" />
     <Compile Include="DTO\ParticipationHistoryDTO.cs" />
     <Compile Include="DTO\PasswordDTO.cs" />
+    <Compile Include="DTO\PercentOrScheduleDTO.cs" />
     <Compile Include="DTO\ProjectDTO.cs" />
     <Compile Include="DTO\ProjectRoleDTO.cs" />
     <Compile Include="DTO\ProjectStatusDTO.cs" />
     <Compile Include="DTO\ProjectWorkDTO.cs" />
     <Compile Include="DTO\RoleDTO.cs" />
+    <Compile Include="DTO\ScheduleDayDTO.cs" />
+    <Compile Include="DTO\ScheduleDTO.cs" />
     <Compile Include="Infrastructure\ServiceModule.cs" />
     <Compile Include="Interfaces\IEmployeeService.cs" />
     <Compile Include="Interfaces\IParticipationHistoryService.cs" />
@@ -66,6 +69,7 @@
     <Compile Include="Interfaces\IProjectService.cs" />
     <Compile Include="Interfaces\IProjectWorkService.cs" />
     <Compile Include="Interfaces\IRoleService.cs" />
+    <Compile Include="Interfaces\IScheduleService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\EmployeeService.cs" />
     <Compile Include="Services\PartisipationHistoryService.cs" />
@@ -73,6 +77,7 @@
     <Compile Include="Services\ProjectService.cs" />
     <Compile Include="Services\ProjectWorkService.cs" />
     <Compile Include="Services\RoleService.cs" />
+    <Compile Include="Services\ScheduleServise.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DAL\DAL.csproj">

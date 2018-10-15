@@ -30,7 +30,10 @@ namespace BLL.Services
             ProjectWork work = Database.ProjectWorks.GetProjectWorkById(historyDTO.ProjectWorkId);
 
             if (work == null)
+            {
                 Console.WriteLine("история участия в проекте не создана");
+                return;
+            }
             ParticipationHistory history = new ParticipationHistory
             {
                 ProjectWorkId = historyDTO.ProjectWorkId,
@@ -46,10 +49,16 @@ namespace BLL.Services
         public void DeleteHistoryById(int? id)
         {
             if (id == null)
+            {
                 Console.WriteLine("не установлено id истории");
+                return;
+            }
             var history = Database.ParticipationHistories.GetHistoryById(id.Value);
             if (history == null)
+            {
                 Console.WriteLine("истории не существует");
+                return;
+            }
             Database.ParticipationHistories.DeleteHistory(id.Value);
             Database.Save();
         }
@@ -58,7 +67,10 @@ namespace BLL.Services
         {
             var history = Database.ParticipationHistories.GetHistoryById(id.Value);
             if (history == null)
+            {
                 Console.WriteLine("история не найдена");
+                return null;
+            }
             var mapper = new MapperConfiguration(cfg => cfg.CreateMap<ParticipationHistory, ParticipationHistoryDTO>()).CreateMapper();
             return mapper.Map<ParticipationHistory, ParticipationHistoryDTO>(Database.ParticipationHistories.GetHistoryById(id.Value));
         }
@@ -67,19 +79,45 @@ namespace BLL.Services
         {
             var history = Database.ParticipationHistories.GetLastEmployeesHistory(projectWorkId.Value);
             if (history == null)
+            {
                 Console.WriteLine("история не найдена");
+                return null;
+            }
             var mapper = new MapperConfiguration(cfg => cfg.CreateMap<ParticipationHistory, ParticipationHistoryDTO>()).CreateMapper();
             return mapper.Map<ParticipationHistory, ParticipationHistoryDTO>(Database.ParticipationHistories.GetLastEmployeesHistory(projectWorkId.Value));
         }
 
         public IEnumerable<ParticipationHistoryDTO> GetAllHistories()
         {
+            var histories = Database.ParticipationHistories.GetAllHistories();
+            if (histories.Count() == 0)
+            {
+                Console.WriteLine("истории не найдены");
+                return null;
+            }
             var mapper = new MapperConfiguration(cfg => cfg.CreateMap<ParticipationHistory, ParticipationHistoryDTO>()).CreateMapper();
             return mapper.Map<IEnumerable<ParticipationHistory>, List<ParticipationHistoryDTO>>(Database.ParticipationHistories.GetAllHistories());
         }
 
         public IEnumerable<ParticipationHistoryDTO> GetAllEmployeesHistoriesOnProject(int? projectWorkId)
         {
+            if (projectWorkId == null)
+            {
+                Console.WriteLine("не указан id проектной работы");
+                return null;
+            }
+            var projectWork = Database.ProjectWorks.GetProjectWorkById(projectWorkId.Value);
+            if (projectWork == null)
+            {
+                Console.WriteLine("проектной работы не существует");
+                return null;
+            }
+            var histories = Database.ParticipationHistories.GetAllHistories();
+            if (histories.Count() == 0)
+            {
+                Console.WriteLine("истории не найдены");
+                return null;
+            }
             var mapper = new MapperConfiguration(cfg => cfg.CreateMap<ParticipationHistory, ParticipationHistoryDTO>()).CreateMapper();
             return mapper.Map<IEnumerable<ParticipationHistory>, List<ParticipationHistoryDTO>>(Database.ParticipationHistories.GetAllEmployeesHistoriesOnProject(projectWorkId.Value));
         }
@@ -87,10 +125,16 @@ namespace BLL.Services
         public void ChangeHistoryStartDate(int? id, DateTimeOffset start)
         {
             if (id == null)
+            {
                 Console.WriteLine("не установлено id истории");
+                return;
+            }
             var history = Database.ParticipationHistories.GetHistoryById(id.Value);
             if (history == null)
+            {
                 Console.WriteLine("истории не существует");
+                return;
+            }
             Database.ParticipationHistories.ChangeHistoryStartDate(id.Value, start);
             Database.Save();
         }
@@ -98,10 +142,16 @@ namespace BLL.Services
         public void ChangeHistoryEndDate(int? id, DateTimeOffset end)
         {
             if (id == null)
+            {
                 Console.WriteLine("не установлено id истории");
+                return;
+            }
             var history = Database.ParticipationHistories.GetHistoryById(id.Value);
             if (history == null)
+            {
                 Console.WriteLine("истории не существует");
+                return;
+            }
             Database.ParticipationHistories.ChangeHistoryEndDate(id.Value, end);
             Database.Save();
         }

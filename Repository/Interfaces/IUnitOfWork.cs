@@ -17,6 +17,9 @@ namespace Repository.Interfaces
         IProjectStatusRepository ProjectStatuses { get; }
         IProjectWorkRepository ProjectWorks { get; }
         IRoleRepository Roles { get; }
+        IScheduleDayRepository ScheduleDays { get; }
+        IScheduleRepository Schedules { get; }
+        IPercentOrScheduleRepository WorkLoads { get; }
         void Save();
     }
 }

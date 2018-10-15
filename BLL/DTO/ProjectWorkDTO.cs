@@ -12,6 +12,6 @@ namespace BLL.DTO
         public int ProjectId { get; set; }
         public int EmployeeId { get; set; }
         public int ProjectRoleId { get; set; }
-        public int WorkLoad { get; set; }
+        public int? WorkLoad { get; set; }
     }
 }

@@ -33,10 +33,16 @@ namespace BLL.Services
         public void DeleteRoleById(int? id)
         {
             if (id == null)
+            {
                 Console.WriteLine("Не установлено id роли");
+                return;
+            }
             var role = Database.Roles.GetRoleById(id.Value);
             if (role == null)
+            {
                 Console.WriteLine("роль не найдена");
+                return;
+            }
             Database.Roles.DeleteRole(id.Value);
             Database.Save();
         }
@@ -44,16 +50,28 @@ namespace BLL.Services
         public RoleDTO GetRoleById(int? id)
         {
             if (id == null)
+            {
                 Console.WriteLine("Не установлено id роли");
+                return null;
+            }
             var role = Database.Roles.GetRoleById(id.Value);
             if (role == null)
+            {
                 Console.WriteLine("роль не найдена");
+                return null;
+            }
             var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Role, RoleDTO>()).CreateMapper();
             return mapper.Map<Role, RoleDTO>(Database.Roles.GetRoleById(id.Value));
         }
 
         public IEnumerable<RoleDTO> GetRoles()
         {
+            var roles = Database.Roles.GetAllRoles();
+            if (roles.Count() == 0)
+            {
+                Console.WriteLine("роли не найдены");
+                return null;
+            }
             var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Role, RoleDTO>()).CreateMapper();
             return mapper.Map<IEnumerable<Role>, List<RoleDTO>>(Database.Roles.GetAllRoles());
         }

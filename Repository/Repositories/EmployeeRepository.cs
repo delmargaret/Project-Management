@@ -85,6 +85,17 @@ namespace Repository.Repositories
             }
         }
 
+        public void SetWorkLoadType(int employeeId, int WorkLoadTypeId)
+        {
+            Employee employee = db.Employees.Find(employeeId);
+            if (employee != null)
+            {
+                employee.PercentOrScheduleId = WorkLoadTypeId;
+                employee.PercentOrSchedule = db.PercentOrSchedules.Find(WorkLoadTypeId);
+            }
+        }
+
+
         public void CreateEmployee(Employee item)
         {
             db.Employees.Add(item);

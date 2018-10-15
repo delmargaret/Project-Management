@@ -21,6 +21,7 @@ namespace DAL.DataContext
         public DbSet<Role> Roles { get; set; }
         public DbSet<Schedule> Schedules { get; set; }
         public DbSet<ScheduleDay> ScheduleDays { get; set; }
+        public DbSet<PercentOrSchedule> PercentOrSchedules { get; set; }
 
         static ManagementContext()
         {
@@ -37,11 +38,14 @@ namespace DAL.DataContext
     {
         protected override void Seed(ManagementContext db)
         {
-            db.ProjectRoles.Add(new ProjectRole { ProjectRoleName = "фронтенд разработчик" });
-            db.ProjectRoles.Add(new ProjectRole { ProjectRoleName = "бэкенд разработчик" });
-            db.ProjectRoles.Add(new ProjectRole { ProjectRoleName = "фулстек" });
-            db.ProjectRoles.Add(new ProjectRole { ProjectRoleName = "дизайнер" });
-            db.ProjectRoles.Add(new ProjectRole { ProjectRoleName = "проектный менеджер" });
+            db.ProjectRoles.Add(new ProjectRole { ProjectRoleName = "Front-end разработчик" });
+            db.ProjectRoles.Add(new ProjectRole { ProjectRoleName = "Back-end разработчик" });
+            db.ProjectRoles.Add(new ProjectRole { ProjectRoleName = "Full-stack разработчик" });
+            db.ProjectRoles.Add(new ProjectRole { ProjectRoleName = "Дизайнер" });
+            db.ProjectRoles.Add(new ProjectRole { ProjectRoleName = "Тестировщик" });
+            db.ProjectRoles.Add(new ProjectRole { ProjectRoleName = "Менеджер проекта" });
+            db.ProjectRoles.Add(new ProjectRole { ProjectRoleName = "Бизнес-аналитик" });
+
 
             db.Roles.Add(new Role { RoleName = "Ресурсный менеджер" });
             db.Roles.Add(new Role { RoleName = "Проектный менеджер" });
@@ -56,6 +60,10 @@ namespace DAL.DataContext
             db.ScheduleDays.Add(new ScheduleDay { ScheduleDayName = "Четверг" });
             db.ScheduleDays.Add(new ScheduleDay { ScheduleDayName = "Пятница" });
             db.ScheduleDays.Add(new ScheduleDay { ScheduleDayName = "Суббота" });
+
+            db.PercentOrSchedules.Add(new PercentOrSchedule { TypeName = "Проценты" });
+            db.PercentOrSchedules.Add(new PercentOrSchedule { TypeName = "Расписание" });
+            db.PercentOrSchedules.Add(new PercentOrSchedule { TypeName = "Не выбрано" });
 
             db.SaveChanges();
         }

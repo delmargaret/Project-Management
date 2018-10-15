@@ -20,6 +20,9 @@ namespace Repository.Repositories
         private ProjectStatusRepository projectStatusRepository;
         private ProjectWorkRepository projectWorkRepository;
         private RoleRepository roleRepository;
+        private ScheduleDayRepository scheduleDayRepository;
+        private ScheduleRepository scheduleRepository;
+        private PercentOrScheduleRepository percentOrScheduleRepository;
 
         public ContextUnitOfWork(string connectionString)
         {
@@ -103,6 +106,36 @@ namespace Repository.Repositories
                 if (roleRepository == null)
                     roleRepository = new RoleRepository(db);
                 return roleRepository;
+            }
+        }
+
+        public IScheduleDayRepository ScheduleDays
+        {
+            get
+            {
+                if (scheduleDayRepository == null)
+                    scheduleDayRepository = new ScheduleDayRepository(db);
+                return scheduleDayRepository;
+            }
+        }
+
+        public IScheduleRepository Schedules
+        {
+            get
+            {
+                if (scheduleRepository == null)
+                    scheduleRepository = new ScheduleRepository(db);
+                return scheduleRepository;
+            }
+        }
+
+        public IPercentOrScheduleRepository WorkLoads
+        {
+            get
+            {
+                if (percentOrScheduleRepository == null)
+                    percentOrScheduleRepository = new PercentOrScheduleRepository(db);
+                return percentOrScheduleRepository;
             }
         }
 

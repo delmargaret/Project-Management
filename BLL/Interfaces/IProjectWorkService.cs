@@ -21,6 +21,8 @@ namespace BLL.Interfaces
         void ChangeEmployee(int? projectWorkId, int? newEmployeeId);
         void ChangeEmployeesProjectRole(int? projectWorkId, int? newProjectRoleId);
         void ChangeWorkLoad(int? projectWorkId, int? newWorkLoad);
+        void AddWorkLoad(int? projectWorkId, int? workLoad);
+        void DeleteWorkLoad(int? projectWorkId);
         void Dispose();
     }
 }

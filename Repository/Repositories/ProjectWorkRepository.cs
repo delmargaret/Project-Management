@@ -141,5 +141,22 @@ namespace Repository.Repositories
             }
         }
 
+        public void AddWorkLoad(int projectWorkId, int workLoad)
+        {
+            ProjectWork projectWork = db.ProjectWorks.Find(projectWorkId);
+            if (projectWork != null)
+            {
+                projectWork.WorkLoad = workLoad;
+            }
+        }
+
+        public void DeleteWorkLoad(int projectWorkId)
+        {
+            ProjectWork projectWork = db.ProjectWorks.Find(projectWorkId);
+            if (projectWork != null)
+            {
+                projectWork.WorkLoad = null;
+            }
+        }
     }
 }

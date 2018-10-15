@@ -52,6 +52,7 @@
     <Compile Include="Entities\Employee.cs" />
     <Compile Include="Entities\ParticipationHistory.cs" />
     <Compile Include="Entities\Password.cs" />
+    <Compile Include="Entities\PercentOrSchedule.cs" />
     <Compile Include="Entities\Project.cs" />
     <Compile Include="Entities\ProjectRole.cs" />
     <Compile Include="Entities\ProjectStatus.cs" />

@@ -28,6 +28,7 @@ namespace ConsoleApp
             PartisipationHistoryService historyService = new PartisipationHistoryService(uow);
             ProjectService projectService = new ProjectService(uow);
             ProjectWorkService projectWorkService = new ProjectWorkService(uow);
+            ScheduleServise scheduleServise = new ScheduleServise(uow);
 
             #region Employee
             //Console.WriteLine("введите фамилию:");
@@ -320,7 +321,91 @@ namespace ConsoleApp
             //Console.WriteLine("{0}", historyService.GetLastEmployeesHistory(2).Id);
             #endregion
 
+            #region Schedule
+            //ProjectDTO project1 = new ProjectDTO
+            //{
+            //    ProjectName = "проект 1",
+            //    ProjectDescription = "проект номер один",
+            //    ProjectStartDate = new DateTimeOffset(2018, 10, 6, 10, 15, 35, new TimeSpan(3, 0, 0)),
+            //    ProjectEndDate = new DateTimeOffset(2018, 10, 21, 10, 15, 35, new TimeSpan(3, 0, 0)),
+            //    ProjectStatusId = 1
+            //};
+            //ProjectDTO project2 = new ProjectDTO
+            //{
+            //    ProjectName = "проект 2",
+            //    ProjectDescription = "проект номер два",
+            //    ProjectStartDate = new DateTimeOffset(2018, 11, 1, 10, 15, 35, new TimeSpan(3, 0, 0)),
+            //    ProjectEndDate = new DateTimeOffset(2018, 12, 11, 10, 15, 35, new TimeSpan(3, 0, 0)),
+            //    ProjectStatusId = 1
+            //};
+            //projectService.CreateProject(project1);
+            //projectService.CreateProject(project2);
 
+            //EmployeeDTO employee1 = new EmployeeDTO
+            //{
+            //    EmployeeName = "Кирилл",
+            //    EmployeeSurname = "Петров",
+            //    EmployeePatronymic = "Иванович",
+            //    RoleId = 3
+            //};
+
+            //EmployeeDTO employee2 = new EmployeeDTO
+            //{
+            //    EmployeeName = "Зоя",
+            //    EmployeeSurname = "Зайцева",
+            //    EmployeePatronymic = "Андреевна",
+            //    RoleId = 3
+            //};
+            //employeeService.CreateEmployee(employee1);
+            //employeeService.CreateEmployee(employee2);
+
+            //ProjectWorkDTO work1 = new ProjectWorkDTO
+            //{
+            //    EmployeeId = 1,
+            //    ProjectId = 1,
+            //    ProjectRoleId = 2,
+            //};
+
+
+            //ProjectWorkDTO work2 = new ProjectWorkDTO
+            //{
+            //    EmployeeId = 2,
+            //    ProjectId = 1,
+            //    ProjectRoleId = 3,
+            //};
+            //projectWorkService.CreateProjectWork(work1);
+            //projectWorkService.CreateProjectWork(work2);
+
+            //ScheduleDTO schedule = new ScheduleDTO
+            //{
+            //    ProjectWorkId = 1,
+            //    ScheduleDayId = 2
+            //};
+            //scheduleServise.CreateSchedule(schedule);
+
+            //projectWorkService.AddWorkLoad(2, 30);
+            //Console.WriteLine();
+
+            //ProjectWorkDTO work3 = new ProjectWorkDTO
+            //{
+            //    EmployeeId = 1,
+            //    ProjectId = 1,
+            //    ProjectRoleId = 3,
+            //};
+
+
+            //ProjectWorkDTO work4 = new ProjectWorkDTO
+            //{
+            //    EmployeeId = 2,
+            //    ProjectId = 2,
+            //    ProjectRoleId = 3,
+            //};
+            //projectWorkService.CreateProjectWork(work3);
+            //projectWorkService.CreateProjectWork(work4);
+
+            projectWorkService.AddWorkLoad(3, 50);
+
+            #endregion
         }
     }
 }

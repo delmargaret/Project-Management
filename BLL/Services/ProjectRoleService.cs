@@ -33,10 +33,16 @@ namespace BLL.Services
         public void DeleteProjectRoleById(int? id)
         {
             if (id == null)
+            {
                 Console.WriteLine("Не установлено id роли в проекте");
+                return;
+            }
             var role = Database.ProjectRoles.GetProjectRoleById(id.Value);
             if (role == null)
+            {
                 Console.WriteLine("роль не найдена");
+                return;
+            }
             Database.ProjectRoles.DeleteProjectRole(id.Value);
             Database.Save();
         }
@@ -44,16 +50,28 @@ namespace BLL.Services
         public ProjectRoleDTO GetProjectRoleById(int? id)
         {
             if (id == null)
+            {
                 Console.WriteLine("Не установлено id роли в проекте");
+                return null;
+            }
             var role = Database.ProjectRoles.GetProjectRoleById(id.Value);
             if (role == null)
+            {
                 Console.WriteLine("роль не найдена");
+                return null;
+            }
             var mapper = new MapperConfiguration(cfg => cfg.CreateMap<ProjectRole, ProjectRoleDTO>()).CreateMapper();
             return mapper.Map<ProjectRole, ProjectRoleDTO>(Database.ProjectRoles.GetProjectRoleById(id.Value));
         }
 
         public IEnumerable<ProjectRoleDTO> GetProjectRoles()
         {
+            var roles = Database.ProjectRoles.GetAllProjectRoles();
+            if (roles.Count() == 0)
+            {
+                Console.WriteLine("роли не найдены");
+                return null;
+            }
             var mapper = new MapperConfiguration(cfg => cfg.CreateMap<ProjectRole, ProjectRoleDTO>()).CreateMapper();
             return mapper.Map<IEnumerable<ProjectRole>, List<ProjectRoleDTO>>(Database.ProjectRoles.GetAllProjectRoles());
         }

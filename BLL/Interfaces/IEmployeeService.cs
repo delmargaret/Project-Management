@@ -17,7 +17,7 @@ namespace BLL.Interfaces
         EmployeeDTO GetEmployeeByEmail(string email);
         IEnumerable<EmployeeDTO> GetEmployeesBySurname(string surname);
         IEnumerable<EmployeeDTO> GetAllEmployees();
-        IEnumerable<EmployeeDTO> GetEmployeesByRoleId(int roleId);
+        IEnumerable<EmployeeDTO> GetEmployeesByRoleId(int? roleId);
         void AddGitLink(int? employeeId, string gitlink);
         void DeleteGitLinkByEmployeeId(int? id);
         void AddPhoneNumber(int? employeeId, string phoneNumber);
