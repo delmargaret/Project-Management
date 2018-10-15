@@ -321,7 +321,34 @@ namespace BLL.Services
             return mapper.Map<IEnumerable<ProjectWork>, List<ProjectWorkDTO>>(Database.ProjectWorks.GetEmployeesProjects(employeeId.Value));
         }
 
-        public IEnumerable<ProjectWorkDTO> GetNamesAndLoadOnProject(int? projectId)
+        public int CalculateEmployeesWorkload(int? employeeId)
+        {
+            if (employeeId == null)
+            {
+                Console.WriteLine("не установлено id сотрудника");
+                return 0;
+            }
+            var employee = Database.Employees.GetEmployeeById(employeeId.Value);
+            if (employee == null)
+            {
+                Console.WriteLine("сотрудник не найден");
+                return 0;
+            }
+            var projectWorks = Database.ProjectWorks.GetEmployeesProjects(employeeId.Value);
+            if (projectWorks.Count() == 0)
+            {
+                Console.WriteLine("у сотрудника нет проектов");
+                return 0;
+            }
+            if (employee.PercentOrScheduleId == 2)
+            {
+                Console.WriteLine("сотрудник работает по расписанию");
+                return 0;
+            }
+            return Database.ProjectWorks.CalculateEmployeesWorkload(employeeId.Value);
+        }
+
+        public IEnumerable<(string name, string role, string workload)> GetNamesAndLoadOnProject(int? projectId)
         {
             if (projectId == null)
             {
@@ -334,14 +361,13 @@ namespace BLL.Services
                 Console.WriteLine("проект не найден");
                 return null; 
             }
-            var projectWorks = Database.ProjectWorks.GetNamesAndLoadOnProject(projectId.Value);
+            var projectWorks = Database.ProjectWorks.FindProjectWork(item=>item.ProjectId==projectId.Value);
             if (projectWorks.Count() == 0)
             {
                 Console.WriteLine("на проекте нет сотрудников");
                 return null;
             }
-            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<ProjectWork, ProjectWorkDTO>()).CreateMapper();
-            return mapper.Map<IEnumerable<ProjectWork>, List<ProjectWorkDTO>>(Database.ProjectWorks.GetNamesAndLoadOnProject(projectId.Value));
+            return Database.ProjectWorks.GetNamesAndLoadOnProject(projectId.Value); ;
         }
 
         public IEnumerable<(string name, string role)> GetNamesOnProject(int? projectId)
@@ -354,7 +380,7 @@ namespace BLL.Services
             var projectWork = Database.ProjectWorks.GetProjectWorkById(projectId.Value);
             if (projectWork == null)
             {
-                Console.WriteLine("проектная работа не найден");
+                Console.WriteLine("проектная работа не найдена");
                 return null;
             }
             var projectWorks = Database.ProjectWorks.GetNamesOnProject(projectId.Value);

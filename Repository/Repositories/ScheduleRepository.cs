@@ -19,6 +19,21 @@ namespace Repository.Repositories
             this.db = context;
         }
 
+        public IEnumerable<ScheduleDay> GetEmployeesFreeDays(int employeeId)
+        {
+            List<ScheduleDay> list = new List<ScheduleDay>();
+            var works = db.ProjectWorks.Where(item => item.EmployeeId == employeeId);
+            foreach(var work in works)
+            {
+                var schedule = db.Schedules.Where(item => item.ProjectWorkId == work.Id);
+                foreach(var day in schedule)
+                {
+                    list.Add(day.ScheduleDay);
+                }
+            }
+            return list;
+        }
+
         public void ChangeScheduleDay(int scheduleId, int scheduleDayId)
         {
             Schedule schedule = db.Schedules.Find(scheduleId);

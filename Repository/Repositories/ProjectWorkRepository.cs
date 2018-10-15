@@ -31,14 +31,20 @@ namespace Repository.Repositories
             return db.ProjectWorks;
         }
 
-        public IEnumerable<ProjectWork> GetNamesAndLoadOnProject(int projectId)
-        {
-            return db.ProjectWorks.Where(item => item.ProjectId == projectId);
-        }
-
         public IEnumerable<ProjectWork> GetEmployeesProjects(int employeeId)
         {
             return db.ProjectWorks.Where(item => item.EmployeeId == employeeId);
+        }
+
+        public int CalculateEmployeesWorkload(int employeeId)
+        {
+            int result = 0;
+            var projects = db.ProjectWorks.Where(item => item.EmployeeId == employeeId);
+            foreach(var project in projects)
+            {
+                result += project.WorkLoad.Value;
+            }
+            return result;
         }
 
         public IEnumerable<(string name, string role)> GetNamesOnProject(int projectId)
@@ -52,6 +58,40 @@ namespace Repository.Repositories
                 name = db.Employees.Find(employee.EmployeeId).EmployeeSurname + " " + db.Employees.Find(employee.EmployeeId).EmployeeName + " " + db.Employees.Find(employee.EmployeeId).EmployeePatronymic;
                 role = db.ProjectRoles.Find(employee.ProjectRoleId).ProjectRoleName;
                 (string, string) tuple = (name, role);
+                list.Add(tuple);
+            }
+            return list;
+        }
+
+        public IEnumerable<(string name, string role, string workload)> GetNamesAndLoadOnProject(int projectId)
+        {
+            List<(string, string, string)> list = new List<(string, string, string)>();
+            string name = " ";
+            string role = " ";
+            string workload = " ";
+            var employeesOnProject = db.ProjectWorks.Where(item => item.ProjectId == projectId).ToList();
+            foreach (var employee in employeesOnProject)
+            {
+                name = db.Employees.Find(employee.EmployeeId).EmployeeSurname + " " + db.Employees.Find(employee.EmployeeId).EmployeeName + " " + db.Employees.Find(employee.EmployeeId).EmployeePatronymic;
+                role = db.ProjectRoles.Find(employee.ProjectRoleId).ProjectRoleName;
+                Employee em = db.Employees.Find(employee.EmployeeId);
+                if (em.PercentOrScheduleId == 3)
+                {
+                    workload = "0%";
+                }
+                if (em.PercentOrScheduleId == 2)
+                {
+                    var days = db.Schedules.Where(item => item.ProjectWorkId == employee.Id);
+                    foreach (var day in days)
+                    {
+                        workload += db.ScheduleDays.Find(day.ScheduleDayId).ScheduleDayName + " ";
+                    }
+                }
+                if (em.PercentOrScheduleId == 1)
+                {
+                    workload = employee.WorkLoad + "%";
+                }
+                               (string, string, string) tuple = (name, role, workload);
                 list.Add(tuple);
             }
             return list;

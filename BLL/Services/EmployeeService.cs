@@ -132,6 +132,11 @@ namespace BLL.Services
         public IEnumerable<EmployeeDTO> GetAllEmployees()
         {
             var employees = Database.Employees.GetAllEmployees();
+            if (employees==null)
+            {
+                Console.WriteLine("сотрудники не найдены");
+                return null;
+            }
             if (employees.Count() == 0)
             {
                 Console.WriteLine("сотрудники не найдены");

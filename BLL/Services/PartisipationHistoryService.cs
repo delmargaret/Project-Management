@@ -34,6 +34,11 @@ namespace BLL.Services
                 Console.WriteLine("история участия в проекте не создана");
                 return;
             }
+            if (historyDTO.StartDate>historyDTO.EndDate)
+            {
+                Console.WriteLine("неверные даты");
+                return;
+            }
             ParticipationHistory history = new ParticipationHistory
             {
                 ProjectWorkId = historyDTO.ProjectWorkId,
@@ -135,6 +140,11 @@ namespace BLL.Services
                 Console.WriteLine("истории не существует");
                 return;
             }
+            if (history.EndDate < start)
+            {
+                Console.WriteLine("неверная дата начала проекта");
+                return;
+            }
             Database.ParticipationHistories.ChangeHistoryStartDate(id.Value, start);
             Database.Save();
         }
@@ -150,6 +160,11 @@ namespace BLL.Services
             if (history == null)
             {
                 Console.WriteLine("истории не существует");
+                return;
+            }
+            if (history.StartDate > end)
+            {
+                Console.WriteLine("неверная дата окончания проекта");
                 return;
             }
             Database.ParticipationHistories.ChangeHistoryEndDate(id.Value, end);

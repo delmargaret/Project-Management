@@ -77,6 +77,29 @@ namespace BLL.Services
             return mapper.Map<Schedule, ScheduleDTO>(Database.Schedules.GetScheduleById(id.Value));
         }
 
+        public IEnumerable<ScheduleDayDTO> GetEmployeesFreeDays(int? employeeId)
+        {
+            if (employeeId == null)
+            {
+                Console.WriteLine("не указан id сотрудника");
+                return null;
+            }
+            Employee employee = Database.Employees.GetEmployeeById(employeeId.Value);
+            if (employee == null)
+            {
+                Console.WriteLine("сотрудник не найден");
+                return null;
+            }
+            var freedays = Database.Schedules.GetEmployeesFreeDays(employeeId.Value);
+            if (freedays.Count() == 0)
+            {
+                Console.WriteLine("свободных дней нет");
+                return null;
+            }
+            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<ScheduleDay, ScheduleDayDTO>()).CreateMapper();
+            return mapper.Map<IEnumerable<ScheduleDay>, List<ScheduleDayDTO>>(Database.Schedules.GetEmployeesFreeDays(employeeId.Value));
+        }
+
         public void CreateSchedule(ScheduleDTO item)
         {
             ProjectWork work = Database.ProjectWorks.GetProjectWorkById(item.ProjectWorkId);

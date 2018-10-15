@@ -23,6 +23,6 @@ namespace Repository.Interfaces
         void ChangeProjectStartDate(int projectId, DateTimeOffset newStartDate);
         void ChangeProjectEndDate(int projectId, DateTimeOffset newEndDate);
         void ChangeProjectStatus(int projectId, int projectStatusId);
-
+        void CloseProject(int projectId);
     }
 }

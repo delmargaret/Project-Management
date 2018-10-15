@@ -60,6 +60,11 @@ namespace BLL.Services
                 Console.WriteLine("не установлена дата окончания проекта");
                 return;
             }
+            if (project.ProjectStartDate > newEndDate)
+            {
+                Console.WriteLine("неверная дата окончания проекта");
+                return;
+            }
             Database.Projects.ChangeProjectEndDate(projectId.Value, newEndDate.Value);
             Database.Save();
         }
@@ -99,6 +104,11 @@ namespace BLL.Services
                 Console.WriteLine("не установлена дата начала проекта");
                 return;
             }
+            if (project.ProjectEndDate < newStartDate)
+            {
+                Console.WriteLine("неверная дата начала проекта");
+                return;
+            }
             Database.Projects.ChangeProjectStartDate(projectId.Value, newStartDate.Value);
             Database.Save();
         }
@@ -133,11 +143,16 @@ namespace BLL.Services
 
         public void CreateProject(ProjectDTO item)
         {
-            ProjectStatus projectStatus = Database.ProjectStatuses.GetProjectStatusById(item.ProjectStatusId);
+            ProjectStatus projectStatus = Database.ProjectStatuses.GetProjectStatusById(1);
 
             if (projectStatus == null)
             {
                 Console.WriteLine("статуса проекта не существует");
+                return;
+            }
+            if (item.ProjectStartDate > item.ProjectEndDate)
+            {
+                Console.WriteLine("неверные даты");
                 return;
             }
             Project project = new Project
@@ -146,7 +161,7 @@ namespace BLL.Services
                 ProjectDescription = item.ProjectDescription,
                 ProjectStartDate = item.ProjectStartDate,
                 ProjectEndDate = item.ProjectEndDate,
-                ProjectStatusId = item.ProjectStatusId,
+                ProjectStatusId = 1,
                 ProjectStatus = projectStatus
             };
 
@@ -240,5 +255,23 @@ namespace BLL.Services
             var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Project, ProjectDTO>()).CreateMapper();
             return mapper.Map<List<Project>, List<ProjectDTO>>(Database.Projects.GetProjectsEndingInNDays(numberOfDays.Value));
         }
+
+        public void CloseProject(int? projectId)
+        {
+            if (projectId == null)
+            {
+                Console.WriteLine("не указан id проекта");
+                return;
+            }
+            var project = Database.Projects.GetProjectById(projectId.Value);
+            if (project == null)
+            {
+                Console.WriteLine("проект не найден");
+                return;
+            }
+            Database.Projects.CloseProject(projectId.Value);
+            Database.Save();
+        }
+
     }
 }

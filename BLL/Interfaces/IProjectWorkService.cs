@@ -11,9 +11,10 @@ namespace BLL.Interfaces
     {
         IEnumerable<ProjectWorkDTO> GetAllProjectWorks();
         IEnumerable<(string name, string role)> GetNamesOnProject(int? projectId);
-        IEnumerable<ProjectWorkDTO> GetNamesAndLoadOnProject(int? projectId);
+        IEnumerable<(string name, string role, string workload)> GetNamesAndLoadOnProject(int? projectId);
         IEnumerable<ProjectWorkDTO> GetEmployeesProjects(int? employeeId);
         ProjectWorkDTO GetProjectWorkById(int? id);
+        int CalculateEmployeesWorkload(int? employeeId);
         void CreateProjectWork(ProjectWorkDTO item);
         void DeleteProjectWorkById(int? id);
         void DeleteEmployeeFromProject(int? projectId, int? employeeId);

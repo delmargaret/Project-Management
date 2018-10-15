@@ -12,6 +12,7 @@ namespace BLL.Interfaces
         IEnumerable<ScheduleDTO> GetAllSchedules();
         IEnumerable<ScheduleDTO> GetScheduleOnProjectWork(int? projectWorkId);
         ScheduleDTO GetScheduleById(int? id);
+        IEnumerable<ScheduleDayDTO> GetEmployeesFreeDays(int? employeeId);
         void CreateSchedule(ScheduleDTO item);
         void DeleteScheduleById(int? id);
         void DeleteScheduleByProjectWorkId(int? projectWorkId);

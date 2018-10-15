@@ -113,5 +113,16 @@ namespace Repository.Repositories
             }
         }
 
+        public void CloseProject(int projectId)
+        {
+            Project project = db.Projects.Find(projectId);
+            if (project != null)
+            {
+                project.ProjectStatusId = 2;
+                project.ProjectStatus = db.ProjectStatuses.Find(2);
+                project.ProjectEndDate = DateTimeOffset.Now;
+            }
+        }
+
     }
 }

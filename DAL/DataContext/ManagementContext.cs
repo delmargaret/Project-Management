@@ -38,32 +38,32 @@ namespace DAL.DataContext
     {
         protected override void Seed(ManagementContext db)
         {
-            db.ProjectRoles.Add(new ProjectRole { ProjectRoleName = "Front-end разработчик" });
-            db.ProjectRoles.Add(new ProjectRole { ProjectRoleName = "Back-end разработчик" });
-            db.ProjectRoles.Add(new ProjectRole { ProjectRoleName = "Full-stack разработчик" });
-            db.ProjectRoles.Add(new ProjectRole { ProjectRoleName = "Дизайнер" });
-            db.ProjectRoles.Add(new ProjectRole { ProjectRoleName = "Тестировщик" });
-            db.ProjectRoles.Add(new ProjectRole { ProjectRoleName = "Менеджер проекта" });
-            db.ProjectRoles.Add(new ProjectRole { ProjectRoleName = "Бизнес-аналитик" });
+            db.ProjectRoles.Add(new ProjectRole { Id = 1, ProjectRoleName = "Front-end разработчик" });
+            db.ProjectRoles.Add(new ProjectRole { Id = 2, ProjectRoleName = "Back-end разработчик" });
+            db.ProjectRoles.Add(new ProjectRole { Id = 3, ProjectRoleName = "Full-stack разработчик" });
+            db.ProjectRoles.Add(new ProjectRole { Id = 4, ProjectRoleName = "Дизайнер" });
+            db.ProjectRoles.Add(new ProjectRole { Id = 5, ProjectRoleName = "Тестировщик" });
+            db.ProjectRoles.Add(new ProjectRole { Id = 6, ProjectRoleName = "Менеджер проекта" });
+            db.ProjectRoles.Add(new ProjectRole { Id = 7, ProjectRoleName = "Бизнес-аналитик" });
 
 
-            db.Roles.Add(new Role { RoleName = "Ресурсный менеджер" });
-            db.Roles.Add(new Role { RoleName = "Проектный менеджер" });
-            db.Roles.Add(new Role { RoleName = "Сотрудник" });
+            db.Roles.Add(new Role { Id = 1, RoleName = "Ресурсный менеджер" });
+            db.Roles.Add(new Role { Id = 2, RoleName = "Проектный менеджер" });
+            db.Roles.Add(new Role { Id = 3, RoleName = "Сотрудник" });
 
-            db.ProjectStatuses.Add(new ProjectStatus { ProjectStatusName = "Открыт" });
-            db.ProjectStatuses.Add(new ProjectStatus { ProjectStatusName = "Закрыт" });
+            db.ProjectStatuses.Add(new ProjectStatus { Id = 1, ProjectStatusName = "Открыт" });
+            db.ProjectStatuses.Add(new ProjectStatus { Id = 2, ProjectStatusName = "Закрыт" });
 
-            db.ScheduleDays.Add(new ScheduleDay { ScheduleDayName = "Понедельник" });
-            db.ScheduleDays.Add(new ScheduleDay { ScheduleDayName = "Вторник" });
-            db.ScheduleDays.Add(new ScheduleDay { ScheduleDayName = "Среда" });
-            db.ScheduleDays.Add(new ScheduleDay { ScheduleDayName = "Четверг" });
-            db.ScheduleDays.Add(new ScheduleDay { ScheduleDayName = "Пятница" });
-            db.ScheduleDays.Add(new ScheduleDay { ScheduleDayName = "Суббота" });
+            db.ScheduleDays.Add(new ScheduleDay { Id = 1, ScheduleDayName = "Понедельник" });
+            db.ScheduleDays.Add(new ScheduleDay { Id = 2, ScheduleDayName = "Вторник" });
+            db.ScheduleDays.Add(new ScheduleDay { Id = 3, ScheduleDayName = "Среда" });
+            db.ScheduleDays.Add(new ScheduleDay { Id = 4, ScheduleDayName = "Четверг" });
+            db.ScheduleDays.Add(new ScheduleDay { Id = 5, ScheduleDayName = "Пятница" });
+            db.ScheduleDays.Add(new ScheduleDay { Id = 6, ScheduleDayName = "Суббота" });
 
-            db.PercentOrSchedules.Add(new PercentOrSchedule { TypeName = "Проценты" });
-            db.PercentOrSchedules.Add(new PercentOrSchedule { TypeName = "Расписание" });
-            db.PercentOrSchedules.Add(new PercentOrSchedule { TypeName = "Не выбрано" });
+            db.PercentOrSchedules.Add(new PercentOrSchedule { Id = 1, TypeName = "Проценты" });
+            db.PercentOrSchedules.Add(new PercentOrSchedule { Id = 2, TypeName = "Расписание" });
+            db.PercentOrSchedules.Add(new PercentOrSchedule { Id = 3, TypeName = "Не выбрано" });
 
             db.SaveChanges();
         }
