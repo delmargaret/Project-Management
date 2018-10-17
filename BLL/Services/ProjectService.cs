@@ -14,9 +14,9 @@ namespace BLL.Services
     public class ProjectService : IProjectService
     {
         IUnitOfWork Database { get; set; }
-        Maps<Project, ProjectDTO> Map { get; set; }
+        Map<Project, ProjectDTO> Map { get; set; }
 
-        public ProjectService(IUnitOfWork uow, Maps<Project, ProjectDTO> map)
+        public ProjectService(IUnitOfWork uow, Map<Project, ProjectDTO> map)
         {
             Database = uow;
             Map = map;
@@ -228,7 +228,7 @@ namespace BLL.Services
                 Console.WriteLine("проект не найден");
                 return null;
             }
-            return Map.Map(project);
+            return Map.ObjectMap(project);
         }
 
         public IEnumerable<ProjectDTO> GetProjectsEndingInNDays(int? numberOfDays)

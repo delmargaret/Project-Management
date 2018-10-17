@@ -14,9 +14,9 @@ namespace BLL.Services
     public class ProjectWorkService : IProjectWorkService
     {
         IUnitOfWork Database { get; set; }
-        Maps<ProjectWork, ProjectWorkDTO> Map { get; set; }
+        Map<ProjectWork, ProjectWorkDTO> Map { get; set; }
 
-        public ProjectWorkService(IUnitOfWork uow, Maps<ProjectWork, ProjectWorkDTO> map)
+        public ProjectWorkService(IUnitOfWork uow, Map<ProjectWork, ProjectWorkDTO> map)
         {
             Database = uow;
             Map = map;
@@ -405,7 +405,7 @@ namespace BLL.Services
                 Console.WriteLine("проектная работа не найден");
                 return null;
             }
-            return Map.Map(projectWork);
+            return Map.ObjectMap(projectWork);
         }
     }
 }

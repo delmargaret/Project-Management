@@ -24,13 +24,13 @@ namespace ConsoleApp
         static void Main(string[] args)
         {
             IUnitOfWork uow = new ContextUnitOfWork("ManagementContext");
-            EmployeeService employeeService = new EmployeeService(uow, new Maps<Employee, EmployeeDTO>());
-            RoleService roleService = new RoleService(uow, new Maps<Role, RoleDTO>());
-            ProjectRoleService projectRoleService = new ProjectRoleService(uow, new Maps<ProjectRole, ProjectRoleDTO>());
-            ParticipationHistoryService historyService = new ParticipationHistoryService(uow, new Maps<ParticipationHistory, ParticipationHistoryDTO>());
-            ProjectService projectService = new ProjectService(uow, new Maps<Project, ProjectDTO>());
-            ProjectWorkService projectWorkService = new ProjectWorkService(uow, new Maps<ProjectWork, ProjectWorkDTO>());
-            ScheduleServise scheduleServise = new ScheduleServise(uow, new Maps<Schedule, ScheduleDTO>(), new Maps<ScheduleDay, ScheduleDayDTO>());
+            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
+            RoleService roleService = new RoleService(uow, new Map<Role, RoleDTO>());
+            ProjectRoleService projectRoleService = new ProjectRoleService(uow, new Map<ProjectRole, ProjectRoleDTO>());
+            ParticipationHistoryService historyService = new ParticipationHistoryService(uow, new Map<ParticipationHistory, ParticipationHistoryDTO>());
+            ProjectService projectService = new ProjectService(uow, new Map<Project, ProjectDTO>());
+            ProjectWorkService projectWorkService = new ProjectWorkService(uow, new Map<ProjectWork, ProjectWorkDTO>());
+            ScheduleServise scheduleServise = new ScheduleServise(uow, new Map<Schedule, ScheduleDTO>(), new Map<ScheduleDay, ScheduleDayDTO>());
 
             //#region Employee
             //EmployeeDTO employee1 = new EmployeeDTO

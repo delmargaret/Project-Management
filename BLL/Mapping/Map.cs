@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace BLL.Mapping
 {
-    public class Maps<T, N> where T : class where N : class
+    public class Map<T, N> where T : class where N : class
     {
 
         private IMapper mapper;
 
-        public Maps()
+        public Map()
         {
             mapper = new MapperConfiguration(cfg => cfg.CreateMap<T, N>()).CreateMapper();
 
@@ -25,7 +25,7 @@ namespace BLL.Mapping
             return mapper.Map<IEnumerable<T>, List<N>>(projects);
         }
 
-        public N Map(T project)
+        public N ObjectMap(T project)
         {
             return mapper.Map<T, N>(project);
         }

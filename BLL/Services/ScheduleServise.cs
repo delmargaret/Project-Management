@@ -14,10 +14,10 @@ namespace BLL.Services
     public class ScheduleServise : IScheduleService
     {
         IUnitOfWork Database { get; set; }
-        Maps<Schedule, ScheduleDTO> Map { get; set; }
-        Maps<ScheduleDay, ScheduleDayDTO> DayMap { get; set; }
+        Map<Schedule, ScheduleDTO> Map { get; set; }
+        Map<ScheduleDay, ScheduleDayDTO> DayMap { get; set; }
 
-        public ScheduleServise(IUnitOfWork uow, Maps<Schedule, ScheduleDTO> map, Maps<ScheduleDay, ScheduleDayDTO> dayMap)
+        public ScheduleServise(IUnitOfWork uow, Map<Schedule, ScheduleDTO> map, Map<ScheduleDay, ScheduleDayDTO> dayMap)
         {
             Database = uow;
             Map = map;
@@ -75,7 +75,7 @@ namespace BLL.Services
                 Console.WriteLine("расписание не найдено");
                 return null;
             }
-            return Map.Map(schedule);
+            return Map.ObjectMap(schedule);
         }
 
         public IEnumerable<ScheduleDayDTO> GetEmployeesFreeDays(int? employeeId)

@@ -14,9 +14,9 @@ namespace BLL.Services
     public class ParticipationHistoryService : IParticipationHistoryService
     {
         IUnitOfWork Database { get; set; }
-        Maps<ParticipationHistory, ParticipationHistoryDTO> Map { get; set; }
+        Map<ParticipationHistory, ParticipationHistoryDTO> Map { get; set; }
 
-        public ParticipationHistoryService(IUnitOfWork uow, Maps<ParticipationHistory, ParticipationHistoryDTO> map)
+        public ParticipationHistoryService(IUnitOfWork uow, Map<ParticipationHistory, ParticipationHistoryDTO> map)
         {
             Database = uow;
             Map = map;
@@ -78,7 +78,7 @@ namespace BLL.Services
                 Console.WriteLine("история не найдена");
                 return null;
             }
-            return Map.Map(history);
+            return Map.ObjectMap(history);
         }
 
         public ParticipationHistoryDTO GetLastEmployeesHistory(int? projectWorkId)
@@ -89,7 +89,7 @@ namespace BLL.Services
                 Console.WriteLine("история не найдена");
                 return null;
             }
-            return Map.Map(history);
+            return Map.ObjectMap(history);
         }
 
         public IEnumerable<ParticipationHistoryDTO> GetAllHistories()

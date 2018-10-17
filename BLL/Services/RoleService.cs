@@ -14,9 +14,9 @@ namespace BLL.Services
     public class RoleService : IRoleService
     {
         IUnitOfWork Database { get; set; }
-        Maps<Role, RoleDTO> Map { get; set; }
+        Map<Role, RoleDTO> Map { get; set; }
 
-        public RoleService(IUnitOfWork uow, Maps<Role, RoleDTO> map)
+        public RoleService(IUnitOfWork uow, Map<Role, RoleDTO> map)
         {
             Database = uow;
             Map = map;
@@ -62,7 +62,7 @@ namespace BLL.Services
                 Console.WriteLine("роль не найдена");
                 return null;
             }
-            return Map.Map(role);
+            return Map.ObjectMap(role);
         }
 
         public IEnumerable<RoleDTO> GetRoles()

@@ -14,9 +14,9 @@ namespace BLL.Services
     public class EmployeeService : IEmployeeService
     {
         IUnitOfWork Database { get; set; }
-        Maps<Employee, EmployeeDTO> Map { get; set; }
+        Map<Employee, EmployeeDTO> Map { get; set; }
 
-        public EmployeeService(IUnitOfWork uow, Maps<Employee, EmployeeDTO> map)
+        public EmployeeService(IUnitOfWork uow, Map<Employee, EmployeeDTO> map)
         {
             Database = uow;
             Map = map;
@@ -103,7 +103,7 @@ namespace BLL.Services
                 Console.WriteLine("сотрудник не найден");
                 return null;
             }
-            return Map.Map(employee);
+            return Map.ObjectMap(employee);
         }
 
         public IEnumerable<EmployeeDTO> GetEmployeesBySurname(string surname)
@@ -125,7 +125,7 @@ namespace BLL.Services
                 Console.WriteLine("сотрудник не найден");
                 return null; 
             }
-            return Map.Map(employee);
+            return Map.ObjectMap(employee);
         }
 
         public IEnumerable<EmployeeDTO> GetAllEmployees()
