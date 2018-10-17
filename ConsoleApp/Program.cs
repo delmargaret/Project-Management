@@ -15,6 +15,7 @@ using Ninject.Modules;
 using Ninject;
 using System.ComponentModel.DataAnnotations;
 using BLL.Mapping;
+using Validation;
 
 namespace ConsoleApp
 {
@@ -23,6 +24,7 @@ namespace ConsoleApp
     {
         static void Main(string[] args)
         {
+            ValidateObject validate = new ValidateObject();
             IUnitOfWork uow = new ContextUnitOfWork("ManagementContext");
             EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
             RoleService roleService = new RoleService(uow, new Map<Role, RoleDTO>());
@@ -68,6 +70,24 @@ namespace ConsoleApp
                 //{
                 //    Console.WriteLine("{0} {1}  Роль: {2}", employee.EmployeeName, employee.EmployeeSurname, employee.RoleId);
                 //}
+
+                EmployeeDTO employee3 = new EmployeeDTO
+                {
+                    EmployeeName = "Андрей",
+                    EmployeeSurname = "Зайцев",
+                    EmployeePatronymic = "Анатольевич",
+                    Email = "Andr",
+                };
+                foreach(var error in validate.ValidateEmployee(employee3))
+                {
+                    Console.WriteLine(error.ErrorMessage);
+                }
+                employeeService.CreateEmployee(employee3);
+                var employees = employeeService.GetAllEmployees();
+                foreach (var employee in employees)
+                {
+                    Console.WriteLine("{0} {1}  Роль: {2}", employee.EmployeeName, employee.EmployeeSurname, employee.RoleId);
+                }
 
                 //Console.WriteLine();
                 //Console.WriteLine("введите id роли для поиска сотрудников");
@@ -144,12 +164,12 @@ namespace ConsoleApp
                 //}
                 //Console.WriteLine();
 
-                var projects2 = projectService.GetAllProjectsByStatusId(4);
-                foreach (var proj in projects2)
-                {
-                    Console.WriteLine("{0}", proj.ProjectName);
-                }
-                Console.WriteLine();
+                //var projects2 = projectService.GetAllProjectsByStatusId(4);
+                //foreach (var proj in projects2)
+                //{
+                //    Console.WriteLine("{0}", proj.ProjectName);
+                //}
+                //Console.WriteLine();
 
                 //projectService.ChangeProjectName(1, "Проектик");
                 //Console.WriteLine("{0}", projectService.GetProjectById(1).ProjectName);
@@ -302,6 +322,10 @@ namespace ConsoleApp
             catch(ProjectException ex)
             {
                 Console.WriteLine(ex.Message);
+            }
+            catch (ValidationException exception)
+            {
+                Console.WriteLine(exception.Message);
             }
         }
     }
