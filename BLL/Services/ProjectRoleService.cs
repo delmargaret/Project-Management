@@ -8,6 +8,7 @@ using BLL.DTO;
 using Repository.Interfaces;
 using DAL.Entities;
 using BLL.Mapping;
+using BLL.Infrastructure;
 
 namespace BLL.Services
 {
@@ -36,14 +37,12 @@ namespace BLL.Services
         {
             if (id == null)
             {
-                Console.WriteLine("Не установлено id роли в проекте");
-                return;
+                throw new ProjectException("Не установлен идентификатор роли на проекте");
             }
             var role = Database.ProjectRoles.GetProjectRoleById(id.Value);
             if (role == null)
             {
-                Console.WriteLine("роль не найдена");
-                return;
+                throw new ProjectException("Роль не найдена");
             }
             Database.ProjectRoles.DeleteProjectRole(id.Value);
             Database.Save();
@@ -53,14 +52,12 @@ namespace BLL.Services
         {
             if (id == null)
             {
-                Console.WriteLine("Не установлено id роли в проекте");
-                return null;
+                throw new ProjectException("Не установлен идентификатор роли на проекте");
             }
             var role = Database.ProjectRoles.GetProjectRoleById(id.Value);
             if (role == null)
             {
-                Console.WriteLine("роль не найдена");
-                return null;
+                throw new ProjectException("Роль не найдена");
             }
             return Map.ObjectMap(role);
         }
@@ -70,8 +67,7 @@ namespace BLL.Services
             var roles = Database.ProjectRoles.GetAllProjectRoles();
             if (roles.Count() == 0)
             {
-                Console.WriteLine("роли не найдены");
-                return null;
+                throw new ProjectException("Роли не найдены");
             }
             return Map.ListMap(roles);
         }

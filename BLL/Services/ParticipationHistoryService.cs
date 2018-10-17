@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BLL.Infrastructure;
 
 namespace BLL.Services
 {
@@ -33,13 +34,11 @@ namespace BLL.Services
 
             if (work == null)
             {
-                Console.WriteLine("история участия в проекте не создана");
-                return;
+                throw new ProjectException("Участие в проекте не найдено");
             }
             if (historyDTO.StartDate>historyDTO.EndDate)
             {
-                Console.WriteLine("неверные даты");
-                return;
+                throw new ProjectException("Неверные даты");
             }
             ParticipationHistory history = new ParticipationHistory
             {
@@ -57,14 +56,12 @@ namespace BLL.Services
         {
             if (id == null)
             {
-                Console.WriteLine("не установлено id истории");
-                return;
+                throw new ProjectException("Не установлен идентификатор истории участия в проекте");
             }
             var history = Database.ParticipationHistories.GetHistoryById(id.Value);
             if (history == null)
             {
-                Console.WriteLine("истории не существует");
-                return;
+                throw new ProjectException("История участия в проекте не найдена");
             }
             Database.ParticipationHistories.DeleteHistory(id.Value);
             Database.Save();
@@ -72,22 +69,33 @@ namespace BLL.Services
 
         public ParticipationHistoryDTO GetHistoryById(int? id)
         {
+            if (id == null)
+            {
+                throw new ProjectException("Не установлен идентификатор истории участия в проекте");
+            }
             var history = Database.ParticipationHistories.GetHistoryById(id.Value);
             if (history == null)
             {
-                Console.WriteLine("история не найдена");
-                return null;
+                throw new ProjectException("История участия в проекте не найдена");
             }
             return Map.ObjectMap(history);
         }
 
         public ParticipationHistoryDTO GetLastEmployeesHistory(int? projectWorkId)
         {
+            if (projectWorkId == null)
+            {
+                throw new ProjectException("Не установлен идентификатор участия в проекте");
+            }
+            var work = Database.ProjectWorks.GetProjectWorkById(projectWorkId.Value);
+            if (work == null)
+            {
+                throw new ProjectException("Участие в проекте не найдено");
+            }
             var history = Database.ParticipationHistories.GetLastEmployeesHistory(projectWorkId.Value);
             if (history == null)
             {
-                Console.WriteLine("история не найдена");
-                return null;
+                throw new ProjectException("История участия в проекте не найдена");
             }
             return Map.ObjectMap(history);
         }
@@ -97,8 +105,7 @@ namespace BLL.Services
             var histories = Database.ParticipationHistories.GetAllHistories();
             if (histories.Count() == 0)
             {
-                Console.WriteLine("истории не найдены");
-                return null;
+                throw new ProjectException("Истории участия в проекте не найдены");
             }
             return Map.ListMap(histories);
         }
@@ -107,20 +114,17 @@ namespace BLL.Services
         {
             if (projectWorkId == null)
             {
-                Console.WriteLine("не указан id проектной работы");
-                return null;
+                throw new ProjectException("Не установлен идентификатор участия в проекте");
             }
             var projectWork = Database.ProjectWorks.GetProjectWorkById(projectWorkId.Value);
             if (projectWork == null)
             {
-                Console.WriteLine("проектной работы не существует");
-                return null;
+                throw new ProjectException("Участие в проекте не найдено");
             }
             var histories = Database.ParticipationHistories.GetAllHistories();
             if (histories.Count() == 0)
             {
-                Console.WriteLine("истории не найдены");
-                return null;
+                throw new ProjectException("Истории участия в проекте не найдены");
             }
             return Map.ListMap(histories);
         }
@@ -129,19 +133,16 @@ namespace BLL.Services
         {
             if (id == null)
             {
-                Console.WriteLine("не установлено id истории");
-                return;
+                throw new ProjectException("Не установлен идентификатор истории участия в проекте");
             }
             var history = Database.ParticipationHistories.GetHistoryById(id.Value);
             if (history == null)
             {
-                Console.WriteLine("истории не существует");
-                return;
+                throw new ProjectException("История участия в проекте не найдена");
             }
             if (history.EndDate < start)
             {
-                Console.WriteLine("неверная дата начала проекта");
-                return;
+                throw new ProjectException("Неверная дата начала участия в проекте");
             }
             Database.ParticipationHistories.ChangeHistoryStartDate(id.Value, start);
             Database.Save();
@@ -151,19 +152,16 @@ namespace BLL.Services
         {
             if (id == null)
             {
-                Console.WriteLine("не установлено id истории");
-                return;
+                throw new ProjectException("Не установлен идентификатор истории участия в проекте");
             }
             var history = Database.ParticipationHistories.GetHistoryById(id.Value);
             if (history == null)
             {
-                Console.WriteLine("истории не существует");
-                return;
+                throw new ProjectException("История участия в проекте не найдена");
             }
             if (history.StartDate > end)
             {
-                Console.WriteLine("неверная дата окончания проекта");
-                return;
+                throw new ProjectException("Неверная дата конца участия в проекте");
             }
             Database.ParticipationHistories.ChangeHistoryEndDate(id.Value, end);
             Database.Save();

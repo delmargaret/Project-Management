@@ -8,6 +8,7 @@ using BLL.DTO;
 using BLL.Interfaces;
 using DAL.Entities;
 using BLL.Mapping;
+using BLL.Infrastructure;
 
 namespace BLL.Services
 {
@@ -32,8 +33,7 @@ namespace BLL.Services
             Role role = Database.Roles.GetRoleById(employeeDTO.RoleId);
             if (role == null)
             {
-                Console.WriteLine("роль не существует");
-                return;
+                throw new ProjectException("Роль не найдена");
             }
             Employee employee = new Employee
             {
@@ -57,14 +57,12 @@ namespace BLL.Services
         {
             if (id == null)
             {
-                Console.WriteLine("не установлено id сотрудника");
-                return;
+                throw new ProjectException("Не указан идентификатор сотрудника");
             }
             var employee = Database.Employees.GetEmployeeById(id.Value);
             if (employee == null)
             {
-                Console.WriteLine("сотрудника не существует");
-                return;
+                throw new ProjectException("Сотрудник не найден");
             }
             Database.Employees.DeleteEmployeeById(id.Value);
             Database.Save();
@@ -72,12 +70,15 @@ namespace BLL.Services
 
         public void DeleteEmployeeBySurname(string surname)
         {
+            if (surname.Length == 0)
+            {
+                throw new ProjectException("Не указана фамилия сотрудника");
+            }
             var employees = Database.Employees.GetEmployeesBySurname(surname);
             var employee = employees.First();
             if (employee == null)
             {
-                Console.WriteLine("сотрудника не существует");
-                return;
+                throw new ProjectException("Сотруник не найден");
             }
             Database.Employees.DeleteEmployeeBySurname(surname);
             Database.Save();
@@ -85,11 +86,14 @@ namespace BLL.Services
 
         public void DeleteEmployeeByEmail(string email)
         {
+            if (email.Length == 0)
+            {
+                throw new ProjectException("Не указан e-mail сотрудника");
+            }
             var employee = Database.Employees.GetEmployeeByEmail(email);
             if (employee == null)
             {
-                Console.WriteLine("сотрудника не существует");
-                return;
+                throw new ProjectException("Сотрудник не найден");
             }
             Database.Employees.DeleteEmployeeByEmail(email);
             Database.Save();
@@ -97,33 +101,42 @@ namespace BLL.Services
 
         public EmployeeDTO GetEmployeeById(int? id)
         {
+            if (id == null)
+            {
+                throw new ProjectException("Не указан идентификатор сотрудника");
+            }
             var employee = Database.Employees.GetEmployeeById(id.Value);
             if (employee == null)
             {
-                Console.WriteLine("сотрудник не найден");
-                return null;
+                throw new ProjectException("Сотрудник не найден");
             }
             return Map.ObjectMap(employee);
         }
 
         public IEnumerable<EmployeeDTO> GetEmployeesBySurname(string surname)
         {
+            if (surname.Length == 0)
+            {
+                throw new ProjectException("Не указана фамилия сотрудника");
+            }
             var employees = Database.Employees.GetEmployeesBySurname(surname);
             if (employees.Count()==0)
             {
-                Console.WriteLine("сотрудники не найдены");
-                return null;
+                throw new ProjectException("Сотрудники не найдены");
             }
             return Map.ListMap(employees);
         }
 
         public EmployeeDTO GetEmployeeByEmail(string email)
         {
+            if (email.Length == 0)
+            {
+                throw new ProjectException("Не указан e-mail сотрудника");
+            }
             var employee = Database.Employees.GetEmployeeByEmail(email);
             if (employee == null)
             {
-                Console.WriteLine("сотрудник не найден");
-                return null; 
+                throw new ProjectException("Сотрудник не найден");
             }
             return Map.ObjectMap(employee);
         }
@@ -131,15 +144,9 @@ namespace BLL.Services
         public IEnumerable<EmployeeDTO> GetAllEmployees()
         {
             var employees = Database.Employees.GetAllEmployees();
-            if (employees==null)
-            {
-                Console.WriteLine("сотрудники не найдены");
-                return null;
-            }
             if (employees.Count() == 0)
             {
-                Console.WriteLine("сотрудники не найдены");
-                return null;
+                throw new ProjectException("Сотрудники не найдены");
             }
             return Map.ListMap(employees);
         }
@@ -148,36 +155,35 @@ namespace BLL.Services
         {
             if (roleId == null)
             {
-                Console.WriteLine("не указано id роли");
-                return null;
+                throw new ProjectException("Не указан идентификатор роли");
             }
             var role = Database.Roles.GetRoleById(roleId.Value);
             if (role == null)
             {
-                Console.WriteLine("роль не найдена");
-                return null;
+                throw new ProjectException("Роль не найдена");
             }
             var employees = Database.Employees.GetEmployeesByRole(roleId.Value);
             if (employees.Count() == 0)
             {
-                Console.WriteLine("сотрудники не найдены");
-                return null;
+                throw new ProjectException("Сотрудники не найдены");
             }
             return Map.ListMap(employees);
         }
 
         public void AddGitLink(int? employeeId, string gitlink)
         {
+            if (gitlink.Length == 0)
+            {
+                throw new ProjectException("Не указан gitLink сотрудника");
+            }
             if (employeeId == null)
             {
-                Console.WriteLine("не установлено id сотрудника");
-                return;
+                throw new ProjectException("Не установлен идентификатор сотрудника");
             }
             var employee = Database.Employees.GetEmployeeById(employeeId.Value);
             if (employee == null)
             {
-                Console.WriteLine("сотрудника не существует");
-                return;
+                throw new ProjectException("Сотрудник не найден");
             }
             Database.Employees.AddGitLink(employeeId.Value, gitlink);
             Database.Save();
@@ -187,14 +193,12 @@ namespace BLL.Services
         {
             if (id == null)
             {
-                Console.WriteLine("не установлено id сотрудника");
-                return;
+                throw new ProjectException("Не установлен идентификатор сотрудника");
             }
             var employee = Database.Employees.GetEmployeeById(id.Value);
             if (employee == null)
             {
-                Console.WriteLine("сотрудника не существует");
-                return;
+                throw new ProjectException("Сотрудник не найден");
             }
             Database.Employees.DeleteGitLinkByEmployeeId(id.Value);
             Database.Save();
@@ -202,16 +206,18 @@ namespace BLL.Services
 
         public void AddPhoneNumber(int? employeeId, string phoneNumber)
         {
+            if (phoneNumber.Length == 0)
+            {
+                throw new ProjectException("Не указан номер телефона сотрудника");
+            }
             if (employeeId == null)
             {
-                Console.WriteLine("не установлено id сотрудника");
-                return;
+                throw new ProjectException("Не установлен идентификатор сотрудника");
             }
             var employee = Database.Employees.GetEmployeeById(employeeId.Value);
             if (employee == null)
             {
-                Console.WriteLine("сотрудника не существует");
-                return;
+                throw new ProjectException("Сотрудник не найден");
             }
             Database.Employees.AddPhoneNumber(employeeId.Value, phoneNumber);
             Database.Save();
@@ -221,14 +227,12 @@ namespace BLL.Services
         {
             if (id == null)
             {
-                Console.WriteLine("не установлено id сотрудника");
-                return;
+                throw new ProjectException("Не установлен идентификатор сотрудника");
             }
             var employee = Database.Employees.GetEmployeeById(id.Value);
             if (employee == null)
             {
-                Console.WriteLine("сотрудника не существует");
-                return;
+                throw new ProjectException("Сотрудник не найден");
             }
             Database.Employees.DeletePhoneNumberByEmployeeId(id.Value);
             Database.Save();
@@ -238,14 +242,12 @@ namespace BLL.Services
         {
             if (employeeId == null)
             {
-                Console.WriteLine("не установлено id сотрудника");
-                return;
+                throw new ProjectException("Не установлен идентификатор сотрудника");
             }
             var employee = Database.Employees.GetEmployeeById(employeeId.Value);
             if (employee == null)
             {
-                Console.WriteLine("сотрудника не существует");
-                return;
+                throw new ProjectException("Сотрудник не найден");
             }
             Database.Employees.ChangeName(employeeId.Value, newName);
             Database.Save();
@@ -255,14 +257,12 @@ namespace BLL.Services
         {
             if (employeeId == null)
             {
-                Console.WriteLine("не установлено id сотрудника");
-                return;
+                throw new ProjectException("Не установлен идентификатор сотрудника");
             }
             var employee = Database.Employees.GetEmployeeById(employeeId.Value);
             if (employee == null)
             {
-                Console.WriteLine("сотрудника не существует");
-                return;
+                throw new ProjectException("Сотрудник не найден");
             }
             Database.Employees.ChangeSurname(employeeId.Value, newSurname);
             Database.Save();
@@ -272,14 +272,12 @@ namespace BLL.Services
         {
             if (employeeId == null)
             {
-                Console.WriteLine("не установлено id сотрудника");
-                return;
+                throw new ProjectException("Не установлен идентификатор сотрудника");
             }
             var employee = Database.Employees.GetEmployeeById(employeeId.Value);
             if (employee == null)
             {
-                Console.WriteLine("сотрудника не существует");
-                return;
+                throw new ProjectException("Сотрудник не найден");
             }
             Database.Employees.ChangePatronymic(employeeId.Value, newPatronymic);
             Database.Save();
@@ -289,14 +287,12 @@ namespace BLL.Services
         {
             if (employeeId == null)
             {
-                Console.WriteLine("не установлено id сотрудника");
-                return;
+                throw new ProjectException("Не установлен идентификатор сотрудника");
             }
             var employee = Database.Employees.GetEmployeeById(employeeId.Value);
             if (employee == null)
             {
-                Console.WriteLine("сотрудника не существует");
-                return;
+                throw new ProjectException("Сотрудник не найден");
             }
             Database.Employees.ChangeEmail(employeeId.Value, newEmail);
             Database.Save();
@@ -306,14 +302,12 @@ namespace BLL.Services
         {
             if (employeeId == null)
             {
-                Console.WriteLine("не установлено id сотрудника");
-                return;
+                throw new ProjectException("Не установлен идентификатор сотрудника");
             }
             var employee = Database.Employees.GetEmployeeById(employeeId.Value);
             if (employee == null)
             {
-                Console.WriteLine("сотрудника не существует");
-                return;
+                throw new ProjectException("Сотрудник не найден");
             }
             Database.Employees.ChangeGitLink(employeeId.Value, newGitLink);
             Database.Save();
@@ -323,14 +317,12 @@ namespace BLL.Services
         {
             if (employeeId == null)
             {
-                Console.WriteLine("не установлено id сотрудника");
-                return;
+                throw new ProjectException("Не установлен идентификатор сотрудника");
             }
             var employee = Database.Employees.GetEmployeeById(employeeId.Value);
             if (employee == null)
             {
-                Console.WriteLine("сотрудника не существует");
-                return;
+                throw new ProjectException("Сотрудник не найден");
             }
             Database.Employees.ChangePhoneNumber(employeeId.Value, newPhoneNumber);
             Database.Save();
@@ -340,25 +332,21 @@ namespace BLL.Services
         {
             if (employeeId == null)
             {
-                Console.WriteLine("не установлено id сотрудника");
-                return;
+                throw new ProjectException("Не установлен идентификатор сотрудника");
             }
             var employee = Database.Employees.GetEmployeeById(employeeId.Value);
             if (employee == null)
             {
-                Console.WriteLine("сотрудника не существует");
-                return;
+                throw new ProjectException("Сотрудник не найден");
             }
             if (roleId == null)
             {
-                Console.WriteLine("не установлено id роли");
-                return;
+                throw new ProjectException("Не установлен идентификатор роли");
             }
             var role = Database.Roles.GetRoleById(roleId.Value);
             if (role == null)
             {
-                Console.WriteLine("роли не существует");
-                return;
+                throw new ProjectException("Роль не найдена");
             }
             Database.Employees.ChangeRole(employeeId.Value, roleId.Value);
             Database.Save();

@@ -8,6 +8,7 @@ using BLL.Interfaces;
 using BLL.Mapping;
 using DAL.Entities;
 using Repository.Interfaces;
+using BLL.Infrastructure;
 
 namespace BLL.Services
 {
@@ -31,25 +32,21 @@ namespace BLL.Services
         {
             if (newEmployeeId == null)
             {
-                Console.WriteLine("не установлено id сотрудника");
-                return;
+                throw new ProjectException("Не установлен идентификатор сотрудника");
             }
             var employee = Database.Employees.GetEmployeeById(newEmployeeId.Value);
             if (employee == null)
             {
-                Console.WriteLine("сотрудника не существует");
-                return;
+                throw new ProjectException("Сотрудник не найден");
             }
             if (projectWorkId == null)
             {
-                Console.WriteLine("не установлено id проектной работы");
-                return;
+                throw new ProjectException("Не установлен идентификатор участия в проекте");
             }
             var projectWork = Database.ProjectWorks.GetProjectWorkById(projectWorkId.Value);
             if (projectWork == null)
             {
-                Console.WriteLine("проектной работы не существует");
-                return;
+                throw new ProjectException("Участие в проекте не найдено");
             }
             Database.ProjectWorks.ChangeEmployee(projectWorkId.Value, newEmployeeId.Value);
             Database.Save();
@@ -59,25 +56,21 @@ namespace BLL.Services
         {
             if (newProjectRoleId == null)
             {
-                Console.WriteLine("не установлено id роли");
-                return;
+                throw new ProjectException("Не установлен идентификатор роли в проекте");
             }
             var projectRole = Database.ProjectRoles.GetProjectRoleById(newProjectRoleId.Value);
             if (projectRole == null)
             {
-                Console.WriteLine("роль не существует");
-                return;
+                throw new ProjectException("Роль в проекте не найдена");
             }
             if (projectWorkId == null)
             {
-                Console.WriteLine("не установлено id проектной работы");
-                return;
+                throw new ProjectException("Не установлен идентификатор участия в проекте");
             }
             var projectWork = Database.ProjectWorks.GetProjectWorkById(projectWorkId.Value);
             if (projectWork == null)
             {
-                Console.WriteLine("проектной работы не существует");
-                return;
+                throw new ProjectException("Участие в проекте не найдено");
             }
             Database.ProjectWorks.ChangeEmployeesProjectRole(projectWorkId.Value, newProjectRoleId.Value);
             Database.Save();
@@ -87,25 +80,21 @@ namespace BLL.Services
         {
             if (newProjectId == null)
             {
-                Console.WriteLine("не установлено id проекта");
-                return;
+                throw new ProjectException("Не установлен идентификатор проекта");
             }
             var project = Database.Projects.GetProjectById(newProjectId.Value);
             if (project == null)
             {
-                Console.WriteLine("проекта не существует");
-                return;
+                throw new ProjectException("Проект не найден");
             }
             if (projectWorkId == null)
             {
-                Console.WriteLine("не установлено id проектной работы");
-                return;
+                throw new ProjectException("Не установлен идентификатор участия в проекте");
             }
             var projectWork = Database.ProjectWorks.GetProjectWorkById(projectWorkId.Value);
             if (projectWork == null)
             {
-                Console.WriteLine("проектной работы не существует");
-                return;
+                throw new ProjectException("Участие в проекте не найдено");
             }
             Database.ProjectWorks.ChangeProject(projectWorkId.Value, newProjectId.Value);
             Database.Save();
@@ -115,19 +104,16 @@ namespace BLL.Services
         {
             if (newWorkLoad == null)
             {
-                Console.WriteLine("не установлено значение загруженности сотрудника");
-                return;
+                throw new ProjectException("Не установлено значение загруженности сотрудника");
             }
             if (projectWorkId == null)
             {
-                Console.WriteLine("не установлено id проектной работы");
-                return;
+                throw new ProjectException("Не установлен идентификатор участия в проекте");
             }
             var projectWork = Database.ProjectWorks.GetProjectWorkById(projectWorkId.Value);
             if (projectWork == null)
             {
-                Console.WriteLine("проектной работы не существует");
-                return;
+                throw new ProjectException("Участие в проекте не найдено");
             }
             Database.ProjectWorks.ChangeWorkLoad(projectWorkId.Value, newWorkLoad.Value);
             Database.Save();
@@ -137,19 +123,16 @@ namespace BLL.Services
         {
             if (workLoad == null)
             {
-                Console.WriteLine("не установлено значение загруженности сотрудника");
-                return;
+                throw new ProjectException("Не установлено значение загруженности сотрудника");
             }
             if (projectWorkId == null)
             {
-                Console.WriteLine("не установлено id проектной работы");
-                return;
+                throw new ProjectException("Не установлен идентификатор участия в проекте");
             }
             var projectWork = Database.ProjectWorks.GetProjectWorkById(projectWorkId.Value);
             if (projectWork == null)
             {
-                Console.WriteLine("проектной работы не существует");
-                return;
+                throw new ProjectException("Участие в проекте не найдено");
             }
             Employee employee = Database.Employees.GetEmployeeById(projectWork.EmployeeId);
             if (employee.PercentOrScheduleId == 3)
@@ -162,8 +145,7 @@ namespace BLL.Services
             }
             if (employee.PercentOrScheduleId == 2)
             {
-                Console.WriteLine("добавьте расписание");
-                return;
+                throw new ProjectException("Доступно только расписание");
             }
 
             Database.ProjectWorks.AddWorkLoad(projectWorkId.Value, workLoad.Value);
@@ -174,14 +156,12 @@ namespace BLL.Services
         {
             if (projectWorkId == null)
             {
-                Console.WriteLine("не установлено id проектной работы");
-                return;
+                throw new ProjectException("Не установлен идентификатор участия в проекте");
             }
             var projectWork = Database.ProjectWorks.GetProjectWorkById(projectWorkId.Value);
             if (projectWork == null)
             {
-                Console.WriteLine("проектной работы не существует");
-                return;
+                throw new ProjectException("Участие в проекте не найдено");
             }
             Database.ProjectWorks.DeleteWorkLoad(projectWorkId.Value);
             Database.Save();
@@ -192,20 +172,17 @@ namespace BLL.Services
             Employee employee = Database.Employees.GetEmployeeById(item.EmployeeId);
             if (employee == null)
             {
-                Console.WriteLine("сотрудник не найден");
-                return;
+                throw new ProjectException("Сотрудник не найден");
             }
             Project project = Database.Projects.GetProjectById(item.ProjectId);
             if (project == null)
             {
-                Console.WriteLine("проект не найден");
-                return;
+                throw new ProjectException("Проект не найден");
             }
             ProjectRole projectRole = Database.ProjectRoles.GetProjectRoleById(item.ProjectRoleId);
             if (projectRole == null)
             {
-                Console.WriteLine("роль не найдена");
-                return;
+                throw new ProjectException("Роль в проекте не найдена");
             }
             ProjectWork temp = null;
             var works = Database.ProjectWorks.GetAllProjectWorks();
@@ -214,8 +191,7 @@ namespace BLL.Services
                 if (work.EmployeeId == item.EmployeeId && work.ProjectId == item.ProjectId && work.ProjectRoleId == item.ProjectRoleId)
                 {
                     temp = Database.ProjectWorks.GetProjectWorkById(work.Id);
-                    Console.WriteLine("Сотрудник уже добавлен на проект");
-                    break;
+                    throw new ProjectException("Сотрудник уже добавлен в проект");
                 }
             }
             if (temp == null)
@@ -247,25 +223,21 @@ namespace BLL.Services
         {
             if (projectId == null)
             {
-                Console.WriteLine("не установлено id проектной работы");
-                return;
+                throw new ProjectException("Не установлен идентификатор проекта");
             }
-            var projectWork = Database.ProjectWorks.GetProjectWorkById(projectId.Value);
-            if (projectWork == null)
+            var project = Database.Projects.GetProjectById(projectId.Value);
+            if (project == null)
             {
-                Console.WriteLine("проектной работы не существует");
-                return;
+                throw new ProjectException("Проект не найден");
             }
             if (employeeId == null)
             {
-                Console.WriteLine("не установлено id сотрудника");
-                return;
+                throw new ProjectException("Не установлен идентификатор сотрудника");
             }
             var employee = Database.Employees.GetEmployeeById(employeeId.Value);
             if (employee == null)
             {
-                Console.WriteLine("сотрудника не существует");
-                return;
+                throw new ProjectException("Сотрудник не найден");
             }
             Database.ProjectWorks.DeleteEmployeeFromProject(projectId.Value, employeeId.Value);
             Database.Save();
@@ -275,14 +247,12 @@ namespace BLL.Services
         {
             if (id == null)
             {
-                Console.WriteLine("не установлено id проектной работы");
-                return;
+                throw new ProjectException("Не установлен идентификатор участия в проекте");
             }
             var projectWork = Database.ProjectWorks.GetProjectWorkById(id.Value);
             if (projectWork == null)
             {
-                Console.WriteLine("проектной работы не существует");
-                return;
+                throw new ProjectException("Участие в проекте не найдено");
             }
             Database.ProjectWorks.DeleteProjectWorkById(id.Value);
             Database.Save();
@@ -293,8 +263,7 @@ namespace BLL.Services
             var projectWorks = Database.ProjectWorks.GetAllProjectWorks();
             if (projectWorks.Count() == 0)
             {
-                Console.WriteLine("проектные работы не найдены");
-                return null;
+                throw new ProjectException("Участия в проекте не найдены");
             }
             return Map.ListMap(projectWorks);
         }
@@ -303,20 +272,17 @@ namespace BLL.Services
         {
             if (employeeId == null)
             {
-                Console.WriteLine("не установлено id сотрудника");
-                return null;
+                throw new ProjectException("Не установлен идентификатор сотрудника");
             }
             var employee = Database.Employees.GetEmployeeById(employeeId.Value);
             if (employee == null)
             {
-                Console.WriteLine("сотрудник не найден");
-                return null;
+                throw new ProjectException("Сотрудник не найден");
             }
             var projectWorks = Database.ProjectWorks.GetEmployeesProjects(employeeId.Value);
             if (projectWorks.Count() == 0)
             {
-                Console.WriteLine("у сотрудника нет проектов");
-                return null;
+                throw new ProjectException("Проекты не найдены");
             }
             return Map.ListMap(projectWorks);
         }
@@ -325,25 +291,21 @@ namespace BLL.Services
         {
             if (employeeId == null)
             {
-                Console.WriteLine("не установлено id сотрудника");
-                return 0;
+                throw new ProjectException("Не установлен идентификатор сотрудника");
             }
             var employee = Database.Employees.GetEmployeeById(employeeId.Value);
             if (employee == null)
             {
-                Console.WriteLine("сотрудник не найден");
-                return 0;
+                throw new ProjectException("Сотрудник не найден");
             }
             var projectWorks = Database.ProjectWorks.GetEmployeesProjects(employeeId.Value);
             if (projectWorks.Count() == 0)
             {
-                Console.WriteLine("у сотрудника нет проектов");
-                return 0;
+                throw new ProjectException("Проекты не найдены");
             }
             if (employee.PercentOrScheduleId == 2)
             {
-                Console.WriteLine("сотрудник работает по расписанию");
-                return 0;
+                throw new ProjectException("Доступно только расписание");
             }
             return Database.ProjectWorks.CalculateEmployeesWorkload(employeeId.Value);
         }
@@ -352,20 +314,17 @@ namespace BLL.Services
         {
             if (projectId == null)
             {
-                Console.WriteLine("не установлено id проекта");
-                return null;
+                throw new ProjectException("Не установлен идентификатор проекта");
             }
             var project = Database.Projects.GetProjectById(projectId.Value);
             if (project == null)
             {
-                Console.WriteLine("проект не найден");
-                return null; 
+                throw new ProjectException("Проект не найден");
             }
             var projectWorks = Database.ProjectWorks.FindProjectWork(item=>item.ProjectId==projectId.Value);
             if (projectWorks.Count() == 0)
             {
-                Console.WriteLine("на проекте нет сотрудников");
-                return null;
+                throw new ProjectException("Сотрудники на проекте не найдены");
             }
             return Database.ProjectWorks.GetNamesAndLoadOnProject(projectId.Value); ;
         }
@@ -374,20 +333,17 @@ namespace BLL.Services
         {
             if (projectId == null)
             {
-                Console.WriteLine("не установлено id проектной работы");
-                return null;
+                throw new ProjectException("Не установлен идентификатор проекта");
             }
-            var projectWork = Database.ProjectWorks.GetProjectWorkById(projectId.Value);
-            if (projectWork == null)
+            var project = Database.Projects.GetProjectById(projectId.Value);
+            if (project == null)
             {
-                Console.WriteLine("проектная работа не найдена");
-                return null;
+                throw new ProjectException("Проек не найден");
             }
             var projectWorks = Database.ProjectWorks.GetNamesOnProject(projectId.Value);
             if (projectWorks.Count() == 0)
             {
-                Console.WriteLine("на проекте нет сотрудников");
-                return null;
+                throw new ProjectException("Сотрудники на проекте не найдены");
             }
             return Database.ProjectWorks.GetNamesOnProject(projectId.Value);
         }
@@ -396,14 +352,12 @@ namespace BLL.Services
         {
             if (id == null)
             {
-                Console.WriteLine("не установлено id проектной работы");
-                return null;
+                throw new ProjectException("Не установлен идентификатор участия в проекте");
             }
             var projectWork = Database.ProjectWorks.GetProjectWorkById(id.Value);
             if (projectWork == null)
             {
-                Console.WriteLine("проектная работа не найден");
-                return null;
+                throw new ProjectException("Участие в проекте не найдено");
             }
             return Map.ObjectMap(projectWork);
         }

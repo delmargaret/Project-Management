@@ -8,6 +8,7 @@ using BLL.Interfaces;
 using DAL.Entities;
 using Repository.Interfaces;
 using BLL.Mapping;
+using BLL.Infrastructure;
 
 namespace BLL.Services
 {
@@ -31,14 +32,12 @@ namespace BLL.Services
         {
             if (projectId == null)
             {
-                Console.WriteLine("не установлено id проекта");
-                return;
+                throw new ProjectException("Не установлен идентификатор проекта");
             }
             var project = Database.Projects.GetProjectById(projectId.Value);
             if (project == null)
             {
-                Console.WriteLine("проекта не существует");
-                return;
+                throw new ProjectException("Проект не найден");
             }
             Database.Projects.ChangeProjectDescription(projectId.Value, newProjectDescription);
             Database.Save();
@@ -48,24 +47,20 @@ namespace BLL.Services
         {
             if (projectId == null)
             {
-                Console.WriteLine("не установлено id проекта");
-                return;
+                throw new ProjectException("Не установлен идентификатор проекта");
             }
             var project = Database.Projects.GetProjectById(projectId.Value);
             if (project == null)
             {
-                Console.WriteLine("проекта не существует");
-                return;
+                throw new ProjectException("Проект не найден");
             }
             if (newEndDate == null)
             {
-                Console.WriteLine("не установлена дата окончания проекта");
-                return;
+                throw new ProjectException("Не установлена дата окончания проекта");
             }
             if (project.ProjectStartDate > newEndDate)
             {
-                Console.WriteLine("неверная дата окончания проекта");
-                return;
+                throw new ProjectException("Неверная дата окончания проекта");
             }
             Database.Projects.ChangeProjectEndDate(projectId.Value, newEndDate.Value);
             Database.Save();
@@ -75,14 +70,12 @@ namespace BLL.Services
         {
             if (projectId == null)
             {
-                Console.WriteLine("не установлено id проекта");
-                return;
+                throw new ProjectException("Не установлен идентификатор проекта");
             }
             var project = Database.Projects.GetProjectById(projectId.Value);
             if (project == null)
             {
-                Console.WriteLine("проекта не существует");
-                return;
+                throw new ProjectException("Проект не найден");
             }
             Database.Projects.ChangeProjectName(projectId.Value, newProjectName);
             Database.Save();
@@ -92,24 +85,20 @@ namespace BLL.Services
         {
             if (projectId == null)
             {
-                Console.WriteLine("не установлено id проекта");
-                return;
+                throw new ProjectException("Не установлен идентификатор проекта");
             }
             var project = Database.Projects.GetProjectById(projectId.Value);
             if (project == null)
             {
-                Console.WriteLine("проекта не существует");
-                return;
+                throw new ProjectException("Проект не найден");
             }
             if (newStartDate == null)
             {
-                Console.WriteLine("не установлена дата начала проекта");
-                return;
+                throw new ProjectException("Не установлена дата начала проекта");
             }
             if (project.ProjectEndDate < newStartDate)
             {
-                Console.WriteLine("неверная дата начала проекта");
-                return;
+                throw new ProjectException("Неверная дата начала проекта");
             }
             Database.Projects.ChangeProjectStartDate(projectId.Value, newStartDate.Value);
             Database.Save();
@@ -119,25 +108,21 @@ namespace BLL.Services
         {
             if (projectId == null)
             {
-                Console.WriteLine("не установлено id проекта");
-                return;
+                throw new ProjectException("Не установлен идентификатор проекта");
             }
             var project = Database.Projects.GetProjectById(projectId.Value);
             if (project == null)
             {
-                Console.WriteLine("проекта не существует");
-                return;
+                throw new ProjectException("Проект не найден");
             }
             if (projectStatusId == null)
             {
-                Console.WriteLine("не установлено id статуса проекта");
-                return;
+                throw new ProjectException("Не установлен идентификатор статуса проекта");
             }
             var projectStatus = Database.ProjectStatuses.GetProjectStatusById(projectStatusId.Value);
             if (projectStatus == null)
             {
-                Console.WriteLine("статуса проекта не существует");
-                return;
+                throw new ProjectException("Статус проекта не найден");
             }
             Database.Projects.ChangeProjectStatus(projectId.Value, projectStatusId.Value);
             Database.Save();
@@ -149,13 +134,11 @@ namespace BLL.Services
 
             if (projectStatus == null)
             {
-                Console.WriteLine("статуса проекта не существует");
-                return;
+                throw new ProjectException("Статус проекта не найден");
             }
             if (item.ProjectStartDate > item.ProjectEndDate)
             {
-                Console.WriteLine("неверные даты");
-                return;
+                throw new ProjectException("Неверные даты");
             }
             Project project = new Project
             {
@@ -175,14 +158,12 @@ namespace BLL.Services
         {
             if (id == null)
             {
-                Console.WriteLine("не установлено id проекта");
-                return;
+                throw new ProjectException("Не установлен идентификатор проекта");
             }
             var project = Database.Projects.GetProjectById(id.Value);
             if (project == null)
             {
-                Console.WriteLine("проекта не существует");
-                return;
+                throw new ProjectException("Проект не найден");
             }
             Database.Projects.DeleteProjectById(id.Value);
             Database.Save();
@@ -192,14 +173,17 @@ namespace BLL.Services
         {
             if (statusId == null)
             {
-                Console.WriteLine("не указан id статуса");
-                return null;
+                throw new ProjectException("Не установлен идентификатор статуса проекта");
+            }
+            var projectStatus = Database.ProjectStatuses.GetProjectStatusById(statusId.Value);
+            if (projectStatus == null)
+            {
+                throw new ProjectException("Статус проекта не найден");
             }
             var projects = Database.Projects.GetAllProjectsByStatusId(statusId.Value);
             if (projects.Count() == 0)
             {
-                Console.WriteLine("проектов не найдено");
-                return null;
+                throw new ProjectException("Проекты не найдены");
             }
             return Map.ListMap(projects);
         }
@@ -209,8 +193,7 @@ namespace BLL.Services
             var projects = Database.Projects.GetAllProjects();
             if (projects.Count() == 0)
             {
-                Console.WriteLine("проектов не найдено");
-                return null;
+                throw new ProjectException("Проекты не найдены");
             }
             return Map.ListMap(projects);
         }
@@ -219,14 +202,12 @@ namespace BLL.Services
         {
             if (id == null)
             {
-                Console.WriteLine("не указан id проекта");
-                return null;
+                throw new ProjectException("Не установлен идентификатор проекта");
             }
             var project = Database.Projects.GetProjectById(id.Value);
             if (project == null)
             {
-                Console.WriteLine("проект не найден");
-                return null;
+                throw new ProjectException("Проект не найден");
             }
             return Map.ObjectMap(project);
         }
@@ -235,14 +216,12 @@ namespace BLL.Services
         {
             if (numberOfDays == null)
             {
-                Console.WriteLine("не установлено количество дней");
-                return null;
+                throw new ProjectException("Не установлено количество дней");
             }
             var projects = Database.Projects.GetProjectsEndingInNDays(numberOfDays.Value);
             if (projects.Count() == 0)
             {
-                Console.WriteLine("проекты не найдены");
-                return null;
+                throw new ProjectException("Проекты не найдены");
             }
             return Map.ListMap(projects);
         }
@@ -251,14 +230,12 @@ namespace BLL.Services
         {
             if (projectId == null)
             {
-                Console.WriteLine("не указан id проекта");
-                return;
+                throw new ProjectException("Не установлен идентификатор проекта");
             }
             var project = Database.Projects.GetProjectById(projectId.Value);
             if (project == null)
             {
-                Console.WriteLine("проект не найден");
-                return;
+                throw new ProjectException("Проект не найден");
             }
             Database.Projects.CloseProject(projectId.Value);
             Database.Save();
