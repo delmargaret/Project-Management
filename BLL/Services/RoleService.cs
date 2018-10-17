@@ -7,17 +7,19 @@ using System.Text;
 using System.Threading.Tasks;
 using BLL.Interfaces;
 using BLL.DTO;
-using AutoMapper;
+using BLL.Mapping;
 
 namespace BLL.Services
 {
     public class RoleService : IRoleService
     {
         IUnitOfWork Database { get; set; }
+        Maps<Role, RoleDTO> Map { get; set; }
 
-        public RoleService(IUnitOfWork uow)
+        public RoleService(IUnitOfWork uow, Maps<Role, RoleDTO> map)
         {
             Database = uow;
+            Map = map;
         }
 
         public void CreateRole(string roleName)
@@ -60,8 +62,7 @@ namespace BLL.Services
                 Console.WriteLine("роль не найдена");
                 return null;
             }
-            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Role, RoleDTO>()).CreateMapper();
-            return mapper.Map<Role, RoleDTO>(Database.Roles.GetRoleById(id.Value));
+            return Map.Map(role);
         }
 
         public IEnumerable<RoleDTO> GetRoles()
@@ -72,8 +73,7 @@ namespace BLL.Services
                 Console.WriteLine("роли не найдены");
                 return null;
             }
-            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Role, RoleDTO>()).CreateMapper();
-            return mapper.Map<IEnumerable<Role>, List<RoleDTO>>(Database.Roles.GetAllRoles());
+            return Map.ListMap(roles);
         }
 
         public void Dispose()

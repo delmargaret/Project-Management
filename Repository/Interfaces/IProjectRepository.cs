@@ -10,9 +10,8 @@ namespace Repository.Interfaces
     public interface IProjectRepository
     {
         IEnumerable<Project> GetAllProjects();
-        IEnumerable<Project> GetAllClosedProjects();
-        IEnumerable<Project> GetAllOpenedProjects();
-        List<Project> GetProjectsEndingInNDays(int numberOfDays);
+        IEnumerable<Project> GetAllProjectsByStatusId(int projectStatusId);
+        IEnumerable<Project> GetProjectsEndingInNDays(int numberOfDays);
         Project GetProjectById(int id);
         IEnumerable<Project> FindProject(Func<Project, Boolean> predicate);
         void CreateProject(Project item);

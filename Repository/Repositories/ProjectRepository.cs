@@ -24,17 +24,12 @@ namespace Repository.Repositories
             return db.Projects;
         }
 
-        public IEnumerable<Project> GetAllOpenedProjects()
+        public IEnumerable<Project> GetAllProjectsByStatusId(int projectStatusId)
         {
-            return db.Projects.Where(item=>item.ProjectStatusId==1);
+            return db.Projects.Where(item => item.ProjectStatusId == projectStatusId);
         }
 
-        public IEnumerable<Project> GetAllClosedProjects()
-        {
-            return db.Projects.Where(item => item.ProjectStatusId == 2);
-        }
-
-        public List<Project> GetProjectsEndingInNDays(int numberOfDays)
+        public IEnumerable<Project> GetProjectsEndingInNDays(int numberOfDays)
         {
             List<Project> list = new List<Project>();
             var projects = db.Projects;

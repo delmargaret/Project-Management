@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using AutoMapper;
 using BLL.DTO;
 using BLL.Interfaces;
+using BLL.Mapping;
 using DAL.Entities;
 using Repository.Interfaces;
 
@@ -14,10 +14,12 @@ namespace BLL.Services
     public class ProjectWorkService : IProjectWorkService
     {
         IUnitOfWork Database { get; set; }
+        Maps<ProjectWork, ProjectWorkDTO> Map { get; set; }
 
-        public ProjectWorkService(IUnitOfWork uow)
+        public ProjectWorkService(IUnitOfWork uow, Maps<ProjectWork, ProjectWorkDTO> map)
         {
             Database = uow;
+            Map = map;
         }
 
         public void Dispose()
@@ -294,8 +296,7 @@ namespace BLL.Services
                 Console.WriteLine("проектные работы не найдены");
                 return null;
             }
-            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<ProjectWork, ProjectWorkDTO>()).CreateMapper();
-            return mapper.Map<IEnumerable<ProjectWork>, List<ProjectWorkDTO>>(Database.ProjectWorks.GetAllProjectWorks());
+            return Map.ListMap(projectWorks);
         }
 
         public IEnumerable<ProjectWorkDTO> GetEmployeesProjects(int? employeeId)
@@ -317,8 +318,7 @@ namespace BLL.Services
                 Console.WriteLine("у сотрудника нет проектов");
                 return null;
             }
-            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<ProjectWork, ProjectWorkDTO>()).CreateMapper();
-            return mapper.Map<IEnumerable<ProjectWork>, List<ProjectWorkDTO>>(Database.ProjectWorks.GetEmployeesProjects(employeeId.Value));
+            return Map.ListMap(projectWorks);
         }
 
         public int CalculateEmployeesWorkload(int? employeeId)
@@ -405,8 +405,7 @@ namespace BLL.Services
                 Console.WriteLine("проектная работа не найден");
                 return null;
             }
-            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<ProjectWork, ProjectWorkDTO>()).CreateMapper();
-            return mapper.Map<ProjectWork, ProjectWorkDTO>(Database.ProjectWorks.GetProjectWorkById(id.Value));
+            return Map.Map(projectWork);
         }
     }
 }

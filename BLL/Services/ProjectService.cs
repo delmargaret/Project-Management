@@ -3,21 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using AutoMapper;
 using BLL.DTO;
 using BLL.Interfaces;
 using DAL.Entities;
 using Repository.Interfaces;
+using BLL.Mapping;
 
 namespace BLL.Services
 {
     public class ProjectService : IProjectService
     {
         IUnitOfWork Database { get; set; }
+        Maps<Project, ProjectDTO> Map { get; set; }
 
-        public ProjectService(IUnitOfWork uow)
+        public ProjectService(IUnitOfWork uow, Maps<Project, ProjectDTO> map)
         {
             Database = uow;
+            Map = map;
         }
 
         public void Dispose()
@@ -186,28 +188,20 @@ namespace BLL.Services
             Database.Save();
         }
 
-        public IEnumerable<ProjectDTO> GetAllClosedProjects()
+        public IEnumerable<ProjectDTO> GetAllProjectsByStatusId(int? statusId)
         {
-            var projects = Database.Projects.GetAllClosedProjects();
-            if (projects.Count() == 0)
+            if (statusId == null)
             {
-                Console.WriteLine("закрытых проектов не найдено");
+                Console.WriteLine("не указан id статуса");
                 return null;
             }
-            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Project, ProjectDTO>()).CreateMapper();
-            return mapper.Map<IEnumerable<Project>, List<ProjectDTO>>(Database.Projects.GetAllClosedProjects());
-        }
-
-        public IEnumerable<ProjectDTO> GetAllOpenedProjects()
-        {
-            var projects = Database.Projects.GetAllOpenedProjects();
+            var projects = Database.Projects.GetAllProjectsByStatusId(statusId.Value);
             if (projects.Count() == 0)
             {
-                Console.WriteLine("открытых проектов не найдено");
+                Console.WriteLine("проектов не найдено");
                 return null;
             }
-            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Project, ProjectDTO>()).CreateMapper();
-            return mapper.Map<IEnumerable<Project>, List<ProjectDTO>>(Database.Projects.GetAllOpenedProjects());
+            return Map.ListMap(projects);
         }
 
         public IEnumerable<ProjectDTO> GetAllProjects()
@@ -218,8 +212,7 @@ namespace BLL.Services
                 Console.WriteLine("проектов не найдено");
                 return null;
             }
-            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Project, ProjectDTO>()).CreateMapper();
-            return mapper.Map<IEnumerable<Project>, List<ProjectDTO>>(Database.Projects.GetAllProjects());
+            return Map.ListMap(projects);
         }
 
         public ProjectDTO GetProjectById(int? id)
@@ -235,11 +228,10 @@ namespace BLL.Services
                 Console.WriteLine("проект не найден");
                 return null;
             }
-            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Project, ProjectDTO>()).CreateMapper();
-            return mapper.Map<Project, ProjectDTO>(Database.Projects.GetProjectById(id.Value));
+            return Map.Map(project);
         }
 
-        public List<ProjectDTO> GetProjectsEndingInNDays(int? numberOfDays)
+        public IEnumerable<ProjectDTO> GetProjectsEndingInNDays(int? numberOfDays)
         {
             if (numberOfDays == null)
             {
@@ -247,13 +239,12 @@ namespace BLL.Services
                 return null;
             }
             var projects = Database.Projects.GetProjectsEndingInNDays(numberOfDays.Value);
-            if (projects.Count == 0)
+            if (projects.Count() == 0)
             {
                 Console.WriteLine("проекты не найдены");
                 return null;
             }
-            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Project, ProjectDTO>()).CreateMapper();
-            return mapper.Map<List<Project>, List<ProjectDTO>>(Database.Projects.GetProjectsEndingInNDays(numberOfDays.Value));
+            return Map.ListMap(projects);
         }
 
         public void CloseProject(int? projectId)

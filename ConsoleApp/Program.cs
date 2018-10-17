@@ -14,6 +14,7 @@ using BLL.Infrastructure;
 using Ninject.Modules;
 using Ninject;
 using System.ComponentModel.DataAnnotations;
+using BLL.Mapping;
 
 namespace ConsoleApp
 {
@@ -23,278 +24,278 @@ namespace ConsoleApp
         static void Main(string[] args)
         {
             IUnitOfWork uow = new ContextUnitOfWork("ManagementContext");
-            EmployeeService employeeService = new EmployeeService(uow);
-            RoleService roleService = new RoleService(uow);
-            ProjectRoleService projectRoleService = new ProjectRoleService(uow);
-            PartisipationHistoryService historyService = new PartisipationHistoryService(uow);
-            ProjectService projectService = new ProjectService(uow);
-            ProjectWorkService projectWorkService = new ProjectWorkService(uow);
-            ScheduleServise scheduleServise = new ScheduleServise(uow);
+            EmployeeService employeeService = new EmployeeService(uow, new Maps<Employee, EmployeeDTO>());
+            RoleService roleService = new RoleService(uow, new Maps<Role, RoleDTO>());
+            ProjectRoleService projectRoleService = new ProjectRoleService(uow, new Maps<ProjectRole, ProjectRoleDTO>());
+            ParticipationHistoryService historyService = new ParticipationHistoryService(uow, new Maps<ParticipationHistory, ParticipationHistoryDTO>());
+            ProjectService projectService = new ProjectService(uow, new Maps<Project, ProjectDTO>());
+            ProjectWorkService projectWorkService = new ProjectWorkService(uow, new Maps<ProjectWork, ProjectWorkDTO>());
+            ScheduleServise scheduleServise = new ScheduleServise(uow, new Maps<Schedule, ScheduleDTO>(), new Maps<ScheduleDay, ScheduleDayDTO>());
 
-            #region Employee
-            EmployeeDTO employee1 = new EmployeeDTO
-            {
-                EmployeeName = "Иван",
-                EmployeeSurname = "Иванов",
-                EmployeePatronymic = "Иванович",
-                RoleId = 1,
-                Email = "i.van@mail.ru",
-            };
-            employeeService.CreateEmployee(employee1);
+            //#region Employee
+            //EmployeeDTO employee1 = new EmployeeDTO
+            //{
+            //    EmployeeName = "Иван",
+            //    EmployeeSurname = "Иванов",
+            //    EmployeePatronymic = "Иванович",
+            //    RoleId = 1,
+            //    Email = "i.van@mail.ru",
+            //};
+            //employeeService.CreateEmployee(employee1);
 
-            EmployeeDTO employee2 = new EmployeeDTO
-            {
-                EmployeeName = "Ольга",
-                EmployeeSurname = "Петрова",
-                EmployeePatronymic = "Николаевна",
-                RoleId = 3,
-                Email = "Olya@mail.ru",
-            };
-            employeeService.CreateEmployee(employee2);
+            //EmployeeDTO employee2 = new EmployeeDTO
+            //{
+            //    EmployeeName = "Ольга",
+            //    EmployeeSurname = "Петрова",
+            //    EmployeePatronymic = "Николаевна",
+            //    RoleId = 3,
+            //    Email = "Olya@mail.ru",
+            //};
+            //employeeService.CreateEmployee(employee2);
 
-            EmployeeDTO employee3 = new EmployeeDTO
-            {
-                EmployeeName = "Елизавета",
-                EmployeeSurname = "Кот",
-                EmployeePatronymic = "Андреевна",
-                RoleId = 3,
-                Email = "Lisa@mail.ru",
-            };
-            employeeService.CreateEmployee(employee3);
-            var employees = employeeService.GetAllEmployees();
-            foreach (var employee in employees)
-            {
-                Console.WriteLine("{0} {1}  Роль: {2}", employee.EmployeeName, employee.EmployeeSurname, employee.RoleId);
-            }
+            //EmployeeDTO employee3 = new EmployeeDTO
+            //{
+            //    EmployeeName = "Елизавета",
+            //    EmployeeSurname = "Кот",
+            //    EmployeePatronymic = "Андреевна",
+            //    RoleId = 3,
+            //    Email = "Lisa@mail.ru",
+            //};
+            //employeeService.CreateEmployee(employee3);
+            //var employees = employeeService.GetAllEmployees();
+            //foreach (var employee in employees)
+            //{
+            //    Console.WriteLine("{0} {1}  Роль: {2}", employee.EmployeeName, employee.EmployeeSurname, employee.RoleId);
+            //}
 
-            Console.WriteLine();
-            Console.WriteLine("введите id роли для поиска сотрудников");
-            int role = Convert.ToInt32(Console.ReadLine());
-            var roleEmployees = employeeService.GetEmployeesByRoleId(role);
-            foreach (var employee in roleEmployees)
-            {
-                Console.WriteLine("{0} {1}  Роль: {2}", employee.EmployeeName, employee.EmployeeSurname, employee.RoleId);
-            }
-            Console.WriteLine();
+            //Console.WriteLine();
+            //Console.WriteLine("введите id роли для поиска сотрудников");
+            //int role = Convert.ToInt32(Console.ReadLine());
+            //var roleEmployees = employeeService.GetEmployeesByRoleId(role);
+            //foreach (var employee in roleEmployees)
+            //{
+            //    Console.WriteLine("{0} {1}  Роль: {2}", employee.EmployeeName, employee.EmployeeSurname, employee.RoleId);
+            //}
+            //Console.WriteLine();
 
-            Console.WriteLine("введите id сотрудника для изменения email");
-            int idEmployeeForEmail = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("введите email");
-            var email = Console.ReadLine();
-            employeeService.ChangeEmail(idEmployeeForEmail, email);
+            //Console.WriteLine("введите id сотрудника для изменения email");
+            //int idEmployeeForEmail = Convert.ToInt32(Console.ReadLine());
+            //Console.WriteLine("введите email");
+            //var email = Console.ReadLine();
+            //employeeService.ChangeEmail(idEmployeeForEmail, email);
 
-            Console.WriteLine();
+            //Console.WriteLine();
 
-            Console.WriteLine("введите email для нахождения сотрудника");
-            var employeeEmail = Console.ReadLine();
-            var employeeByEmail = employeeService.GetEmployeeByEmail(employeeEmail);
-            Console.WriteLine("{0} Роль: {1}", employeeByEmail.EmployeeSurname, employeeByEmail.RoleId);
+            //Console.WriteLine("введите email для нахождения сотрудника");
+            //var employeeEmail = Console.ReadLine();
+            //var employeeByEmail = employeeService.GetEmployeeByEmail(employeeEmail);
+            //Console.WriteLine("{0} Роль: {1}", employeeByEmail.EmployeeSurname, employeeByEmail.RoleId);
 
-            Console.WriteLine();
-            Console.WriteLine("введите id сотрудника для добавления gitlink");
-            int idEmployeeForGit = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("введите gitlink для сотрудника");
-            var gitlink = Console.ReadLine();
-            employeeService.AddGitLink(idEmployeeForGit, gitlink);
-            Console.WriteLine("{0} Git: {1}", employeeService.GetEmployeeById(idEmployeeForGit).EmployeeSurname, employeeService.GetEmployeeById(idEmployeeForGit).GitLink);
+            //Console.WriteLine();
+            //Console.WriteLine("введите id сотрудника для добавления gitlink");
+            //int idEmployeeForGit = Convert.ToInt32(Console.ReadLine());
+            //Console.WriteLine("введите gitlink для сотрудника");
+            //var gitlink = Console.ReadLine();
+            //employeeService.AddGitLink(idEmployeeForGit, gitlink);
+            //Console.WriteLine("{0} Git: {1}", employeeService.GetEmployeeById(idEmployeeForGit).EmployeeSurname, employeeService.GetEmployeeById(idEmployeeForGit).GitLink);
 
-            Console.WriteLine();
-            employeeService.DeleteGitLinkByEmployeeId(idEmployeeForGit);
-            Console.WriteLine("{0} Git: {1}", employeeService.GetEmployeeById(idEmployeeForGit).EmployeeSurname, employeeService.GetEmployeeById(idEmployeeForGit).GitLink);
+            //Console.WriteLine();
+            //employeeService.DeleteGitLinkByEmployeeId(idEmployeeForGit);
+            //Console.WriteLine("{0} Git: {1}", employeeService.GetEmployeeById(idEmployeeForGit).EmployeeSurname, employeeService.GetEmployeeById(idEmployeeForGit).GitLink);
 
-            Console.WriteLine();
-            Console.WriteLine("введите фамилию для удаления");
-            var employeesurn = Console.ReadLine();
-            foreach (var employee in employeeService.GetAllEmployees())
-            {
-                Console.WriteLine("{0} {1}  Роль: {2}", employee.EmployeeName, employee.EmployeeSurname, employee.RoleId);
-            }
-            employeeService.DeleteEmployeeBySurname(employeesurn);
-            Console.WriteLine();
-            Console.WriteLine("удалено!");
-            foreach (var employee in employeeService.GetAllEmployees())
-            {
-                Console.WriteLine("{0} {1}  Роль: {2}", employee.EmployeeName, employee.EmployeeSurname, employee.RoleId);
-            }
-            #endregion
+            //Console.WriteLine();
+            //Console.WriteLine("введите фамилию для удаления");
+            //var employeesurn = Console.ReadLine();
+            //foreach (var employee in employeeService.GetAllEmployees())
+            //{
+            //    Console.WriteLine("{0} {1}  Роль: {2}", employee.EmployeeName, employee.EmployeeSurname, employee.RoleId);
+            //}
+            //employeeService.DeleteEmployeeBySurname(employeesurn);
+            //Console.WriteLine();
+            //Console.WriteLine("удалено!");
+            //foreach (var employee in employeeService.GetAllEmployees())
+            //{
+            //    Console.WriteLine("{0} {1}  Роль: {2}", employee.EmployeeName, employee.EmployeeSurname, employee.RoleId);
+            //}
+            //#endregion
 
-            #region Project
-            ProjectDTO project1 = new ProjectDTO
-            {
-                ProjectName = "проект 1",
-                ProjectDescription = "проект номер один",
-                ProjectStartDate = new DateTimeOffset(2018, 10, 6, 10, 15, 35, new TimeSpan(3, 0, 0)),
-                ProjectEndDate = new DateTimeOffset(2018, 10, 21, 10, 15, 35, new TimeSpan(3, 0, 0))
-            };
-            ProjectDTO project2 = new ProjectDTO
-            {
-                ProjectName = "проект 2",
-                ProjectDescription = "проект номер два",
-                ProjectStartDate = new DateTimeOffset(2018, 11, 1, 10, 15, 35, new TimeSpan(3, 0, 0)),
-                ProjectEndDate = new DateTimeOffset(2018, 12, 11, 10, 15, 35, new TimeSpan(3, 0, 0))
-            };
-            projectService.CreateProject(project1);
-            projectService.CreateProject(project2);
-            var projects = projectService.GetAllProjects();
-            foreach (var proj in projects)
-            {
-                Console.WriteLine("{0}", proj.ProjectName);
-            }
-            Console.WriteLine();
+            //#region Project
+            //ProjectDTO project1 = new ProjectDTO
+            //{
+            //    ProjectName = "проект 1",
+            //    ProjectDescription = "проект номер один",
+            //    ProjectStartDate = new DateTimeOffset(2018, 10, 6, 10, 15, 35, new TimeSpan(3, 0, 0)),
+            //    ProjectEndDate = new DateTimeOffset(2018, 10, 21, 10, 15, 35, new TimeSpan(3, 0, 0))
+            //};
+            //ProjectDTO project2 = new ProjectDTO
+            //{
+            //    ProjectName = "проект 2",
+            //    ProjectDescription = "проект номер два",
+            //    ProjectStartDate = new DateTimeOffset(2018, 11, 1, 10, 15, 35, new TimeSpan(3, 0, 0)),
+            //    ProjectEndDate = new DateTimeOffset(2018, 12, 11, 10, 15, 35, new TimeSpan(3, 0, 0))
+            //};
+            //projectService.CreateProject(project1);
+            //projectService.CreateProject(project2);
+            //var projects = projectService.GetAllProjects();
+            //foreach (var proj in projects)
+            //{
+            //    Console.WriteLine("{0}", proj.ProjectName);
+            //}
+            //Console.WriteLine();
 
-            var projects2 = projectService.GetAllOpenedProjects();
+            var projects2 = projectService.GetAllProjectsByStatusId(1);
             foreach (var proj in projects2)
             {
                 Console.WriteLine("{0}", proj.ProjectName);
             }
             Console.WriteLine();
 
-            projectService.ChangeProjectName(1, "Проектик");
-            Console.WriteLine("{0}", projectService.GetProjectById(1).ProjectName);
-            Console.WriteLine();
+            //projectService.ChangeProjectName(1, "Проектик");
+            //Console.WriteLine("{0}", projectService.GetProjectById(1).ProjectName);
+            //Console.WriteLine();
 
-            projectService.ChangeProjectStatus(2, 2);
-            var projects4 = projectService.GetAllClosedProjects();
-            foreach (var proj in projects4)
-            {
-                Console.WriteLine("{0}", proj.ProjectName);
-            }
-            Console.WriteLine();
-            var pr = projectService.GetProjectsEndingInNDays(6);
-            foreach (var proj in pr)
-            {
-                Console.WriteLine("{0}", proj.ProjectName);
-            }
-            #endregion
+            //projectService.ChangeProjectStatus(2, 2);
+            //var projects4 = projectService.GetAllClosedProjects();
+            //foreach (var proj in projects4)
+            //{
+            //    Console.WriteLine("{0}", proj.ProjectName);
+            //}
+            //Console.WriteLine();
+            //var pr = projectService.GetProjectsEndingInNDays(6);
+            //foreach (var proj in pr)
+            //{
+            //    Console.WriteLine("{0}", proj.ProjectName);
+            //}
+            //#endregion
 
-            #region ProjectWork
-            ProjectWorkDTO work1 = new ProjectWorkDTO
-            {
-                EmployeeId = 3,
-                ProjectId = 1,
-                ProjectRoleId = 2,
-            };
+            //#region ProjectWork
+            //ProjectWorkDTO work1 = new ProjectWorkDTO
+            //{
+            //    EmployeeId = 3,
+            //    ProjectId = 1,
+            //    ProjectRoleId = 2,
+            //};
 
-            ProjectWorkDTO work2 = new ProjectWorkDTO
-            {
-                EmployeeId = 3,
-                ProjectId = 1,
-                ProjectRoleId = 4,
-            };
+            //ProjectWorkDTO work2 = new ProjectWorkDTO
+            //{
+            //    EmployeeId = 3,
+            //    ProjectId = 1,
+            //    ProjectRoleId = 4,
+            //};
 
-            ProjectWorkDTO work3 = new ProjectWorkDTO
-            {
-                EmployeeId = 2,
-                ProjectId = 1,
-                ProjectRoleId = 1,
-            };
+            //ProjectWorkDTO work3 = new ProjectWorkDTO
+            //{
+            //    EmployeeId = 2,
+            //    ProjectId = 1,
+            //    ProjectRoleId = 1,
+            //};
 
-            ProjectWorkDTO work4 = new ProjectWorkDTO
-            {
-                EmployeeId = 2,
-                ProjectId = 2,
-                ProjectRoleId = 3,
-            };
+            //ProjectWorkDTO work4 = new ProjectWorkDTO
+            //{
+            //    EmployeeId = 2,
+            //    ProjectId = 2,
+            //    ProjectRoleId = 3,
+            //};
 
-            projectWorkService.CreateProjectWork(work1);
-            projectWorkService.CreateProjectWork(work2);
-            projectWorkService.CreateProjectWork(work3);
-            projectWorkService.CreateProjectWork(work4);
+            //projectWorkService.CreateProjectWork(work1);
+            //projectWorkService.CreateProjectWork(work2);
+            //projectWorkService.CreateProjectWork(work3);
+            //projectWorkService.CreateProjectWork(work4);
 
-            var works = projectWorkService.GetAllProjectWorks();
-            foreach (var work in works)
-            {
-                Console.WriteLine("{0} {1} {2} {3}", work.ProjectId, work.EmployeeId, work.ProjectRoleId, work.WorkLoad);
-            }
-            Console.WriteLine();
+            //var works = projectWorkService.GetAllProjectWorks();
+            //foreach (var work in works)
+            //{
+            //    Console.WriteLine("{0} {1} {2} {3}", work.ProjectId, work.EmployeeId, work.ProjectRoleId, work.WorkLoad);
+            //}
+            //Console.WriteLine();
 
-            var works2 = projectWorkService.GetEmployeesProjects(2);
-            foreach (var work in works2)
-            {
-                Console.WriteLine("{0} {1} {2} ", work.ProjectId, work.ProjectRoleId, work.WorkLoad);
-            }
-            Console.WriteLine();
+            //var works2 = projectWorkService.GetEmployeesProjects(2);
+            //foreach (var work in works2)
+            //{
+            //    Console.WriteLine("{0} {1} {2} ", work.ProjectId, work.ProjectRoleId, work.WorkLoad);
+            //}
+            //Console.WriteLine();
 
-            var works3 = projectWorkService.GetNamesAndLoadOnProject(1);
-            foreach (var work in works3)
-            {
-                Console.WriteLine("{0} {1} {2} ", work.name, work.role, work.workload);
-            }
-            Console.WriteLine();
+            //var works3 = projectWorkService.GetNamesAndLoadOnProject(1);
+            //foreach (var work in works3)
+            //{
+            //    Console.WriteLine("{0} {1} {2} ", work.name, work.role, work.workload);
+            //}
+            //Console.WriteLine();
 
-            var works4 = projectWorkService.GetNamesOnProject(2);
-            foreach (var work in works4)
-            {
-                Console.WriteLine("{0} {1}", work.name, work.role);
-            }
-            Console.WriteLine();
+            //var works4 = projectWorkService.GetNamesOnProject(2);
+            //foreach (var work in works4)
+            //{
+            //    Console.WriteLine("{0} {1}", work.name, work.role);
+            //}
+            //Console.WriteLine();
 
 
-            projectWorkService.ChangeEmployeesProjectRole(1, 4);
-            var works6 = projectWorkService.GetAllProjectWorks();
-            foreach (var work in works6)
-            {
-                Console.WriteLine("{0} {1} {2} {3}", work.ProjectId, work.EmployeeId, work.ProjectRoleId, work.WorkLoad);
-            }
+            //projectWorkService.ChangeEmployeesProjectRole(1, 4);
+            //var works6 = projectWorkService.GetAllProjectWorks();
+            //foreach (var work in works6)
+            //{
+            //    Console.WriteLine("{0} {1} {2} {3}", work.ProjectId, work.EmployeeId, work.ProjectRoleId, work.WorkLoad);
+            //}
 
-            projectWorkService.AddWorkLoad(3, 30);
-            projectWorkService.AddWorkLoad(4, 50);
-            Console.WriteLine("Load: {0}%", projectWorkService.CalculateEmployeesWorkload(2));
+            //projectWorkService.AddWorkLoad(3, 30);
+            //projectWorkService.AddWorkLoad(4, 50);
+            //Console.WriteLine("Load: {0}%", projectWorkService.CalculateEmployeesWorkload(2));
 
-            #endregion
+            //#endregion
 
-            #region ParticipationHistory
-            ParticipationHistoryDTO history = new ParticipationHistoryDTO
-            {
-                ProjectWorkId = 2,
-                StartDate = new DateTimeOffset(2018, 10, 6, 10, 15, 35, new TimeSpan(3, 0, 0)),
-                EndDate = new DateTimeOffset(2018, 10, 21, 10, 15, 35, new TimeSpan(3, 0, 0))
-            };
-            historyService.CreateHistory(history);
+            //#region ParticipationHistory
+            //ParticipationHistoryDTO history = new ParticipationHistoryDTO
+            //{
+            //    ProjectWorkId = 2,
+            //    StartDate = new DateTimeOffset(2018, 10, 6, 10, 15, 35, new TimeSpan(3, 0, 0)),
+            //    EndDate = new DateTimeOffset(2018, 10, 21, 10, 15, 35, new TimeSpan(3, 0, 0))
+            //};
+            //historyService.CreateHistory(history);
 
-            foreach (var hist in historyService.GetAllEmployeesHistoriesOnProject(2))
-            {
-                Console.WriteLine("{0}", hist.Id);
-            }
+            //foreach (var hist in historyService.GetAllEmployeesHistoriesOnProject(2))
+            //{
+            //    Console.WriteLine("{0}", hist.Id);
+            //}
 
-            Console.WriteLine();
-            historyService.ChangeHistoryEndDate(1, new DateTimeOffset(2018, 10, 15, 10, 15, 35, new TimeSpan(3, 0, 0)));
+            //Console.WriteLine();
+            //historyService.ChangeHistoryEndDate(1, new DateTimeOffset(2018, 10, 15, 10, 15, 35, new TimeSpan(3, 0, 0)));
 
-            foreach (var hist in historyService.GetAllEmployeesHistoriesOnProject(2))
-            {
-                Console.WriteLine("{0}", hist.Id);
-            }
-            Console.WriteLine();
+            //foreach (var hist in historyService.GetAllEmployeesHistoriesOnProject(2))
+            //{
+            //    Console.WriteLine("{0}", hist.Id);
+            //}
+            //Console.WriteLine();
 
-            ParticipationHistoryDTO history2 = new ParticipationHistoryDTO
-            {
-                ProjectWorkId = 2,
-                StartDate = new DateTimeOffset(2018, 10, 16, 10, 15, 35, new TimeSpan(3, 0, 0)),
-                EndDate = new DateTimeOffset(2018, 10, 21, 10, 15, 35, new TimeSpan(3, 0, 0))
-            };
+            //ParticipationHistoryDTO history2 = new ParticipationHistoryDTO
+            //{
+            //    ProjectWorkId = 2,
+            //    StartDate = new DateTimeOffset(2018, 10, 16, 10, 15, 35, new TimeSpan(3, 0, 0)),
+            //    EndDate = new DateTimeOffset(2018, 10, 21, 10, 15, 35, new TimeSpan(3, 0, 0))
+            //};
 
-            historyService.CreateHistory(history2);
-            Console.WriteLine("{0}", historyService.GetLastEmployeesHistory(2).Id);
-            #endregion
+            //historyService.CreateHistory(history2);
+            //Console.WriteLine("{0}", historyService.GetLastEmployeesHistory(2).Id);
+            //#endregion
 
-            #region Schedule
+            //#region Schedule
 
-            ScheduleDTO schedule = new ScheduleDTO
-            {
-                ProjectWorkId = 1,
-                ScheduleDayId = 2
-            };
-            scheduleServise.CreateSchedule(schedule);
+            //ScheduleDTO schedule = new ScheduleDTO
+            //{
+            //    ProjectWorkId = 1,
+            //    ScheduleDayId = 2
+            //};
+            //scheduleServise.CreateSchedule(schedule);
 
-            projectWorkService.AddWorkLoad(2, 30);
-            Console.WriteLine();
+            //projectWorkService.AddWorkLoad(2, 30);
+            //Console.WriteLine();
 
-            foreach (var work in projectWorkService.GetNamesAndLoadOnProject(1))
-            {
-                Console.WriteLine("{0} {1} {2} ", work.name, work.role, work.workload);
-            }
-            Console.WriteLine();
-            #endregion
+            //foreach (var work in projectWorkService.GetNamesAndLoadOnProject(1))
+            //{
+            //    Console.WriteLine("{0} {1} {2} ", work.name, work.role, work.workload);
+            //}
+            //Console.WriteLine();
+            //#endregion
 
         }
     }

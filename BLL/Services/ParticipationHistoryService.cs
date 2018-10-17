@@ -1,6 +1,6 @@
-﻿using AutoMapper;
-using BLL.DTO;
+﻿using BLL.DTO;
 using BLL.Interfaces;
+using BLL.Mapping;
 using DAL.Entities;
 using Repository.Interfaces;
 using System;
@@ -11,13 +11,15 @@ using System.Threading.Tasks;
 
 namespace BLL.Services
 {
-    public class PartisipationHistoryService : IParticipationHistoryService
+    public class ParticipationHistoryService : IParticipationHistoryService
     {
         IUnitOfWork Database { get; set; }
+        Maps<ParticipationHistory, ParticipationHistoryDTO> Map { get; set; }
 
-        public PartisipationHistoryService(IUnitOfWork uow)
+        public ParticipationHistoryService(IUnitOfWork uow, Maps<ParticipationHistory, ParticipationHistoryDTO> map)
         {
             Database = uow;
+            Map = map;
         }
 
         public void Dispose()
@@ -76,8 +78,7 @@ namespace BLL.Services
                 Console.WriteLine("история не найдена");
                 return null;
             }
-            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<ParticipationHistory, ParticipationHistoryDTO>()).CreateMapper();
-            return mapper.Map<ParticipationHistory, ParticipationHistoryDTO>(Database.ParticipationHistories.GetHistoryById(id.Value));
+            return Map.Map(history);
         }
 
         public ParticipationHistoryDTO GetLastEmployeesHistory(int? projectWorkId)
@@ -88,8 +89,7 @@ namespace BLL.Services
                 Console.WriteLine("история не найдена");
                 return null;
             }
-            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<ParticipationHistory, ParticipationHistoryDTO>()).CreateMapper();
-            return mapper.Map<ParticipationHistory, ParticipationHistoryDTO>(Database.ParticipationHistories.GetLastEmployeesHistory(projectWorkId.Value));
+            return Map.Map(history);
         }
 
         public IEnumerable<ParticipationHistoryDTO> GetAllHistories()
@@ -100,8 +100,7 @@ namespace BLL.Services
                 Console.WriteLine("истории не найдены");
                 return null;
             }
-            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<ParticipationHistory, ParticipationHistoryDTO>()).CreateMapper();
-            return mapper.Map<IEnumerable<ParticipationHistory>, List<ParticipationHistoryDTO>>(Database.ParticipationHistories.GetAllHistories());
+            return Map.ListMap(histories);
         }
 
         public IEnumerable<ParticipationHistoryDTO> GetAllEmployeesHistoriesOnProject(int? projectWorkId)
@@ -123,8 +122,7 @@ namespace BLL.Services
                 Console.WriteLine("истории не найдены");
                 return null;
             }
-            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<ParticipationHistory, ParticipationHistoryDTO>()).CreateMapper();
-            return mapper.Map<IEnumerable<ParticipationHistory>, List<ParticipationHistoryDTO>>(Database.ParticipationHistories.GetAllEmployeesHistoriesOnProject(projectWorkId.Value));
+            return Map.ListMap(histories);
         }
 
         public void ChangeHistoryStartDate(int? id, DateTimeOffset start)

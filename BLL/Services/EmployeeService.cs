@@ -7,17 +7,19 @@ using Repository.Interfaces;
 using BLL.DTO;
 using BLL.Interfaces;
 using DAL.Entities;
-using AutoMapper;
+using BLL.Mapping;
 
 namespace BLL.Services
 {
     public class EmployeeService : IEmployeeService
     {
         IUnitOfWork Database { get; set; }
+        Maps<Employee, EmployeeDTO> Map { get; set; }
 
-        public EmployeeService(IUnitOfWork uow)
+        public EmployeeService(IUnitOfWork uow, Maps<Employee, EmployeeDTO> map)
         {
             Database = uow;
+            Map = map;
         }
 
         public void Dispose()
@@ -101,8 +103,7 @@ namespace BLL.Services
                 Console.WriteLine("сотрудник не найден");
                 return null;
             }
-            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Employee, EmployeeDTO>()).CreateMapper();
-            return mapper.Map<Employee, EmployeeDTO>(Database.Employees.GetEmployeeById(id.Value));
+            return Map.Map(employee);
         }
 
         public IEnumerable<EmployeeDTO> GetEmployeesBySurname(string surname)
@@ -113,8 +114,7 @@ namespace BLL.Services
                 Console.WriteLine("сотрудники не найдены");
                 return null;
             }
-            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Employee, EmployeeDTO>()).CreateMapper();
-            return mapper.Map<IEnumerable<Employee>, List<EmployeeDTO>>(Database.Employees.GetEmployeesBySurname(surname));
+            return Map.ListMap(employees);
         }
 
         public EmployeeDTO GetEmployeeByEmail(string email)
@@ -125,8 +125,7 @@ namespace BLL.Services
                 Console.WriteLine("сотрудник не найден");
                 return null; 
             }
-            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Employee, EmployeeDTO>()).CreateMapper();
-            return mapper.Map<Employee, EmployeeDTO>(Database.Employees.GetEmployeeByEmail(email));
+            return Map.Map(employee);
         }
 
         public IEnumerable<EmployeeDTO> GetAllEmployees()
@@ -142,8 +141,7 @@ namespace BLL.Services
                 Console.WriteLine("сотрудники не найдены");
                 return null;
             }
-            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Employee, EmployeeDTO>()).CreateMapper();
-            return mapper.Map<IEnumerable<Employee>, List<EmployeeDTO>>(Database.Employees.GetAllEmployees());
+            return Map.ListMap(employees);
         }
 
         public IEnumerable<EmployeeDTO> GetEmployeesByRoleId(int? roleId)
@@ -165,8 +163,7 @@ namespace BLL.Services
                 Console.WriteLine("сотрудники не найдены");
                 return null;
             }
-            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Employee, EmployeeDTO>()).CreateMapper();
-            return mapper.Map<IEnumerable<Employee>, List<EmployeeDTO>>(Database.Employees.GetEmployeesByRole(roleId.Value));
+            return Map.ListMap(employees);
         }
 
         public void AddGitLink(int? employeeId, string gitlink)

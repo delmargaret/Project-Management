@@ -7,17 +7,21 @@ using Repository.Interfaces;
 using BLL.DTO;
 using BLL.Interfaces;
 using DAL.Entities;
-using AutoMapper;
+using BLL.Mapping;
 
 namespace BLL.Services
 {
     public class ScheduleServise : IScheduleService
     {
         IUnitOfWork Database { get; set; }
+        Maps<Schedule, ScheduleDTO> Map { get; set; }
+        Maps<ScheduleDay, ScheduleDayDTO> DayMap { get; set; }
 
-        public ScheduleServise(IUnitOfWork uow)
+        public ScheduleServise(IUnitOfWork uow, Maps<Schedule, ScheduleDTO> map, Maps<ScheduleDay, ScheduleDayDTO> dayMap)
         {
             Database = uow;
+            Map = map;
+            DayMap = dayMap;
         }
 
         public void Dispose()
@@ -33,8 +37,7 @@ namespace BLL.Services
                 Console.WriteLine("расписания не найдены");
                 return null;
             }
-            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Schedule, ScheduleDTO>()).CreateMapper();
-            return mapper.Map<IEnumerable<Schedule>, List<ScheduleDTO>>(Database.Schedules.GetAllSchedules());
+            return Map.ListMap(schedules);
         }
 
         public IEnumerable<ScheduleDTO> GetScheduleOnProjectWork(int? projectWorkId)
@@ -56,8 +59,7 @@ namespace BLL.Services
                 Console.WriteLine("расписание сотрудника не найдено");
                 return null;
             }
-            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Schedule, ScheduleDTO>()).CreateMapper();
-            return mapper.Map<IEnumerable<Schedule>, List<ScheduleDTO>>(Database.Schedules.GetScheduleOnProjectWork(projectWorkId.Value));
+            return Map.ListMap(schedules);
         }
 
         public ScheduleDTO GetScheduleById(int? id)
@@ -73,8 +75,7 @@ namespace BLL.Services
                 Console.WriteLine("расписание не найдено");
                 return null;
             }
-            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Schedule, ScheduleDTO>()).CreateMapper();
-            return mapper.Map<Schedule, ScheduleDTO>(Database.Schedules.GetScheduleById(id.Value));
+            return Map.Map(schedule);
         }
 
         public IEnumerable<ScheduleDayDTO> GetEmployeesFreeDays(int? employeeId)
@@ -96,8 +97,7 @@ namespace BLL.Services
                 Console.WriteLine("свободных дней нет");
                 return null;
             }
-            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<ScheduleDay, ScheduleDayDTO>()).CreateMapper();
-            return mapper.Map<IEnumerable<ScheduleDay>, List<ScheduleDayDTO>>(Database.Schedules.GetEmployeesFreeDays(employeeId.Value));
+            return DayMap.ListMap(freedays);
         }
 
         public void CreateSchedule(ScheduleDTO item)

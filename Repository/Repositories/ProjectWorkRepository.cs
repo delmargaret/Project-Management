@@ -33,7 +33,7 @@ namespace Repository.Repositories
 
         public IEnumerable<ProjectWork> GetEmployeesProjects(int employeeId)
         {
-            return db.ProjectWorks.Where(item => item.EmployeeId == employeeId);
+            return db.ProjectWorks.Where(item => item.EmployeeId == employeeId && item.Project.ProjectStatusId == 1);
         }
 
         public int CalculateEmployeesWorkload(int employeeId)

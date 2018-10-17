@@ -10,9 +10,8 @@ namespace BLL.Interfaces
     public interface IProjectService
     {
         IEnumerable<ProjectDTO> GetAllProjects();
-        IEnumerable<ProjectDTO> GetAllClosedProjects();
-        IEnumerable<ProjectDTO> GetAllOpenedProjects();
-        List<ProjectDTO> GetProjectsEndingInNDays(int? numberOfDays);
+        IEnumerable<ProjectDTO> GetAllProjectsByStatusId(int? statusId);
+        IEnumerable<ProjectDTO> GetProjectsEndingInNDays(int? numberOfDays);
         ProjectDTO GetProjectById(int? id);
         void CreateProject(ProjectDTO item);
         void DeleteProjectById(int? id);

@@ -5,19 +5,21 @@ using System.Text;
 using System.Threading.Tasks;
 using BLL.Interfaces;
 using BLL.DTO;
-using AutoMapper;
 using Repository.Interfaces;
 using DAL.Entities;
+using BLL.Mapping;
 
 namespace BLL.Services
 {
     public class ProjectRoleService : IProjectRoleService
     {
         IUnitOfWork Database { get; set; }
+        Maps<ProjectRole, ProjectRoleDTO> Map { get; set; }
 
-        public ProjectRoleService(IUnitOfWork uow)
+        public ProjectRoleService(IUnitOfWork uow, Maps<ProjectRole, ProjectRoleDTO> map)
         {
             Database = uow;
+            Map = map;
         }
 
         public void CreateProjectRole(string projectRoleName)
@@ -60,8 +62,7 @@ namespace BLL.Services
                 Console.WriteLine("роль не найдена");
                 return null;
             }
-            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<ProjectRole, ProjectRoleDTO>()).CreateMapper();
-            return mapper.Map<ProjectRole, ProjectRoleDTO>(Database.ProjectRoles.GetProjectRoleById(id.Value));
+            return Map.Map(role);
         }
 
         public IEnumerable<ProjectRoleDTO> GetProjectRoles()
@@ -72,8 +73,7 @@ namespace BLL.Services
                 Console.WriteLine("роли не найдены");
                 return null;
             }
-            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<ProjectRole, ProjectRoleDTO>()).CreateMapper();
-            return mapper.Map<IEnumerable<ProjectRole>, List<ProjectRoleDTO>>(Database.ProjectRoles.GetAllProjectRoles());
+            return Map.ListMap(roles);
         }
 
         public void Dispose()
