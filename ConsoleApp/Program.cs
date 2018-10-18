@@ -78,15 +78,32 @@ namespace ConsoleApp
                     EmployeePatronymic = "Анатольевич",
                     Email = "Andr",
                 };
-                foreach(var error in validate.ValidateEmployee(employee3))
+                var errors = validate.ValidateEmployee(employee3);
+                if (errors.Count() != 0)
                 {
-                    Console.WriteLine(error.ErrorMessage);
+                    foreach (var error in errors)
+                    {
+                        if (error.MemberNames.Count() != 0)
+                        {
+                            foreach (var membername in error.MemberNames)
+                            {
+                                Console.WriteLine(membername.ToString() + ": " + error.ErrorMessage);
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine(error.ErrorMessage);
+                        }
+                    }
                 }
-                employeeService.CreateEmployee(employee3);
-                var employees = employeeService.GetAllEmployees();
-                foreach (var employee in employees)
+                else
                 {
-                    Console.WriteLine("{0} {1}  Роль: {2}", employee.EmployeeName, employee.EmployeeSurname, employee.RoleId);
+                    employeeService.CreateEmployee(employee3);
+                    var employees = employeeService.GetAllEmployees();
+                    foreach (var employee in employees)
+                    {
+                        Console.WriteLine("{0} {1}  Роль: {2}", employee.EmployeeName, employee.EmployeeSurname, employee.RoleId);
+                    }
                 }
 
                 //Console.WriteLine();
@@ -323,10 +340,7 @@ namespace ConsoleApp
             {
                 Console.WriteLine(ex.Message);
             }
-            catch (ValidationException exception)
-            {
-                Console.WriteLine(exception.Message);
-            }
+
         }
     }
 }

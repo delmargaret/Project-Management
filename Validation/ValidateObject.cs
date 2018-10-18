@@ -18,51 +18,51 @@ namespace Validation
             List<ValidationResult> errors = new List<ValidationResult>();
             if (string.IsNullOrWhiteSpace(employee.EmployeeName))
             {
-                throw new ValidationException("Введите имя сотрудника");
+                errors.Add(new ValidationResult("Введите имя сотрудника", new List<string>() { "EmployeeName" }));
             }
             if (employee.EmployeeName.Length > 20 || employee.EmployeeName.Length < 2)
             {
-                throw new ValidationException("Недопустимая длина имени");
+                errors.Add(new ValidationResult("Недопустимая длина имени", new List<string>() { "EmployeeName" }));
             }
             if (string.IsNullOrWhiteSpace(employee.EmployeeSurname))
             {
-                throw new ValidationException("Введите фамилию сотрудника");
+                errors.Add(new ValidationResult("Введите фамилию сотрудника", new List<string>() { "EmployeeSurname" }));
             }
             if (employee.EmployeeSurname.Length > 20 || employee.EmployeeSurname.Length < 2)
             {
-                throw new ValidationException("Недопустимая длина фамилии");
+                errors.Add(new ValidationResult("Недопустимая длина фамилии", new List<string>() { "EmployeeSurname" }));
             }
             if (string.IsNullOrWhiteSpace(employee.EmployeePatronymic))
             {
-                throw new ValidationException("Введите отчество сотрудника");
+                errors.Add(new ValidationResult("Введите отчество сотрудника", new List<string>() { "EmployeePatronymic" }));
             }
             if (employee.EmployeePatronymic.Length > 20 || employee.EmployeePatronymic.Length < 2)
             {
-                throw new ValidationException("Недопустимая длина отчества");
+                errors.Add(new ValidationResult("Недопустимая длина отчества", new List<string>() { "EmployeePatronymic" }));
             }
             if (string.IsNullOrWhiteSpace(employee.Email))
             {
-                throw new ValidationException("Введите e-mai сотрудника");
+                errors.Add(new ValidationResult("Введите e-mai сотрудника", new List<string>() { "Email" }));
             }
             if (!(new System.ComponentModel.DataAnnotations.EmailAddressAttribute()).IsValid(employee.Email))
             {
-                errors.Add(new ValidationResult("Неверный e-mail"));
+                errors.Add(new ValidationResult("Неверный e-mail", new List<string>() { "Email" }));
             }
             if (employee.GitLink!=null && (employee.GitLink.Length > 30 || employee.GitLink.Length < 2))
             {
-                throw new ValidationException("Недопустимая длина ссылки");
+                errors.Add(new ValidationResult("Недопустимая длина ссылки", new List<string>() { "GitLink" }));
             }
-            if (string.IsNullOrWhiteSpace(employee.RoleId.ToString()))
+            if (employee.RoleId == 0)
             {
-                throw new ValidationException("Не указан идентификатор роли");
+                errors.Add(new ValidationResult("Не указан идентификатор роли", new List<string>() { "RoleId" }));
             }
-            if (employee.RoleId > 3 || employee.RoleId < 1)
+            if (employee.RoleId != 0 && (employee.RoleId > 3 || employee.RoleId < 1))
             {
-                errors.Add(new ValidationResult("Роль не существует"));
+                errors.Add(new ValidationResult("Роль не существует", new List<string>() { "RoleId" }));
             }
             if(employee.PhoneNumber != null && !Regex.IsMatch(employee.PhoneNumber, @"^(\+375|80)(29|25|44|33)(\d{3})(\d{2})(\d{2})$"))
             {
-                throw new ValidationException("Неверно введен номер");
+                errors.Add(new ValidationResult("Неверно введен номер", new List<string>() { "PhoneNumber" }));
             }
             return errors;
         }
