@@ -42,8 +42,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EmployeeValidator.cs" />
+    <Compile Include="ParticipationHistoryVlidator.cs" />
+    <Compile Include="ProjectValidator.cs" />
+    <Compile Include="ProjectWorkValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ValidateObject.cs" />
+    <Compile Include="ScheduleValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BLL\BLL.csproj">

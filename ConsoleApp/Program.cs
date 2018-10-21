@@ -24,7 +24,7 @@ namespace ConsoleApp
     {
         static void Main(string[] args)
         {
-            ValidateObject validate = new ValidateObject();
+            EmployeeValidator evalidator = new EmployeeValidator();
             IUnitOfWork uow = new ContextUnitOfWork("ManagementContext");
             EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
             RoleService roleService = new RoleService(uow, new Map<Role, RoleDTO>());
@@ -78,7 +78,7 @@ namespace ConsoleApp
                     EmployeePatronymic = "Анатольевич",
                     Email = "Andr",
                 };
-                var errors = validate.ValidateEmployee(employee3);
+                var errors = evalidator.Validate(employee3);
                 if (errors.Count() != 0)
                 {
                     foreach (var error in errors)

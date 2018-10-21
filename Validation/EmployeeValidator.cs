@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace Validation
 {
-    public class ValidateObject 
+    public class EmployeeValidator 
     {
 
-        public ValidateObject() { }
-        public List<ValidationResult> ValidateEmployee(EmployeeDTO employee)
+        public EmployeeValidator() { }
+        public List<ValidationResult> Validate(EmployeeDTO employee)
         {
             List<ValidationResult> errors = new List<ValidationResult>();
             if (string.IsNullOrWhiteSpace(employee.EmployeeName))
@@ -44,7 +44,7 @@ namespace Validation
             {
                 errors.Add(new ValidationResult("Введите e-mai сотрудника", new List<string>() { "Email" }));
             }
-            if (!(new System.ComponentModel.DataAnnotations.EmailAddressAttribute()).IsValid(employee.Email))
+            if (!(new EmailAddressAttribute()).IsValid(employee.Email))
             {
                 errors.Add(new ValidationResult("Неверный e-mail", new List<string>() { "Email" }));
             }

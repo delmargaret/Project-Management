@@ -8,8 +8,6 @@ namespace Exeption
 {
     public class InvalidDateException : Exception
     {
-        const string InvalidDateMessage = "Неверная дата";
-
-        public InvalidDateException() : base(InvalidDateMessage) { }
+        public InvalidDateException() : base() { }
     }
 }

@@ -86,6 +86,10 @@
       <Project>{c5b25926-d0ce-4e55-a718-67d7d04c9a82}</Project>
       <Name>DAL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Exeption\Exeption.csproj">
+      <Project>{7e23a097-f1b6-4867-a670-0a1c11a4bcff}</Project>
+      <Name>Exeption</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Repository\Repository.csproj">
       <Project>{059de57e-7556-4c23-9e43-047b7b63479e}</Project>
       <Name>Repository</Name>

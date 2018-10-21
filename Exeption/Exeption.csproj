@@ -41,21 +41,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EmployeeExeptions\EmployeeIdNotSetException.cs" />
-    <Compile Include="EmployeeExeptions\EmployeeNotFoundException.cs" />
-    <Compile Include="EmployeeExeptions\EmployeesNotFoundException.cs" />
     <Compile Include="EmptyFieldException.cs" />
+    <Compile Include="IdNotSetException.cs" />
     <Compile Include="InvalidDateException.cs" />
-    <Compile Include="ParticipationHistoryExceptions\ParticipationHistoriesNotFoundException.cs" />
-    <Compile Include="ParticipationHistoryExceptions\ParticipationHistoryIdNotSetException.cs" />
-    <Compile Include="ParticipationHistoryExceptions\ParticipationHistoryNotFoundException.cs" />
-    <Compile Include="ProjectRoleExceptions\ProjectRoleIdNotSetException.cs" />
-    <Compile Include="ProjectRoleExceptions\ProjectRoleNotFoundException.cs" />
-    <Compile Include="ProjectRoleExceptions\ProjectRolesNotFoundException.cs" />
+    <Compile Include="NotFoundException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RoleExceptions\RoleIdNotSetException.cs" />
-    <Compile Include="RoleExceptions\RoleNotFoundException.cs" />
-    <Compile Include="RoleExceptions\RolesNotFoundException.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
