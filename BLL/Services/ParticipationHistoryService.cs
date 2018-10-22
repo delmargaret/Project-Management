@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using BLL.Infrastructure;
+using Exeption;
 
 namespace BLL.Services
 {
@@ -32,13 +32,9 @@ namespace BLL.Services
         {
             ProjectWork work = Database.ProjectWorks.GetProjectWorkById(historyDTO.ProjectWorkId);
 
-            if (work == null)
+            if (historyDTO.StartDate > historyDTO.EndDate)
             {
-                throw new ProjectException("Участие в проекте не найдено");
-            }
-            if (historyDTO.StartDate>historyDTO.EndDate)
-            {
-                throw new ProjectException("Неверные даты");
+                throw new InvalidDateException();
             }
             ParticipationHistory history = new ParticipationHistory
             {
@@ -52,118 +48,58 @@ namespace BLL.Services
             Database.Save();
         }
 
-        public void DeleteHistoryById(int? id)
+        public void DeleteHistoryById(int id)
         {
-            if (id == null)
-            {
-                throw new ProjectException("Не установлен идентификатор истории участия в проекте");
-            }
-            var history = Database.ParticipationHistories.GetHistoryById(id.Value);
-            if (history == null)
-            {
-                throw new ProjectException("История участия в проекте не найдена");
-            }
-            Database.ParticipationHistories.DeleteHistory(id.Value);
+            var history = Database.ParticipationHistories.GetHistoryById(id);
+            Database.ParticipationHistories.DeleteHistory(history.Id);
             Database.Save();
         }
 
-        public ParticipationHistoryDTO GetHistoryById(int? id)
+        public ParticipationHistoryDTO GetHistoryById(int id)
         {
-            if (id == null)
-            {
-                throw new ProjectException("Не установлен идентификатор истории участия в проекте");
-            }
-            var history = Database.ParticipationHistories.GetHistoryById(id.Value);
-            if (history == null)
-            {
-                throw new ProjectException("История участия в проекте не найдена");
-            }
+            var history = Database.ParticipationHistories.GetHistoryById(id);
             return Map.ObjectMap(history);
         }
 
-        public ParticipationHistoryDTO GetLastEmployeesHistory(int? projectWorkId)
+        public ParticipationHistoryDTO GetLastEmployeesHistory(int projectWorkId)
         {
-            if (projectWorkId == null)
-            {
-                throw new ProjectException("Не установлен идентификатор участия в проекте");
-            }
-            var work = Database.ProjectWorks.GetProjectWorkById(projectWorkId.Value);
-            if (work == null)
-            {
-                throw new ProjectException("Участие в проекте не найдено");
-            }
-            var history = Database.ParticipationHistories.GetLastEmployeesHistory(projectWorkId.Value);
-            if (history == null)
-            {
-                throw new ProjectException("История участия в проекте не найдена");
-            }
+            var work = Database.ProjectWorks.GetProjectWorkById(projectWorkId);
+            var history = Database.ParticipationHistories.GetLastEmployeesHistory(work.Id);
             return Map.ObjectMap(history);
         }
 
         public IEnumerable<ParticipationHistoryDTO> GetAllHistories()
         {
             var histories = Database.ParticipationHistories.GetAllHistories();
-            if (histories.Count() == 0)
-            {
-                throw new ProjectException("Истории участия в проекте не найдены");
-            }
             return Map.ListMap(histories);
         }
 
-        public IEnumerable<ParticipationHistoryDTO> GetAllEmployeesHistoriesOnProject(int? projectWorkId)
+        public IEnumerable<ParticipationHistoryDTO> GetAllEmployeesHistoriesOnProject(int projectWorkId)
         {
-            if (projectWorkId == null)
-            {
-                throw new ProjectException("Не установлен идентификатор участия в проекте");
-            }
-            var projectWork = Database.ProjectWorks.GetProjectWorkById(projectWorkId.Value);
-            if (projectWork == null)
-            {
-                throw new ProjectException("Участие в проекте не найдено");
-            }
-            var histories = Database.ParticipationHistories.GetAllHistories();
-            if (histories.Count() == 0)
-            {
-                throw new ProjectException("Истории участия в проекте не найдены");
-            }
+            var projectWork = Database.ProjectWorks.GetProjectWorkById(projectWorkId);
+            var histories = Database.ParticipationHistories.GetAllEmployeesHistoriesOnProject(projectWork.Id);
             return Map.ListMap(histories);
         }
 
-        public void ChangeHistoryStartDate(int? id, DateTimeOffset start)
+        public void ChangeHistoryStartDate(int id, DateTimeOffset start)
         {
-            if (id == null)
-            {
-                throw new ProjectException("Не установлен идентификатор истории участия в проекте");
-            }
-            var history = Database.ParticipationHistories.GetHistoryById(id.Value);
-            if (history == null)
-            {
-                throw new ProjectException("История участия в проекте не найдена");
-            }
+            var history = Database.ParticipationHistories.GetHistoryById(id);
             if (history.EndDate < start)
             {
-                throw new ProjectException("Неверная дата начала участия в проекте");
+                throw new InvalidDateException();
             }
-            Database.ParticipationHistories.ChangeHistoryStartDate(id.Value, start);
+            Database.ParticipationHistories.ChangeHistoryStartDate(history.Id, start);
             Database.Save();
         }
 
-        public void ChangeHistoryEndDate(int? id, DateTimeOffset end)
+        public void ChangeHistoryEndDate(int id, DateTimeOffset end)
         {
-            if (id == null)
-            {
-                throw new ProjectException("Не установлен идентификатор истории участия в проекте");
-            }
-            var history = Database.ParticipationHistories.GetHistoryById(id.Value);
-            if (history == null)
-            {
-                throw new ProjectException("История участия в проекте не найдена");
-            }
+            var history = Database.ParticipationHistories.GetHistoryById(id);
             if (history.StartDate > end)
             {
-                throw new ProjectException("Неверная дата конца участия в проекте");
+                throw new InvalidDateException();
             }
-            Database.ParticipationHistories.ChangeHistoryEndDate(id.Value, end);
+            Database.ParticipationHistories.ChangeHistoryEndDate(history.Id, end);
             Database.Save();
         }
     }

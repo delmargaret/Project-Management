@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Exeption
 {
-    public class IdNotSetException : Exception
+    public class ObjectAlreadyExistsException : Exception
     {
-        public IdNotSetException() : base() { }
+        public ObjectAlreadyExistsException() : base() { }
     }
 }

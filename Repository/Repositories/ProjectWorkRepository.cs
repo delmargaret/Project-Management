@@ -7,6 +7,7 @@ using System.Data.Entity;
 using DAL.Entities;
 using DAL.DataContext;
 using Repository.Interfaces;
+using Exeption;
 
 namespace Repository.Repositories
 {
@@ -28,11 +29,19 @@ namespace Repository.Repositories
 
         public IEnumerable<ProjectWork> GetAllProjectWorks()
         {
+            if (db.ProjectWorks.Count() == 0)
+            {
+                throw new NotFoundException();
+            }
             return db.ProjectWorks;
         }
 
         public IEnumerable<ProjectWork> GetEmployeesProjects(int employeeId)
         {
+            if(db.ProjectWorks.Where(item => item.EmployeeId == employeeId && item.Project.ProjectStatusId == 1).Count() == 0)
+            {
+                throw new NotFoundException();
+            }
             return db.ProjectWorks.Where(item => item.EmployeeId == employeeId && item.Project.ProjectStatusId == 1);
         }
 
@@ -59,6 +68,10 @@ namespace Repository.Repositories
                 role = db.ProjectRoles.Find(employee.ProjectRoleId).ProjectRoleName;
                 (string, string) tuple = (name, role);
                 list.Add(tuple);
+            }
+            if (list.Count() == 0)
+            {
+                throw new NotFoundException();
             }
             return list;
         }
@@ -94,11 +107,19 @@ namespace Repository.Repositories
                                (string, string, string) tuple = (name, role, workload);
                 list.Add(tuple);
             }
+            if (list.Count() == 0)
+            {
+                throw new NotFoundException();
+            }
             return list;
         }
 
         public ProjectWork GetProjectWorkById(int id)
         {
+            if (db.ProjectWorks.Find(id) == null)
+            {
+                throw new NotFoundException();
+            }
             return db.ProjectWorks.Find(id);
         }
 
@@ -114,13 +135,20 @@ namespace Repository.Repositories
 
         public IEnumerable<ProjectWork> FindProjectWork(Func<ProjectWork, Boolean> predicate)
         {
+            if (db.ProjectWorks.Where(predicate).ToList().Count() == 0)
+            {
+                throw new NotFoundException();
+            }
             return db.ProjectWorks.Where(predicate).ToList();
         }
 
         public void DeleteProjectWorkById(int id)
         {
             ProjectWork projectwork = db.ProjectWorks.Find(id);
-            if (projectwork != null)
+            if (projectwork == null)
+            {
+                throw new NotFoundException();
+            }
                 db.ProjectWorks.Remove(projectwork);
         }
 
@@ -129,74 +157,77 @@ namespace Repository.Repositories
             List<ProjectWork> list = new List<ProjectWork>();
             list = db.ProjectWorks.Where(item => item.ProjectId == projectId && item.EmployeeId == employeeId).ToList();
             ProjectWork projectwork = list.First();
-            if (projectwork != null)
+            if (projectwork == null)
+            {
+                throw new NotFoundException();
+            }
                 db.ProjectWorks.Remove(projectwork);
         }
 
         public void ChangeProject(int projectWorkId, int newProjectId)
         {
             Project project = db.Projects.Find(newProjectId);
-            if(project==null)
-                Console.WriteLine("проект не найден");
             ProjectWork projectWork = db.ProjectWorks.Find(projectWorkId);
-            if (projectWork != null)
+            if (projectWork == null)
             {
-                projectWork.ProjectId = newProjectId;
-                projectWork.Project = project;
+                throw new NotFoundException();
             }
+            projectWork.ProjectId = newProjectId;
+            projectWork.Project = project;
         }
 
         public void ChangeEmployee(int projectWorkId, int newEmployeeId)
         {
             Employee employee = db.Employees.Find(newEmployeeId);
-            if (employee == null)
-                Console.WriteLine("сотрудник не найден");
             ProjectWork projectWork = db.ProjectWorks.Find(projectWorkId);
-            if (projectWork != null)
+            if (projectWork == null)
             {
-                projectWork.EmployeeId = newEmployeeId;
-                projectWork.Employee = employee;
+                throw new NotFoundException();
             }
+            projectWork.EmployeeId = newEmployeeId;
+            projectWork.Employee = employee;
         }
 
         public void ChangeEmployeesProjectRole(int projectWorkId, int newProjectRoleId)
         {
             ProjectRole projectRole = db.ProjectRoles.Find(newProjectRoleId);
-            if (projectRole == null)
-                Console.WriteLine("роль на проекте не найден");
             ProjectWork projectWork = db.ProjectWorks.Find(projectWorkId);
-            if (projectWork != null)
+            if (projectWork == null)
             {
-                projectWork.ProjectRoleId = newProjectRoleId;
-                projectWork.ProjectRole = projectRole;
+                throw new NotFoundException();
             }
+            projectWork.ProjectRoleId = newProjectRoleId;
+            projectWork.ProjectRole = projectRole;
         }
 
         public void ChangeWorkLoad(int projectWorkId, int newWorkLoad)
         {
             ProjectWork projectWork = db.ProjectWorks.Find(projectWorkId);
-            if (projectWork != null)
+            if (projectWork == null)
             {
-                projectWork.WorkLoad = newWorkLoad;
+                throw new NotFoundException();
             }
+            projectWork.WorkLoad = newWorkLoad;
         }
 
         public void AddWorkLoad(int projectWorkId, int workLoad)
         {
             ProjectWork projectWork = db.ProjectWorks.Find(projectWorkId);
-            if (projectWork != null)
+            if (projectWork == null)
             {
-                projectWork.WorkLoad = workLoad;
+                throw new NotFoundException();
             }
+            projectWork.WorkLoad = workLoad;
         }
 
         public void DeleteWorkLoad(int projectWorkId)
         {
             ProjectWork projectWork = db.ProjectWorks.Find(projectWorkId);
-            if (projectWork != null)
+            if (projectWork == null)
             {
-                projectWork.WorkLoad = null;
+                throw new NotFoundException();
             }
+            projectWork.WorkLoad = null;
         }
     }
 }

@@ -10,8 +10,8 @@ namespace BLL.Interfaces
     public interface IRoleService
     {
         void CreateRole(string roleName);
-        void DeleteRoleById(int? id);
-        RoleDTO GetRoleById(int? id);
+        void DeleteRoleById(int id);
+        RoleDTO GetRoleById(int id);
         IEnumerable<RoleDTO> GetRoles();
         void Dispose();
     }

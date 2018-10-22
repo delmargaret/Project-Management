@@ -7,6 +7,7 @@ using System.Data.Entity;
 using DAL.Entities;
 using DAL.DataContext;
 using Repository.Interfaces;
+using Exeption;
 
 namespace Repository.Repositories
 {
@@ -21,11 +22,19 @@ namespace Repository.Repositories
 
         public IEnumerable<ProjectRole> GetAllProjectRoles()
         {
+            if (db.ProjectRoles.Count() == 0) 
+            {
+                throw new NotFoundException();
+            }
             return db.ProjectRoles;
         }
 
         public ProjectRole GetProjectRoleById(int id)
         {
+            if (db.ProjectRoles.Find(id) == null)
+            {
+                throw new NotFoundException();
+            }
             return db.ProjectRoles.Find(id);
         }
 
@@ -41,13 +50,20 @@ namespace Repository.Repositories
 
         public IEnumerable<ProjectRole> FindProjectRole(Func<ProjectRole, Boolean> predicate)
         {
+            if (db.ProjectRoles.Where(predicate).ToList().Count() == 0)
+            {
+                throw new NotFoundException();
+            }
             return db.ProjectRoles.Where(predicate).ToList();
         }
 
         public void DeleteProjectRole(int id)
         {
             ProjectRole projectrole = db.ProjectRoles.Find(id);
-            if (projectrole != null)
+            if (projectrole == null)
+            {
+                throw new NotFoundException();
+            }
                 db.ProjectRoles.Remove(projectrole);
         }
     }

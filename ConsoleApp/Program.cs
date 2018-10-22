@@ -16,6 +16,7 @@ using Ninject;
 using System.ComponentModel.DataAnnotations;
 using BLL.Mapping;
 using Validation;
+using Exeption;
 
 namespace ConsoleApp
 {
@@ -71,50 +72,50 @@ namespace ConsoleApp
                 //    Console.WriteLine("{0} {1}  Роль: {2}", employee.EmployeeName, employee.EmployeeSurname, employee.RoleId);
                 //}
 
-                EmployeeDTO employee3 = new EmployeeDTO
-                {
-                    EmployeeName = "Андрей",
-                    EmployeeSurname = "Зайцев",
-                    EmployeePatronymic = "Анатольевич",
-                    Email = "Andr",
-                };
-                var errors = evalidator.Validate(employee3);
-                if (errors.Count() != 0)
-                {
-                    foreach (var error in errors)
-                    {
-                        if (error.MemberNames.Count() != 0)
-                        {
-                            foreach (var membername in error.MemberNames)
-                            {
-                                Console.WriteLine(membername.ToString() + ": " + error.ErrorMessage);
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine(error.ErrorMessage);
-                        }
-                    }
-                }
-                else
-                {
-                    employeeService.CreateEmployee(employee3);
-                    var employees = employeeService.GetAllEmployees();
-                    foreach (var employee in employees)
-                    {
-                        Console.WriteLine("{0} {1}  Роль: {2}", employee.EmployeeName, employee.EmployeeSurname, employee.RoleId);
-                    }
-                }
-
-                //Console.WriteLine();
-                //Console.WriteLine("введите id роли для поиска сотрудников");
-                //int role = Convert.ToInt32(Console.ReadLine());
-                //var roleEmployees = employeeService.GetEmployeesByRoleId(role);
-                //foreach (var employee in roleEmployees)
+                //EmployeeDTO employee4 = new EmployeeDTO
                 //{
-                //    Console.WriteLine("{0} {1}  Роль: {2}", employee.EmployeeName, employee.EmployeeSurname, employee.RoleId);
+                //    EmployeeName = "Андрей",
+                //    EmployeeSurname = "Зайцев",
+                //    EmployeePatronymic = "Анатольевич",
+                //    Email = "Andr",
+                //};
+                //var errors = evalidator.Validate(employee4);
+                //if (errors.Count() != 0)
+                //{
+                //    foreach (var error in errors)
+                //    {
+                //        if (error.MemberNames.Count() != 0)
+                //        {
+                //            foreach (var membername in error.MemberNames)
+                //            {
+                //                Console.WriteLine(membername.ToString() + ": " + error.ErrorMessage);
+                //            }
+                //        }
+                //        else
+                //        {
+                //            Console.WriteLine(error.ErrorMessage);
+                //        }
+                //    }
                 //}
-                //Console.WriteLine();
+                //else
+                //{
+                //    employeeService.CreateEmployee(employee4);
+                //    var employeess = employeeService.GetAllEmployees();
+                //    foreach (var employee in employeess)
+                //    {
+                //        Console.WriteLine("{0} {1}  Роль: {2}", employee.EmployeeName, employee.EmployeeSurname, employee.RoleId);
+                //    }
+                //}
+
+                Console.WriteLine();
+                Console.WriteLine("введите id роли для поиска сотрудников");
+                int role = Convert.ToInt32(Console.ReadLine());
+                var roleEmployees = employeeService.GetEmployeesByRoleId(role);
+                foreach (var employee in roleEmployees)
+                {
+                    Console.WriteLine("{0} {1}  Роль: {2}", employee.EmployeeName, employee.EmployeeSurname, employee.RoleId);
+                }
+                Console.WriteLine();
 
                 //Console.WriteLine("введите id сотрудника для изменения email");
                 //int idEmployeeForEmail = Convert.ToInt32(Console.ReadLine());
@@ -336,11 +337,22 @@ namespace ConsoleApp
                 //#endregion
             }
 
-            catch(ProjectException ex)
+            catch(NotFoundException)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine("объект не найден");
             }
-
+            catch (ObjectAlreadyExistsException)
+            {
+                Console.WriteLine("объект уже создан");
+            }
+            catch (InvalidDateException)
+            {
+                Console.WriteLine("неверная дата");
+            }
+            catch (PercentOrScheduleException)
+            {
+                Console.WriteLine("неверный тип загруженности");
+            }
         }
     }
 }

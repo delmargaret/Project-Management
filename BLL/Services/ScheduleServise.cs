@@ -8,7 +8,7 @@ using BLL.DTO;
 using BLL.Interfaces;
 using DAL.Entities;
 using BLL.Mapping;
-using BLL.Infrastructure;
+using Exeption;
 
 namespace BLL.Services
 {
@@ -33,77 +33,33 @@ namespace BLL.Services
         public IEnumerable<ScheduleDTO> GetAllSchedules()
         {
             var schedules = Database.Schedules.GetAllSchedules();
-            if (schedules.Count() == 0)
-            {
-                throw new ProjectException("Расписания не найдены");
-            }
             return Map.ListMap(schedules);
         }
 
-        public IEnumerable<ScheduleDTO> GetScheduleOnProjectWork(int? projectWorkId)
+        public IEnumerable<ScheduleDTO> GetScheduleOnProjectWork(int projectWorkId)
         {
-            if (projectWorkId == null)
-            {
-                throw new ProjectException("Не установлен идентификатор участия в проекте");
-            }
-            var projectWork = Database.ProjectWorks.GetProjectWorkById(projectWorkId.Value);
-            if (projectWork == null)
-            {
-                throw new ProjectException("Участие в проекте не найдено");
-            }
-            var schedules = Database.Schedules.GetAllSchedules();
-            if (schedules.Count() == 0)
-            {
-                throw new ProjectException("Расписание сотрудника");
-            }
+            var projectWork = Database.ProjectWorks.GetProjectWorkById(projectWorkId);
+            var schedules = Database.Schedules.GetScheduleOnProjectWork(projectWork.Id);
             return Map.ListMap(schedules);
         }
 
-        public ScheduleDTO GetScheduleById(int? id)
+        public ScheduleDTO GetScheduleById(int id)
         {
-            if (id == null)
-            {
-                throw new ProjectException("Не установлен идентификатор расписания");
-            }
-            var schedule = Database.Schedules.GetScheduleById(id.Value);
-            if (schedule == null) 
-            {
-                throw new ProjectException("Расписание не найдено");
-            }
+            var schedule = Database.Schedules.GetScheduleById(id);
             return Map.ObjectMap(schedule);
         }
 
-        public IEnumerable<ScheduleDayDTO> GetEmployeesFreeDays(int? employeeId)
+        public IEnumerable<ScheduleDayDTO> GetEmployeesFreeDays(int employeeId)
         {
-            if (employeeId == null)
-            {
-                throw new ProjectException("Не установлен идентификатор сотрудника");
-            }
-            Employee employee = Database.Employees.GetEmployeeById(employeeId.Value);
-            if (employee == null)
-            {
-                throw new ProjectException("Сотрудник не найден");
-            }
-            var freedays = Database.Schedules.GetEmployeesFreeDays(employeeId.Value);
-            if (freedays.Count() == 0)
-            {
-                throw new ProjectException("Свободных дней нет");
-            }
+            Employee employee = Database.Employees.GetEmployeeById(employeeId);
+            var freedays = Database.Schedules.GetEmployeesFreeDays(employee.Id);
             return DayMap.ListMap(freedays);
         }
 
         public void CreateSchedule(ScheduleDTO item)
         {
             ProjectWork work = Database.ProjectWorks.GetProjectWorkById(item.ProjectWorkId);
-            if (work == null)
-            {
-                throw new ProjectException("Участие в проекте не найдено");
-            }
             ScheduleDay day = Database.ScheduleDays.GetScheduleDayById(item.ScheduleDayId);
-            if (day == null)
-            {
-                throw new ProjectException("День не найден");
-            }
             Employee employee = Database.Employees.GetEmployeeById(work.EmployeeId);
             if (employee.PercentOrScheduleId == 3)
             {
@@ -122,7 +78,7 @@ namespace BLL.Services
             }
             if (employee.PercentOrScheduleId == 1)
             {
-                throw new ProjectException("Доступен только процент загруженности");
+                throw new PercentOrScheduleException();
             }
             if (employee.PercentOrScheduleId == 2)
             {
@@ -140,57 +96,25 @@ namespace BLL.Services
             }
         }
 
-        public void DeleteScheduleById(int? id)
+        public void DeleteScheduleById(int id)
         {
-            if (id == null)
-            {
-                throw new ProjectException("Не установлен идентификатор расписания");
-            }
-            var scedule = Database.Schedules.GetScheduleById(id.Value);
-            if (scedule == null)
-            {
-                throw new ProjectException("Расписание не найден");
-            }
-            Database.Schedules.DeleteScheduleById(id.Value);
+            var scedule = Database.Schedules.GetScheduleById(id);
+            Database.Schedules.DeleteScheduleById(scedule.Id);
             Database.Save();
         }
 
-        public void DeleteScheduleByProjectWorkId(int? projectWorkId)
+        public void DeleteScheduleByProjectWorkId(int projectWorkId)
         {
-            if (projectWorkId == null)
-            {
-                throw new ProjectException("Не установлен идентификатор участия в проекте");
-            }
-            var projectWork = Database.ProjectWorks.GetProjectWorkById(projectWorkId.Value);
-            if (projectWork == null)
-            {
-                throw new ProjectException("Участие в проекте не найдено");
-            }
-            Database.Schedules.DeleteScheduleByProjectWorkId(projectWorkId.Value);
+            var projectWork = Database.ProjectWorks.GetProjectWorkById(projectWorkId);
+            Database.Schedules.DeleteScheduleByProjectWorkId(projectWork.Id);
             Database.Save();
         }
 
-        public void ChangeScheduleDay(int? scheduleId, int? scheduleDayId)
+        public void ChangeScheduleDay(int scheduleId, int scheduleDayId)
         {
-            if (scheduleId == null)
-            {
-                throw new ProjectException("Не установлен идентификатор расписания");
-            }
-            var schedule = Database.Schedules.GetScheduleById(scheduleId.Value);
-            if (schedule == null)
-            {
-                throw new ProjectException("Расписание не найдено");
-            }
-            if (scheduleDayId == null)
-            {
-                throw new ProjectException("Не установлен идентификатор дня");
-            }
-            var day = Database.ScheduleDays.GetScheduleDayById(scheduleDayId.Value);
-            if (day == null)
-            {
-                throw new ProjectException("День не найден");
-            }
-            Database.Schedules.ChangeScheduleDay(scheduleId.Value, scheduleDayId.Value);
+            var schedule = Database.Schedules.GetScheduleById(scheduleId);
+            var day = Database.ScheduleDays.GetScheduleDayById(scheduleDayId);
+            Database.Schedules.ChangeScheduleDay(schedule.Id, day.Id);
             Database.Save();
         }
     }

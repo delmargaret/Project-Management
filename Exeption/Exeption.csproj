@@ -41,10 +41,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EmptyFieldException.cs" />
-    <Compile Include="IdNotSetException.cs" />
     <Compile Include="InvalidDateException.cs" />
     <Compile Include="NotFoundException.cs" />
+    <Compile Include="ObjectAlreadyExistsException.cs" />
+    <Compile Include="PercentOrScheduleException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

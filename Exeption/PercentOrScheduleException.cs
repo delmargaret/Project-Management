@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Exeption
 {
-    public class EmptyFieldException : Exception
+    public class PercentOrScheduleException : Exception
     {
-        public EmptyFieldException() : base() { }
+        public PercentOrScheduleException() : base() { }
     }
 }

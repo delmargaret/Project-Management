@@ -62,7 +62,6 @@
     <Compile Include="DTO\RoleDTO.cs" />
     <Compile Include="DTO\ScheduleDayDTO.cs" />
     <Compile Include="DTO\ScheduleDTO.cs" />
-    <Compile Include="Infrastructure\ProjectException.cs" />
     <Compile Include="Infrastructure\ServiceModule.cs" />
     <Compile Include="Interfaces\IEmployeeService.cs" />
     <Compile Include="Interfaces\IParticipationHistoryService.cs" />

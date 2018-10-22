@@ -10,13 +10,13 @@ namespace BLL.Interfaces
     public interface IScheduleService
     {
         IEnumerable<ScheduleDTO> GetAllSchedules();
-        IEnumerable<ScheduleDTO> GetScheduleOnProjectWork(int? projectWorkId);
-        ScheduleDTO GetScheduleById(int? id);
-        IEnumerable<ScheduleDayDTO> GetEmployeesFreeDays(int? employeeId);
+        IEnumerable<ScheduleDTO> GetScheduleOnProjectWork(int projectWorkId);
+        ScheduleDTO GetScheduleById(int id);
+        IEnumerable<ScheduleDayDTO> GetEmployeesFreeDays(int employeeId);
         void CreateSchedule(ScheduleDTO item);
-        void DeleteScheduleById(int? id);
-        void DeleteScheduleByProjectWorkId(int? projectWorkId);
-        void ChangeScheduleDay(int? scheduleId, int? scheduleDayId);
+        void DeleteScheduleById(int id);
+        void DeleteScheduleByProjectWorkId(int projectWorkId);
+        void ChangeScheduleDay(int scheduleId, int scheduleDayId);
         void Dispose();
     }
 }

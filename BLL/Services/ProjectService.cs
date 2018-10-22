@@ -8,7 +8,7 @@ using BLL.Interfaces;
 using DAL.Entities;
 using Repository.Interfaces;
 using BLL.Mapping;
-using BLL.Infrastructure;
+using Exeption;
 
 namespace BLL.Services
 {
@@ -28,117 +28,56 @@ namespace BLL.Services
             Database.Dispose();
         }
 
-        public void ChangeProjectDescription(int? projectId, string newProjectDescription)
+        public void ChangeProjectDescription(int projectId, string newProjectDescription)
         {
-            if (projectId == null)
-            {
-                throw new ProjectException("Не установлен идентификатор проекта");
-            }
-            var project = Database.Projects.GetProjectById(projectId.Value);
-            if (project == null)
-            {
-                throw new ProjectException("Проект не найден");
-            }
-            Database.Projects.ChangeProjectDescription(projectId.Value, newProjectDescription);
+            var project = Database.Projects.GetProjectById(projectId);
+            Database.Projects.ChangeProjectDescription(project.Id, newProjectDescription);
             Database.Save();
         }
 
-        public void ChangeProjectEndDate(int? projectId, DateTimeOffset? newEndDate)
+        public void ChangeProjectEndDate(int projectId, DateTimeOffset newEndDate)
         {
-            if (projectId == null)
-            {
-                throw new ProjectException("Не установлен идентификатор проекта");
-            }
-            var project = Database.Projects.GetProjectById(projectId.Value);
-            if (project == null)
-            {
-                throw new ProjectException("Проект не найден");
-            }
-            if (newEndDate == null)
-            {
-                throw new ProjectException("Не установлена дата окончания проекта");
-            }
+            var project = Database.Projects.GetProjectById(projectId);
             if (project.ProjectStartDate > newEndDate)
             {
-                throw new ProjectException("Неверная дата окончания проекта");
+                throw new InvalidDateException();
             }
-            Database.Projects.ChangeProjectEndDate(projectId.Value, newEndDate.Value);
+            Database.Projects.ChangeProjectEndDate(project.Id, newEndDate);
             Database.Save();
         }
 
-        public void ChangeProjectName(int? projectId, string newProjectName)
+        public void ChangeProjectName(int projectId, string newProjectName)
         {
-            if (projectId == null)
-            {
-                throw new ProjectException("Не установлен идентификатор проекта");
-            }
-            var project = Database.Projects.GetProjectById(projectId.Value);
-            if (project == null)
-            {
-                throw new ProjectException("Проект не найден");
-            }
-            Database.Projects.ChangeProjectName(projectId.Value, newProjectName);
+            var project = Database.Projects.GetProjectById(projectId);
+            Database.Projects.ChangeProjectName(project.Id, newProjectName);
             Database.Save();
         }
 
-        public void ChangeProjectStartDate(int? projectId, DateTimeOffset? newStartDate)
+        public void ChangeProjectStartDate(int projectId, DateTimeOffset newStartDate)
         {
-            if (projectId == null)
-            {
-                throw new ProjectException("Не установлен идентификатор проекта");
-            }
-            var project = Database.Projects.GetProjectById(projectId.Value);
-            if (project == null)
-            {
-                throw new ProjectException("Проект не найден");
-            }
-            if (newStartDate == null)
-            {
-                throw new ProjectException("Не установлена дата начала проекта");
-            }
+            var project = Database.Projects.GetProjectById(projectId);
             if (project.ProjectEndDate < newStartDate)
             {
-                throw new ProjectException("Неверная дата начала проекта");
+                throw new InvalidDateException();
             }
-            Database.Projects.ChangeProjectStartDate(projectId.Value, newStartDate.Value);
+            Database.Projects.ChangeProjectStartDate(project.Id, newStartDate);
             Database.Save();
         }
 
-        public void ChangeProjectStatus(int? projectId, int? projectStatusId)
+        public void ChangeProjectStatus(int projectId, int projectStatusId)
         {
-            if (projectId == null)
-            {
-                throw new ProjectException("Не установлен идентификатор проекта");
-            }
-            var project = Database.Projects.GetProjectById(projectId.Value);
-            if (project == null)
-            {
-                throw new ProjectException("Проект не найден");
-            }
-            if (projectStatusId == null)
-            {
-                throw new ProjectException("Не установлен идентификатор статуса проекта");
-            }
-            var projectStatus = Database.ProjectStatuses.GetProjectStatusById(projectStatusId.Value);
-            if (projectStatus == null)
-            {
-                throw new ProjectException("Статус проекта не найден");
-            }
-            Database.Projects.ChangeProjectStatus(projectId.Value, projectStatusId.Value);
+            var project = Database.Projects.GetProjectById(projectId);
+            var projectStatus = Database.ProjectStatuses.GetProjectStatusById(projectStatusId);
+            Database.Projects.ChangeProjectStatus(project.Id, projectStatus.Id);
             Database.Save();
         }
 
         public void CreateProject(ProjectDTO item)
         {
             ProjectStatus projectStatus = Database.ProjectStatuses.GetProjectStatusById(1);
-
-            if (projectStatus == null)
-            {
-                throw new ProjectException("Статус проекта не найден");
-            }
             if (item.ProjectStartDate > item.ProjectEndDate)
             {
-                throw new ProjectException("Неверные даты");
+                throw new InvalidDateException();
             }
             Project project = new Project
             {
@@ -154,92 +93,43 @@ namespace BLL.Services
             Database.Save();
         }
 
-        public void DeleteProjectById(int? id)
+        public void DeleteProjectById(int id)
         {
-            if (id == null)
-            {
-                throw new ProjectException("Не установлен идентификатор проекта");
-            }
-            var project = Database.Projects.GetProjectById(id.Value);
-            if (project == null)
-            {
-                throw new ProjectException("Проект не найден");
-            }
-            Database.Projects.DeleteProjectById(id.Value);
+            var project = Database.Projects.GetProjectById(id);
+            Database.Projects.DeleteProjectById(project.Id);
             Database.Save();
         }
 
-        public IEnumerable<ProjectDTO> GetAllProjectsByStatusId(int? statusId)
+        public IEnumerable<ProjectDTO> GetAllProjectsByStatusId(int statusId)
         {
-            if (statusId == null)
-            {
-                throw new ProjectException("Не установлен идентификатор статуса проекта");
-            }
-            var projectStatus = Database.ProjectStatuses.GetProjectStatusById(statusId.Value);
-            if (projectStatus == null)
-            {
-                throw new ProjectException("Статус проекта не найден");
-            }
-            var projects = Database.Projects.GetAllProjectsByStatusId(statusId.Value);
-            if (projects.Count() == 0)
-            {
-                throw new ProjectException("Проекты не найдены");
-            }
+            var projectStatus = Database.ProjectStatuses.GetProjectStatusById(statusId);
+            var projects = Database.Projects.GetAllProjectsByStatusId(projectStatus.Id);
             return Map.ListMap(projects);
         }
 
         public IEnumerable<ProjectDTO> GetAllProjects()
         {
             var projects = Database.Projects.GetAllProjects();
-            if (projects.Count() == 0)
-            {
-                throw new ProjectException("Проекты не найдены");
-            }
             return Map.ListMap(projects);
         }
 
-        public ProjectDTO GetProjectById(int? id)
+        public ProjectDTO GetProjectById(int id)
         {
-            if (id == null)
-            {
-                throw new ProjectException("Не установлен идентификатор проекта");
-            }
-            var project = Database.Projects.GetProjectById(id.Value);
-            if (project == null)
-            {
-                throw new ProjectException("Проект не найден");
-            }
+            var project = Database.Projects.GetProjectById(id);
             return Map.ObjectMap(project);
         }
 
-        public IEnumerable<ProjectDTO> GetProjectsEndingInNDays(int? numberOfDays)
+        public IEnumerable<ProjectDTO> GetProjectsEndingInNDays(int numberOfDays)
         {
-            if (numberOfDays == null)
-            {
-                throw new ProjectException("Не установлено количество дней");
-            }
-            var projects = Database.Projects.GetProjectsEndingInNDays(numberOfDays.Value);
-            if (projects.Count() == 0)
-            {
-                throw new ProjectException("Проекты не найдены");
-            }
+            var projects = Database.Projects.GetProjectsEndingInNDays(numberOfDays);
             return Map.ListMap(projects);
         }
 
-        public void CloseProject(int? projectId)
+        public void CloseProject(int projectId)
         {
-            if (projectId == null)
-            {
-                throw new ProjectException("Не установлен идентификатор проекта");
-            }
-            var project = Database.Projects.GetProjectById(projectId.Value);
-            if (project == null)
-            {
-                throw new ProjectException("Проект не найден");
-            }
-            Database.Projects.CloseProject(projectId.Value);
+            var project = Database.Projects.GetProjectById(projectId);
+            Database.Projects.CloseProject(project.Id);
             Database.Save();
         }
-
     }
 }

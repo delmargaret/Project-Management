@@ -7,6 +7,7 @@ using System.Data.Entity;
 using DAL.Entities;
 using DAL.DataContext;
 using Repository.Interfaces;
+using Exeption;
 
 namespace Repository.Repositories
 {
@@ -31,17 +32,22 @@ namespace Repository.Repositories
                     list.Add(day.ScheduleDay);
                 }
             }
+            if (list.Count() == 0)
+            {
+                throw new NotFoundException();
+            }
             return list;
         }
 
         public void ChangeScheduleDay(int scheduleId, int scheduleDayId)
         {
             Schedule schedule = db.Schedules.Find(scheduleId);
-            if (schedule != null)
+            if (schedule == null)
             {
-                schedule.ScheduleDayId = scheduleDayId;
-                schedule.ScheduleDay = db.ScheduleDays.Find(scheduleDayId);
+                throw new NotFoundException();
             }
+            schedule.ScheduleDayId = scheduleDayId;
+            schedule.ScheduleDay = db.ScheduleDays.Find(scheduleDayId);
         }
 
         public void CreateSchedule(Schedule item)
@@ -52,13 +58,20 @@ namespace Repository.Repositories
         public void DeleteScheduleById(int id)
         {
             Schedule schedule = db.Schedules.Find(id);
-            if (schedule != null)
+            if (schedule == null)
+            {
+                throw new NotFoundException();
+            }
                 db.Schedules.Remove(schedule);
         }
 
         public void DeleteScheduleByProjectWorkId(int projectWorkId)
         {
             var days = db.Schedules.Where(item => item.ProjectWorkId == projectWorkId);
+            if (days.Count() == 0)
+            {
+                throw new NotFoundException();
+            }
             foreach(var day in days)
             {
                 db.Schedules.Remove(day);
@@ -67,21 +80,37 @@ namespace Repository.Repositories
 
         public IEnumerable<Schedule> FindSchedule(Func<Schedule, bool> predicate)
         {
+            if (db.Schedules.Where(predicate).ToList().Count() == 0)
+            {
+                throw new NotFoundException();
+            }
             return db.Schedules.Where(predicate).ToList();
         }
 
         public IEnumerable<Schedule> GetAllSchedules()
         {
+            if (db.Schedules.Count() == 0)
+            {
+                throw new NotFoundException();
+            }
             return db.Schedules;
         }
 
         public Schedule GetScheduleById(int id)
         {
+            if (db.Schedules.Find(id) == null)
+            {
+                throw new NotFoundException();
+            }
             return db.Schedules.Find(id);
         }
 
         public IEnumerable<Schedule> GetScheduleOnProjectWork(int projectWorkId)
         {
+            if(db.Schedules.Where(item => item.ProjectWorkId == projectWorkId).Count() == 0)
+            {
+                throw new NotFoundException();
+            }
             return db.Schedules.Where(item => item.ProjectWorkId == projectWorkId);
         }
 

@@ -33,42 +33,22 @@ namespace BLL.Services
             Database.Save();
         }
 
-        public void DeleteRoleById(int? id)
+        public void DeleteRoleById(int id)
         {
-            if (id == null)
-            {
-                throw new ProjectException("Не установлен идентификатор роли");
-            }
-            var role = Database.Roles.GetRoleById(id.Value);
-            if (role == null)
-            {
-                throw new ProjectException("Роль не найдена");
-            }
-            Database.Roles.DeleteRole(id.Value);
+            var role = Database.Roles.GetRoleById(id);
+            Database.Roles.DeleteRole(role.Id);
             Database.Save();
         }
 
-        public RoleDTO GetRoleById(int? id)
+        public RoleDTO GetRoleById(int id)
         {
-            if (id == null)
-            {
-                throw new ProjectException("Не установлен идентификатор роли");
-            }
-            var role = Database.Roles.GetRoleById(id.Value);
-            if (role == null)
-            {
-                throw new ProjectException("Роль не найдена");
-            }
+            var role = Database.Roles.GetRoleById(id);
             return Map.ObjectMap(role);
         }
 
         public IEnumerable<RoleDTO> GetRoles()
         {
             var roles = Database.Roles.GetAllRoles();
-            if (roles.Count() == 0)
-            {
-                throw new ProjectException("Роли не найдены");
-            }
             return Map.ListMap(roles);
         }
 
