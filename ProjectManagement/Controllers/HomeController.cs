@@ -31,7 +31,7 @@ namespace ProjectManagement.Controllers
 
         public ActionResult CreateEmployee(int? id)
         {
-            RoleDTO role = roleService.GetRoleById(id);
+            RoleDTO role = roleService.GetRoleById(id.Value);
             var employee = new EmployeeViewModel { RoleId = role.Id};
 
             return View(employee);
