@@ -107,15 +107,15 @@ namespace ConsoleApp
                 //    }
                 //}
 
-                Console.WriteLine();
-                Console.WriteLine("введите id роли для поиска сотрудников");
-                int role = Convert.ToInt32(Console.ReadLine());
-                var roleEmployees = employeeService.GetEmployeesByRoleId(role);
-                foreach (var employee in roleEmployees)
-                {
-                    Console.WriteLine("{0} {1}  Роль: {2}", employee.EmployeeName, employee.EmployeeSurname, employee.RoleId);
-                }
-                Console.WriteLine();
+                //Console.WriteLine();
+                //Console.WriteLine("введите id роли для поиска сотрудников");
+                //int role = Convert.ToInt32(Console.ReadLine());
+                //var roleEmployees = employeeService.GetEmployeesByRoleId(role);
+                //foreach (var employee in roleEmployees)
+                //{
+                //    Console.WriteLine("{0} {1}  Роль: {2}", employee.EmployeeName, employee.EmployeeSurname, employee.RoleId);
+                //}
+                //Console.WriteLine();
 
                 //Console.WriteLine("введите id сотрудника для изменения email");
                 //int idEmployeeForEmail = Convert.ToInt32(Console.ReadLine());
@@ -130,13 +130,13 @@ namespace ConsoleApp
                 //var employeeByEmail = employeeService.GetEmployeeByEmail(employeeEmail);
                 //Console.WriteLine("{0} Роль: {1}", employeeByEmail.EmployeeSurname, employeeByEmail.RoleId);
 
-                //Console.WriteLine();
-                //Console.WriteLine("введите id сотрудника для добавления gitlink");
-                //int idEmployeeForGit = Convert.ToInt32(Console.ReadLine());
-                //Console.WriteLine("введите gitlink для сотрудника");
-                //var gitlink = Console.ReadLine();
-                //employeeService.AddGitLink(idEmployeeForGit, gitlink);
-                //Console.WriteLine("{0} Git: {1}", employeeService.GetEmployeeById(idEmployeeForGit).EmployeeSurname, employeeService.GetEmployeeById(idEmployeeForGit).GitLink);
+                Console.WriteLine();
+                Console.WriteLine("введите id сотрудника для добавления gitlink");
+                int idEmployeeForGit = Convert.ToInt32(Console.ReadLine());
+                Console.WriteLine("введите gitlink для сотрудника");
+                var gitlink = Console.ReadLine();
+                employeeService.AddGitLink(idEmployeeForGit, gitlink);
+                Console.WriteLine("{0} Git: {1}", employeeService.GetEmployeeById(idEmployeeForGit).EmployeeSurname, employeeService.GetEmployeeById(idEmployeeForGit).GitLink);
 
                 //Console.WriteLine();
                 //employeeService.DeleteGitLinkByEmployeeId(idEmployeeForGit);

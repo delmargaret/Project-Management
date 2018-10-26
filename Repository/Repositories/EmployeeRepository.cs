@@ -131,12 +131,11 @@ namespace Repository.Repositories
         {
             List<Employee> list = new List<Employee>();
             list = db.Employees.Where(item => item.Email == email).ToList();
-            Employee employee = list.First();
-            if (employee == null)
+            if (list.Count == 0)
             {
                 throw new NotFoundException();
             }
-            db.Employees.Remove(employee);
+            db.Employees.Remove(list.First());
         }
 
         public void DeleteEmployeeById(int id)
@@ -153,12 +152,11 @@ namespace Repository.Repositories
         {
             List<Employee> list = new List<Employee>();
             list = db.Employees.Where(item => item.EmployeeSurname == surname).ToList();
-            Employee employee = list.First();
-            if (employee == null)
+            if (list.Count == 0)
             {
                 throw new NotFoundException();
             }
-            db.Employees.Remove(employee);
+            db.Employees.Remove(list.First());
         }
 
         public void DeleteGitLinkByEmployeeId(int id)
@@ -203,7 +201,7 @@ namespace Repository.Repositories
         {
             List<Employee> list = new List<Employee>();
             list = db.Employees.Where(item => item.Email == email).ToList();
-            if (list.First() == null)
+            if (list.Count == 0)
             {
                 throw new NotFoundException();
             }
