@@ -76,6 +76,7 @@ namespace BLL.Services
                 var sc = Database.Schedules.CreateSchedule(sch);
                 Database.Save();
                 result = Map.ObjectMap(sc);
+                return result;
             }
             if (employee.PercentOrScheduleId == 1)
             {
@@ -94,6 +95,7 @@ namespace BLL.Services
                 var sc = Database.Schedules.CreateSchedule(schedule);
                 Database.Save();
                 result = Map.ObjectMap(sc);
+                return result;
             }
             return result;
         }

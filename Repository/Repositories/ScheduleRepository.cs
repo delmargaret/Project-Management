@@ -23,6 +23,14 @@ namespace Repository.Repositories
         public IEnumerable<ScheduleDay> GetEmployeesFreeDays(int employeeId)
         {
             List<ScheduleDay> list = new List<ScheduleDay>();
+            List<ScheduleDay> days = new List<ScheduleDay>();
+            days.Add(db.ScheduleDays.Find(1));
+            days.Add(db.ScheduleDays.Find(2));
+            days.Add(db.ScheduleDays.Find(3));
+            days.Add(db.ScheduleDays.Find(4));
+            days.Add(db.ScheduleDays.Find(5));
+            days.Add(db.ScheduleDays.Find(6));
+
             var works = db.ProjectWorks.Where(item => item.EmployeeId == employeeId);
             foreach(var work in works)
             {
@@ -32,11 +40,22 @@ namespace Repository.Repositories
                     list.Add(day.ScheduleDay);
                 }
             }
-            if (list.Count() == 0)
+            if (list.Count() == 6)
             {
                 throw new NotFoundException();
             }
-            return list;
+            if (list.Count == 0)
+            {
+                return days;
+            }
+            else
+            {
+                foreach (var day in list)
+                {
+                    days.Remove(db.ScheduleDays.Find(day.Id));
+                }
+            }
+            return days;
         }
 
         public void ChangeScheduleDay(int scheduleId, int scheduleDayId)

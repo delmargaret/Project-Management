@@ -60,6 +60,7 @@
     <Compile Include="ParticipationHistoryTests.cs" />
     <Compile Include="ProjectRoleServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ScheduleServiceTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
