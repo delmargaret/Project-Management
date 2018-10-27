@@ -43,7 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EmployeeValidator.cs" />
-    <Compile Include="ParticipationHistoryVlidator.cs" />
+    <Compile Include="ParticipationHistoryValidator.cs" />
     <Compile Include="ProjectValidator.cs" />
     <Compile Include="ProjectWorkValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

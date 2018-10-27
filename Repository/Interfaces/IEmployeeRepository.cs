@@ -15,7 +15,7 @@ namespace Repository.Interfaces
         Employee GetEmployeeById(int id);
         Employee GetEmployeeByEmail(string email);
         IEnumerable<Employee> FindEmployee(Func<Employee, Boolean> predicate);
-        void CreateEmployee(Employee item);
+        Employee CreateEmployee(Employee item);
         void UpdateEmployee(Employee item);
         void DeleteEmployeeById(int id);
         void DeleteEmployeeBySurname(string surname);

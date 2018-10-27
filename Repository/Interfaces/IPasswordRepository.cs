@@ -13,7 +13,7 @@ namespace Repository.Interfaces
         IEnumerable<Password> GetAll();
         Password Get(int id);
         IEnumerable<Password> Find(Func<Password, Boolean> predicate);
-        void Create(Password item);
+        Password Create(Password item);
         void Update(Password item);
         void Delete(int id);
     }

@@ -65,9 +65,10 @@ namespace Repository.Repositories
             return db.Projects.Find(id);
         }
 
-        public void CreateProject(Project project)
+        public Project CreateProject(Project project)
         {
-            db.Projects.Add(project);
+            var pr = db.Projects.Add(project);
+            return pr;
         }
 
         public void UpdateProject(Project project)

@@ -12,8 +12,9 @@ namespace Repository.Interfaces
         IEnumerable<ProjectRole> GetAllProjectRoles();
         ProjectRole GetProjectRoleById(int id);
         IEnumerable<ProjectRole> FindProjectRole(Func<ProjectRole, Boolean> predicate);
-        void CreateProjectRole(ProjectRole item);
+        ProjectRole CreateProjectRole(ProjectRole item);
         void UpdateProjectRole(ProjectRole item);
         void DeleteProjectRole(int id);
+        void ChangeProjectRoleName(int projectRoleId, string projectRoleName);
     }
 }

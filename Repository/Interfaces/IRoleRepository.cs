@@ -12,7 +12,7 @@ namespace Repository.Interfaces
         IEnumerable<Role> GetAllRoles();
         Role GetRoleById(int id);
         IEnumerable<Role> FindRole(Func<Role, Boolean> predicate);
-        void CreateRole(Role item);
+        Role CreateRole(Role item);
         void UpdateRole(Role item);
         void DeleteRole(int id);
     }

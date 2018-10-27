@@ -38,9 +38,10 @@ namespace Repository.Repositories
             return db.ScheduleDays.Find(id);
         }
 
-        public void CreateScheduleDay(ScheduleDay day)
+        public ScheduleDay CreateScheduleDay(ScheduleDay day)
         {
-            db.ScheduleDays.Add(day);
+            var scd = db.ScheduleDays.Add(day);
+            return scd;
         }
 
         public void UpdateScheduleDay(ScheduleDay day)

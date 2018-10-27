@@ -26,6 +26,7 @@ namespace ConsoleApp
         static void Main(string[] args)
         {
             EmployeeValidator evalidator = new EmployeeValidator();
+            ParticipationHistoryValidator phvalidator = new ParticipationHistoryValidator();
             IUnitOfWork uow = new ContextUnitOfWork("ManagementContext");
             EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
             RoleService roleService = new RoleService(uow, new Map<Role, RoleDTO>());
@@ -59,6 +60,7 @@ namespace ConsoleApp
 
                 //EmployeeDTO employee3 = new EmployeeDTO
                 //{
+                //    Id = 23,
                 //    EmployeeName = "Елизавета",
                 //    EmployeeSurname = "Кот",
                 //    EmployeePatronymic = "Андреевна",
@@ -69,7 +71,7 @@ namespace ConsoleApp
                 //var employees = employeeService.GetAllEmployees();
                 //foreach (var employee in employees)
                 //{
-                //    Console.WriteLine("{0} {1}  Роль: {2}", employee.EmployeeName, employee.EmployeeSurname, employee.RoleId);
+                //    Console.WriteLine("{0} {1}  Роль: {2}", employee.Id, employee.EmployeeSurname, employee.RoleId);
                 //}
 
                 //EmployeeDTO employee4 = new EmployeeDTO
@@ -130,13 +132,13 @@ namespace ConsoleApp
                 //var employeeByEmail = employeeService.GetEmployeeByEmail(employeeEmail);
                 //Console.WriteLine("{0} Роль: {1}", employeeByEmail.EmployeeSurname, employeeByEmail.RoleId);
 
-                Console.WriteLine();
-                Console.WriteLine("введите id сотрудника для добавления gitlink");
-                int idEmployeeForGit = Convert.ToInt32(Console.ReadLine());
-                Console.WriteLine("введите gitlink для сотрудника");
-                var gitlink = Console.ReadLine();
-                employeeService.AddGitLink(idEmployeeForGit, gitlink);
-                Console.WriteLine("{0} Git: {1}", employeeService.GetEmployeeById(idEmployeeForGit).EmployeeSurname, employeeService.GetEmployeeById(idEmployeeForGit).GitLink);
+                //Console.WriteLine();
+                //Console.WriteLine("введите id сотрудника для добавления gitlink");
+                //int idEmployeeForGit = Convert.ToInt32(Console.ReadLine());
+                //Console.WriteLine("введите gitlink для сотрудника");
+                //var gitlink = Console.ReadLine();
+                //employeeService.AddGitLink(idEmployeeForGit, gitlink);
+                //Console.WriteLine("{0} Git: {1}", employeeService.GetEmployeeById(idEmployeeForGit).EmployeeSurname, employeeService.GetEmployeeById(idEmployeeForGit).GitLink);
 
                 //Console.WriteLine();
                 //employeeService.DeleteGitLinkByEmployeeId(idEmployeeForGit);
@@ -337,7 +339,7 @@ namespace ConsoleApp
                 //#endregion
             }
 
-            catch(NotFoundException)
+            catch (NotFoundException)
             {
                 Console.WriteLine("объект не найден");
             }

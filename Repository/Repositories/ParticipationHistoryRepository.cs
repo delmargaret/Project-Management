@@ -78,9 +78,10 @@ namespace Repository.Repositories
             return db.ParticipationHistories.Find(id);
         }
 
-        public void CreateHistory(ParticipationHistory participationHistory)
+        public ParticipationHistory CreateHistory(ParticipationHistory participationHistory)
         {
-            db.ParticipationHistories.Add(participationHistory);
+            var hist = db.ParticipationHistories.Add(participationHistory);
+            return hist;
         }
 
         public void UpdateHistory(ParticipationHistory participationHistory)

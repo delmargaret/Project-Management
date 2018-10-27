@@ -28,7 +28,7 @@ namespace BLL.Services
             Database.Dispose();
         }
 
-        public void CreateEmployee(EmployeeDTO employeeDTO)
+        public EmployeeDTO CreateEmployee(EmployeeDTO employeeDTO)
         {
             Role role = Database.Roles.GetRoleById(employeeDTO.RoleId);
             Employee employee = new Employee
@@ -45,8 +45,9 @@ namespace BLL.Services
                 PercentOrSchedule=Database.WorkLoads.GetTypeById(3)
             };
 
-            Database.Employees.CreateEmployee(employee);
+            var emp = Database.Employees.CreateEmployee(employee);
             Database.Save();
+            return Map.ObjectMap(emp);
         }
 
         public void DeleteEmployeeById(int id)

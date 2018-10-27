@@ -72,7 +72,7 @@ namespace BLL.Services
             Database.Save();
         }
 
-        public void CreateProject(ProjectDTO item)
+        public ProjectDTO CreateProject(ProjectDTO item)
         {
             ProjectStatus projectStatus = Database.ProjectStatuses.GetProjectStatusById(1);
             if (item.ProjectStartDate > item.ProjectEndDate)
@@ -89,8 +89,10 @@ namespace BLL.Services
                 ProjectStatus = projectStatus
             };
 
-            Database.Projects.CreateProject(project);
+            var proj = Database.Projects.CreateProject(project);
             Database.Save();
+
+            return Map.ObjectMap(proj);
         }
 
         public void DeleteProjectById(int id)

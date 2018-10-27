@@ -9,10 +9,11 @@ namespace BLL.Interfaces
 {
     public interface IProjectRoleService
     {
-        void CreateProjectRole(string roleName);
+        ProjectRoleDTO CreateProjectRole(string roleName);
         void DeleteProjectRoleById(int id);
         ProjectRoleDTO GetProjectRoleById(int id);
         IEnumerable<ProjectRoleDTO> GetProjectRoles();
+        void ChangeProjectRoleName(int id, string roleName);
         void Dispose();
     }
 }

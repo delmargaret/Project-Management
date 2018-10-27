@@ -22,14 +22,15 @@ namespace BLL.Services
             Map = map;
         }
 
-        public void CreateProjectRole(string projectRoleName)
+        public ProjectRoleDTO CreateProjectRole(string projectRoleName)
         {
             ProjectRole projectRole = new ProjectRole
             {
                 ProjectRoleName = projectRoleName
             };
-            Database.ProjectRoles.CreateProjectRole(projectRole);
+            var pr = Database.ProjectRoles.CreateProjectRole(projectRole);
             Database.Save();
+            return Map.ObjectMap(pr);
         }
 
         public void DeleteProjectRoleById(int id)
@@ -49,6 +50,13 @@ namespace BLL.Services
         {
             var roles = Database.ProjectRoles.GetAllProjectRoles();
             return Map.ListMap(roles);
+        }
+
+        public void ChangeProjectRoleName(int id, string roleName)
+        {
+            var role = Database.ProjectRoles.GetProjectRoleById(id);
+            Database.ProjectRoles.ChangeProjectRoleName(role.Id, roleName);
+            Database.Save();
         }
 
         public void Dispose()

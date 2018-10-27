@@ -29,9 +29,10 @@ namespace Repository.Repositories
             return db.Passwords.Find(id);
         }
 
-        public void Create(Password password)
+        public Password Create(Password password)
         {
-            db.Passwords.Add(password);
+            var pw = db.Passwords.Add(password);
+            return pw;
         }
 
         public void Update(Password password)

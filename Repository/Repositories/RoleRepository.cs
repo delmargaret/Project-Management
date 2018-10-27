@@ -38,9 +38,10 @@ namespace Repository.Repositories
             return db.Roles.Find(id);
         }
 
-        public void CreateRole(Role role)
+        public Role CreateRole(Role role)
         {
-            db.Roles.Add(role);
+            var rl = db.Roles.Add(role);
+            return rl;
         }
 
         public void UpdateRole(Role role)

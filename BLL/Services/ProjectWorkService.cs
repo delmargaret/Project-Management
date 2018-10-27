@@ -86,15 +86,12 @@ namespace BLL.Services
             Database.Save();
         }
 
-        public void CreateProjectWork(ProjectWorkDTO item)
+        public ProjectWorkDTO CreateProjectWork(ProjectWorkDTO item)
         {
             Employee employee = Database.Employees.GetEmployeeById(item.EmployeeId);
             Project project = Database.Projects.GetProjectById(item.ProjectId);
             ProjectRole projectRole = Database.ProjectRoles.GetProjectRoleById(item.ProjectRoleId);
-            if (Database.ProjectWorks.FindSameProjectWork(project.Id, employee.Id, projectRole.Id) != null)
-            {
-                throw new ObjectAlreadyExistsException();
-            }
+            Database.ProjectWorks.FindSameProjectWork(project.Id, employee.Id, projectRole.Id);
             ProjectWork projectWork = new ProjectWork
             {
                 EmployeeId = item.EmployeeId,
@@ -106,7 +103,7 @@ namespace BLL.Services
                 WorkLoad = null
             };
 
-            Database.ProjectWorks.CreateProjectWork(projectWork);
+            var pw = Database.ProjectWorks.CreateProjectWork(projectWork);
             Database.Save();
 
             var empl = Database.Employees.GetEmployeeById(item.EmployeeId);
@@ -116,6 +113,7 @@ namespace BLL.Services
                 Console.WriteLine("Добавьте процент загруженности");
             if (empl.PercentOrScheduleId == 2)
                 Console.WriteLine("Добавьте расписание");
+            return Map.ObjectMap(pw);
         }
 
         public void DeleteEmployeeFromProject(int projectId, int employeeId)
@@ -128,8 +126,7 @@ namespace BLL.Services
 
         public void DeleteProjectWorkById(int id)
         {
-            var projectWork = Database.ProjectWorks.GetProjectWorkById(id);
-            Database.ProjectWorks.DeleteProjectWorkById(projectWork.Id);
+            Database.ProjectWorks.DeleteProjectWorkById(id);
             Database.Save();
         }
 

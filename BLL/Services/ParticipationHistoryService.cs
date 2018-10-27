@@ -28,7 +28,7 @@ namespace BLL.Services
             Database.Dispose();
         }
 
-        public void CreateHistory(ParticipationHistoryDTO historyDTO)
+        public ParticipationHistoryDTO CreateHistory(ParticipationHistoryDTO historyDTO)
         {
             ProjectWork work = Database.ProjectWorks.GetProjectWorkById(historyDTO.ProjectWorkId);
 
@@ -44,8 +44,10 @@ namespace BLL.Services
                 EndDate=historyDTO.EndDate
             };
 
-            Database.ParticipationHistories.CreateHistory(history);
+            var hist = Database.ParticipationHistories.CreateHistory(history);
             Database.Save();
+
+            return Map.ObjectMap(hist);
         }
 
         public void DeleteHistoryById(int id)

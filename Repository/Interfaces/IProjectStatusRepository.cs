@@ -12,7 +12,7 @@ namespace Repository.Interfaces
         IEnumerable<ProjectStatus> GetAllProjectStatuses();
         ProjectStatus GetProjectStatusById(int id);
         IEnumerable<ProjectStatus> FindProjectStatus(Func<ProjectStatus, Boolean> predicate);
-        void CreateProjectStatus(ProjectStatus item);
+        ProjectStatus CreateProjectStatus(ProjectStatus item);
         void UpdateProjectStatus(ProjectStatus item);
         void DeleteProjectStatus(int id);
     }

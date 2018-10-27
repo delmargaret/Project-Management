@@ -9,7 +9,7 @@ namespace BLL.Interfaces
 {
     public interface IEmployeeService
     {
-        void CreateEmployee(EmployeeDTO employeeDTO);
+        EmployeeDTO CreateEmployee(EmployeeDTO employeeDTO);
         void DeleteEmployeeById(int id);
         void DeleteEmployeeBySurname(string surname);
         void DeleteEmployeeByEmail(string email);

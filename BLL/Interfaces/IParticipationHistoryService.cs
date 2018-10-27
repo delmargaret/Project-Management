@@ -9,7 +9,7 @@ namespace BLL.Interfaces
 {
     public interface IParticipationHistoryService
     {
-        void CreateHistory(ParticipationHistoryDTO history);
+        ParticipationHistoryDTO CreateHistory(ParticipationHistoryDTO history);
         void DeleteHistoryById(int id);
         ParticipationHistoryDTO GetHistoryById(int id);
         ParticipationHistoryDTO GetLastEmployeesHistory(int projectWorkId);

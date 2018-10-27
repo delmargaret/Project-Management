@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Validation
 {
-    public class ParticipationHistoryVlidator
+    public class ParticipationHistoryValidator
     {
-        public ParticipationHistoryVlidator() { }
+        public ParticipationHistoryValidator() { }
         public List<ValidationResult> Validate(ParticipationHistoryDTO history)
         {
             List<ValidationResult> errors = new List<ValidationResult>();

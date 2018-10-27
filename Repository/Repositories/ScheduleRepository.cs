@@ -50,9 +50,10 @@ namespace Repository.Repositories
             schedule.ScheduleDay = db.ScheduleDays.Find(scheduleDayId);
         }
 
-        public void CreateSchedule(Schedule item)
+        public Schedule CreateSchedule(Schedule item)
         {
-            db.Schedules.Add(item);
+            var sch = db.Schedules.Add(item);
+            return sch;
         }
 
         public void DeleteScheduleById(int id)

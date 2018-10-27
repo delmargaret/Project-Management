@@ -56,11 +56,12 @@ namespace BLL.Services
             return DayMap.ListMap(freedays);
         }
 
-        public void CreateSchedule(ScheduleDTO item)
+        public ScheduleDTO CreateSchedule(ScheduleDTO item)
         {
             ProjectWork work = Database.ProjectWorks.GetProjectWorkById(item.ProjectWorkId);
             ScheduleDay day = Database.ScheduleDays.GetScheduleDayById(item.ScheduleDayId);
             Employee employee = Database.Employees.GetEmployeeById(work.EmployeeId);
+            ScheduleDTO result = new ScheduleDTO();
             if (employee.PercentOrScheduleId == 3)
             {
                 employee.PercentOrScheduleId = 2;
@@ -72,9 +73,9 @@ namespace BLL.Services
                     ScheduleDayId = item.ScheduleDayId,
                     ScheduleDay = day
                 };
-                Database.Schedules.CreateSchedule(sch);
+                var sc = Database.Schedules.CreateSchedule(sch);
                 Database.Save();
-                return;
+                result = Map.ObjectMap(sc);
             }
             if (employee.PercentOrScheduleId == 1)
             {
@@ -90,10 +91,11 @@ namespace BLL.Services
                     ScheduleDay = day
                 };
 
-                Database.Schedules.CreateSchedule(schedule);
+                var sc = Database.Schedules.CreateSchedule(schedule);
                 Database.Save();
-                return;
+                result = Map.ObjectMap(sc);
             }
+            return result;
         }
 
         public void DeleteScheduleById(int id)

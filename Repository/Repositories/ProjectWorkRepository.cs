@@ -20,11 +20,14 @@ namespace Repository.Repositories
             this.db = context;
         }
 
-        public ProjectWork FindSameProjectWork(int projectId, int employeeId, int projectRoleId)
+        public void FindSameProjectWork(int projectId, int employeeId, int projectRoleId)
         {
             List<ProjectWork> list = new List<ProjectWork>();
             list = db.ProjectWorks.Where(item => item.ProjectId == projectId && item.EmployeeId == employeeId && item.ProjectRoleId == projectRoleId).ToList();
-            return list.First();
+            if (list.Count != 0)
+            {
+                throw new ObjectAlreadyExistsException();
+            }
         }
 
         public IEnumerable<ProjectWork> GetAllProjectWorks()
@@ -123,9 +126,10 @@ namespace Repository.Repositories
             return db.ProjectWorks.Find(id);
         }
 
-        public void CreateProjectWork(ProjectWork projectwork)
+        public ProjectWork CreateProjectWork(ProjectWork projectwork)
         {
-            db.ProjectWorks.Add(projectwork);
+            var prw = db.ProjectWorks.Add(projectwork);
+            return prw;
         }
 
         public void UpdateProjectWork(ProjectWork projectwork)

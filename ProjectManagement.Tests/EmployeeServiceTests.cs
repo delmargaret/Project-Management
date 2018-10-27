@@ -32,8 +32,8 @@ namespace ProjectManagement.Tests
                 Email = "katya@mail.ru",
             };
             var errors = evalidator.Validate(employee);
-            employeeService.CreateEmployee(employee);
-            EmployeeDTO actual = employeeService.GetEmployeeByEmail("katya@mail.ru");
+            var emp = employeeService.CreateEmployee(employee);
+            EmployeeDTO actual = employeeService.GetEmployeeById(emp.Id);
             EmployeeDTO expected = new EmployeeDTO
             {
                 Id = actual.Id,
@@ -55,7 +55,7 @@ namespace ProjectManagement.Tests
         }
 
         [TestMethod]
-        public void CreateEmployeeIfItIsNonValidTest()
+        public void CreateEmployeeIfItIsNotValidTest()
         {
             EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
 
@@ -67,12 +67,13 @@ namespace ProjectManagement.Tests
                 RoleId = 2,
                 Email = "katya",
             };
+            EmployeeDTO result = new EmployeeDTO();
             var errors = evalidator.Validate(actual);
             if (errors.Count == 0)
             {
-                employeeService.CreateEmployee(actual);
+                result = employeeService.CreateEmployee(actual);
             }
-            Assert.ThrowsException<NotFoundException>(() => employeeService.GetEmployeeByEmail("katya"));
+            Assert.ThrowsException<NotFoundException>(() => employeeService.GetEmployeeById(result.Id));
         }
 
         [TestMethod]
@@ -80,7 +81,7 @@ namespace ProjectManagement.Tests
         {
             EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
 
-            employeeService.CreateEmployee(new EmployeeDTO
+            var em = employeeService.CreateEmployee(new EmployeeDTO
             {
                 EmployeeName = "Екатерина",
                 EmployeeSurname = "Антонович",
@@ -88,9 +89,9 @@ namespace ProjectManagement.Tests
                 RoleId = 2,
                 Email = "katya@mail.ru",
             });
-            EmployeeDTO actual = employeeService.GetEmployeeByEmail("katya@mail.ru");
+            EmployeeDTO actual = employeeService.GetEmployeeById(em.Id);
             employeeService.DeleteEmployeeById(actual.Id);
-            Assert.ThrowsException<NotFoundException>(() => employeeService.GetEmployeeByEmail("katya@mail.ru"));
+            Assert.ThrowsException<NotFoundException>(() => employeeService.GetEmployeeById(em.Id));
         }
 
         [TestMethod]
@@ -105,7 +106,7 @@ namespace ProjectManagement.Tests
         {
             EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
 
-            employeeService.CreateEmployee(new EmployeeDTO
+            var katya = employeeService.CreateEmployee(new EmployeeDTO
             {
                 EmployeeName = "Екатерина",
                 EmployeeSurname = "Антонович",
@@ -113,7 +114,7 @@ namespace ProjectManagement.Tests
                 RoleId = 2,
                 Email = "katya@mail.ru",
             });
-            employeeService.CreateEmployee(new EmployeeDTO
+            var sasha = employeeService.CreateEmployee(new EmployeeDTO
             {
                 EmployeeName = "Александр",
                 EmployeeSurname = "Антонович",
@@ -121,9 +122,9 @@ namespace ProjectManagement.Tests
                 RoleId = 3,
                 Email = "sasha@mail.ru",
             });
-            EmployeeDTO saved = employeeService.GetEmployeeByEmail("sasha@mail.ru");
+            EmployeeDTO saved = employeeService.GetEmployeeById(sasha.Id);
             employeeService.DeleteEmployeeBySurname("Антонович");
-            Assert.ThrowsException<NotFoundException>(() => employeeService.GetEmployeeByEmail("katya@mail.ru"));
+            Assert.ThrowsException<NotFoundException>(() => employeeService.GetEmployeeById(katya.Id));
             employeeService.DeleteEmployeeById(saved.Id);
         }
 
@@ -139,7 +140,7 @@ namespace ProjectManagement.Tests
         {
             EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
 
-            employeeService.CreateEmployee(new EmployeeDTO
+            var katya = employeeService.CreateEmployee(new EmployeeDTO
             {
                 EmployeeName = "Екатерина",
                 EmployeeSurname = "Антонович",
@@ -148,7 +149,7 @@ namespace ProjectManagement.Tests
                 Email = "katya@mail.ru",
             });
             employeeService.DeleteEmployeeByEmail("katya@mail.ru");
-            Assert.ThrowsException<NotFoundException>(() => employeeService.GetEmployeeByEmail("katya@mail.ru"));
+            Assert.ThrowsException<NotFoundException>(() => employeeService.GetEmployeeById(katya.Id));
         }
 
         [TestMethod]
@@ -170,10 +171,9 @@ namespace ProjectManagement.Tests
                 RoleId = 2,
                 Email = "katya@mail.ru",
             };
-            employeeService.CreateEmployee(expected);
-            EmployeeDTO actual = employeeService.GetEmployeeByEmail("katya@mail.ru");
-            Assert.IsNotNull(employeeService.GetEmployeeById(actual.Id));
-            employeeService.DeleteEmployeeById(actual.Id);
+            var em = employeeService.CreateEmployee(expected);
+            Assert.IsNotNull(employeeService.GetEmployeeById(em.Id));
+            employeeService.DeleteEmployeeById(em.Id);
         }
 
         [TestMethod]
@@ -245,7 +245,7 @@ namespace ProjectManagement.Tests
         }
 
         [TestMethod]
-        public void GetEmployeesByRoleIdIfTheyNotFoundTest()
+        public void GetEmployeesByRoleIdIfEmployeesNotFoundTest()
         {
             EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
             employeeService.CreateEmployee(new EmployeeDTO
@@ -281,8 +281,8 @@ namespace ProjectManagement.Tests
                 RoleId = 3,
                 Email = "katya@mail.ru",
             };
-            employeeService.CreateEmployee(employee);
-            EmployeeDTO emp = employeeService.GetEmployeeByEmail("katya@mail.ru");
+            var em = employeeService.CreateEmployee(employee);
+            EmployeeDTO emp = employeeService.GetEmployeeById(em.Id);
             employeeService.AddGitLink(emp.Id, "abc");
             EmployeeDTO expected = employeeService.GetEmployeeById(emp.Id);
             Assert.IsTrue(expected.GitLink == "abc");
@@ -301,8 +301,8 @@ namespace ProjectManagement.Tests
                 RoleId = 3,
                 Email = "katya@mail.ru",
             };
-            employeeService.CreateEmployee(employee);
-            EmployeeDTO emp = employeeService.GetEmployeeByEmail("katya@mail.ru");
+            var em = employeeService.CreateEmployee(employee);
+            EmployeeDTO emp = employeeService.GetEmployeeById(em.Id);
             employeeService.AddGitLink(emp.Id, "abc");
             employeeService.DeleteGitLinkByEmployeeId(emp.Id);
             EmployeeDTO expected = employeeService.GetEmployeeById(emp.Id);
@@ -322,8 +322,8 @@ namespace ProjectManagement.Tests
                 RoleId = 3,
                 Email = "katya@mail.ru",
             };
-            employeeService.CreateEmployee(employee);
-            EmployeeDTO emp = employeeService.GetEmployeeByEmail("katya@mail.ru");
+            var em = employeeService.CreateEmployee(employee);
+            EmployeeDTO emp = employeeService.GetEmployeeById(em.Id);
             employeeService.AddPhoneNumber(emp.Id, "+324589617426");
             EmployeeDTO expected = employeeService.GetEmployeeById(emp.Id);
             Assert.IsTrue(expected.PhoneNumber == "+324589617426");
@@ -342,8 +342,8 @@ namespace ProjectManagement.Tests
                 RoleId = 3,
                 Email = "katya@mail.ru",
             };
-            employeeService.CreateEmployee(employee);
-            EmployeeDTO emp = employeeService.GetEmployeeByEmail("katya@mail.ru");
+            var em = employeeService.CreateEmployee(employee);
+            EmployeeDTO emp = employeeService.GetEmployeeById(em.Id);
             employeeService.AddPhoneNumber(emp.Id, "+324589617426");
             employeeService.DeletePhoneNumberByEmployeeId(emp.Id);
             EmployeeDTO expected = employeeService.GetEmployeeById(emp.Id);
@@ -363,8 +363,8 @@ namespace ProjectManagement.Tests
                 RoleId = 3,
                 Email = "katya@mail.ru",
             };
-            employeeService.CreateEmployee(employee);
-            EmployeeDTO emp = employeeService.GetEmployeeByEmail("katya@mail.ru");
+            var em = employeeService.CreateEmployee(employee);
+            EmployeeDTO emp = employeeService.GetEmployeeById(em.Id);
             employeeService.ChangeName(emp.Id, "Светлана");
             EmployeeDTO expected = employeeService.GetEmployeeById(emp.Id);
             Assert.IsTrue(expected.EmployeeName == "Светлана");
@@ -383,8 +383,8 @@ namespace ProjectManagement.Tests
                 RoleId = 3,
                 Email = "katya@mail.ru",
             };
-            employeeService.CreateEmployee(employee);
-            EmployeeDTO emp = employeeService.GetEmployeeByEmail("katya@mail.ru");
+            var em = employeeService.CreateEmployee(employee);
+            EmployeeDTO emp = employeeService.GetEmployeeById(em.Id);
             employeeService.ChangeSurname(emp.Id, "Кот");
             EmployeeDTO expected = employeeService.GetEmployeeById(emp.Id);
             Assert.IsTrue(expected.EmployeeSurname == "Кот");
@@ -403,8 +403,8 @@ namespace ProjectManagement.Tests
                 RoleId = 3,
                 Email = "katya@mail.ru",
             };
-            employeeService.CreateEmployee(employee);
-            EmployeeDTO emp = employeeService.GetEmployeeByEmail("katya@mail.ru");
+            var em = employeeService.CreateEmployee(employee);
+            EmployeeDTO emp = employeeService.GetEmployeeById(em.Id);
             employeeService.ChangePatronymic(emp.Id, "Олеговна");
             EmployeeDTO expected = employeeService.GetEmployeeById(emp.Id);
             Assert.IsTrue(expected.EmployeePatronymic == "Олеговна");
@@ -423,8 +423,8 @@ namespace ProjectManagement.Tests
                 RoleId = 3,
                 Email = "katya@mail.ru",
             };
-            employeeService.CreateEmployee(employee);
-            EmployeeDTO emp = employeeService.GetEmployeeByEmail("katya@mail.ru");
+            var em = employeeService.CreateEmployee(employee);
+            EmployeeDTO emp = employeeService.GetEmployeeById(em.Id);
             employeeService.ChangeEmail(emp.Id, "katrin@mail.ru");
             EmployeeDTO expected = employeeService.GetEmployeeById(emp.Id);
             Assert.IsTrue(expected.Email == "katrin@mail.ru");
@@ -444,8 +444,8 @@ namespace ProjectManagement.Tests
                 Email = "katya@mail.ru",
                 GitLink = "link"
             };
-            employeeService.CreateEmployee(employee);
-            EmployeeDTO emp = employeeService.GetEmployeeByEmail("katya@mail.ru");
+            var em = employeeService.CreateEmployee(employee);
+            EmployeeDTO emp = employeeService.GetEmployeeById(em.Id);
             employeeService.ChangeGitLink(emp.Id, "abc");
             EmployeeDTO expected = employeeService.GetEmployeeById(emp.Id);
             Assert.IsTrue(expected.GitLink == "abc");
@@ -465,8 +465,8 @@ namespace ProjectManagement.Tests
                 Email = "katya@mail.ru",
                 PhoneNumber = "+258469812534"
             };
-            employeeService.CreateEmployee(employee);
-            EmployeeDTO emp = employeeService.GetEmployeeByEmail("katya@mail.ru");
+            var em = employeeService.CreateEmployee(employee);
+            EmployeeDTO emp = employeeService.GetEmployeeById(em.Id);
             employeeService.ChangePhoneNumber(emp.Id, "80469812534");
             EmployeeDTO expected = employeeService.GetEmployeeById(emp.Id);
             Assert.IsTrue(expected.PhoneNumber == "80469812534");
@@ -485,8 +485,8 @@ namespace ProjectManagement.Tests
                 RoleId = 3,
                 Email = "katya@mail.ru",
             };
-            employeeService.CreateEmployee(employee);
-            EmployeeDTO emp = employeeService.GetEmployeeByEmail("katya@mail.ru");
+            var em = employeeService.CreateEmployee(employee);
+            EmployeeDTO emp = employeeService.GetEmployeeById(em.Id);
             employeeService.ChangeRole(emp.Id, 1);
             EmployeeDTO expected = employeeService.GetEmployeeById(emp.Id);
             Assert.IsTrue(expected.RoleId == 1);

@@ -15,7 +15,7 @@ namespace BLL.Interfaces
         IEnumerable<ProjectWorkDTO> GetEmployeesProjects(int employeeId);
         ProjectWorkDTO GetProjectWorkById(int id);
         int CalculateEmployeesWorkload(int employeeId);
-        void CreateProjectWork(ProjectWorkDTO item);
+        ProjectWorkDTO CreateProjectWork(ProjectWorkDTO item);
         void DeleteProjectWorkById(int id);
         void DeleteEmployeeFromProject(int projectId, int employeeId);
         void ChangeProject(int projectWorkId, int newProjectId);

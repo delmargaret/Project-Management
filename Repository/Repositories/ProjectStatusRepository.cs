@@ -38,9 +38,10 @@ namespace Repository.Repositories
             return db.ProjectStatuses.Find(id);
         }
 
-        public void CreateProjectStatus(ProjectStatus projectstatus)
+        public ProjectStatus CreateProjectStatus(ProjectStatus projectstatus)
         {
-            db.ProjectStatuses.Add(projectstatus);
+            var ps = db.ProjectStatuses.Add(projectstatus);
+            return ps;
         }
 
         public void UpdateProjectStatus(ProjectStatus projectstatus)

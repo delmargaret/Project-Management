@@ -122,9 +122,10 @@ namespace Repository.Repositories
             employee.PercentOrSchedule = db.PercentOrSchedules.Find(WorkLoadTypeId);
         }
         
-        public void CreateEmployee(Employee item)
+        public Employee CreateEmployee(Employee item)
         {
-            db.Employees.Add(item);
+            var emp = db.Employees.Add(item);
+            return emp;
         }
 
         public void DeleteEmployeeByEmail(string email)

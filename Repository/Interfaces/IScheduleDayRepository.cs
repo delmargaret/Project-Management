@@ -12,7 +12,7 @@ namespace Repository.Interfaces
         IEnumerable<ScheduleDay> GetAllScheduleDays();
         ScheduleDay GetScheduleDayById(int id);
         IEnumerable<ScheduleDay> FindScheduleDay(Func<ScheduleDay, Boolean> predicate);
-        void CreateScheduleDay(ScheduleDay item);
+        ScheduleDay CreateScheduleDay(ScheduleDay item);
         void UpdateScheduleDay(ScheduleDay item);
         void DeleteScheduleDay(int id);
     }

@@ -38,9 +38,10 @@ namespace Repository.Repositories
             return db.ProjectRoles.Find(id);
         }
 
-        public void CreateProjectRole(ProjectRole projectrole)
+        public ProjectRole CreateProjectRole(ProjectRole projectrole)
         {
-            db.ProjectRoles.Add(projectrole);
+            var pr = db.ProjectRoles.Add(projectrole);
+            return pr;
         }
 
         public void UpdateProjectRole(ProjectRole projectrole)
@@ -65,6 +66,16 @@ namespace Repository.Repositories
                 throw new NotFoundException();
             }
                 db.ProjectRoles.Remove(projectrole);
+        }
+
+        public void ChangeProjectRoleName(int projectRoleId, string projectRoleName)
+        {
+            ProjectRole role = db.ProjectRoles.Find(projectRoleId);
+            if (role == null)
+            {
+                throw new NotFoundException();
+            }
+            role.ProjectRoleName = projectRoleName;
         }
     }
 }

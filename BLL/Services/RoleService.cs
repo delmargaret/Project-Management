@@ -23,14 +23,16 @@ namespace BLL.Services
             Map = map;
         }
 
-        public void CreateRole(string roleName)
+        public RoleDTO CreateRole(string roleName)
         {
             Role role = new Role
             {
                 RoleName = roleName
             };
-            Database.Roles.CreateRole(role);
+            var rl = Database.Roles.CreateRole(role);
             Database.Save();
+
+            return Map.ObjectMap(rl);
         }
 
         public void DeleteRoleById(int id)

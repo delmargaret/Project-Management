@@ -14,7 +14,7 @@ namespace Repository.Interfaces
         IEnumerable<Project> GetProjectsEndingInNDays(int numberOfDays);
         Project GetProjectById(int id);
         IEnumerable<Project> FindProject(Func<Project, Boolean> predicate);
-        void CreateProject(Project item);
+        Project CreateProject(Project item);
         void UpdateProject(Project item);
         void DeleteProjectById(int id);
         void ChangeProjectName(int projectId, string newProjectName);

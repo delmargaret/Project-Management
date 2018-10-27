@@ -13,7 +13,7 @@ namespace BLL.Interfaces
         IEnumerable<ProjectDTO> GetAllProjectsByStatusId(int statusId);
         IEnumerable<ProjectDTO> GetProjectsEndingInNDays(int numberOfDays);
         ProjectDTO GetProjectById(int id);
-        void CreateProject(ProjectDTO item);
+        ProjectDTO CreateProject(ProjectDTO item);
         void DeleteProjectById(int id);
         void ChangeProjectName(int projectId, string newProjectName);
         void ChangeProjectDescription(int projectId, string newProjectDescription);
