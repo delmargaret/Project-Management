@@ -50,6 +50,44 @@ namespace BLL.Services
             return Map.ObjectMap(emp);
         }
 
+        public void ChangeWorkLoad(int employeeId, int workLoadId)
+        {
+            var employee = Database.Employees.GetEmployeeById(employeeId);
+            if (employee.PercentOrScheduleId == 3 && workLoadId != 3)
+            {
+                Database.Employees.SetWorkLoadType(employeeId, workLoadId);
+            }
+            else if(employee.PercentOrScheduleId == 1 && workLoadId != 1)
+            {
+                var projects = Database.ProjectWorks.GetEmployeesProjects(employeeId);
+                foreach(var project in projects)
+                {
+                    if(project.WorkLoad != null)
+                    {
+                        throw new PercentOrScheduleException();
+                    }
+                }
+                Database.Employees.SetWorkLoadType(employeeId, workLoadId);
+            }
+            else if (employee.PercentOrScheduleId == 2 && workLoadId != 2)
+            {
+                var projects = Database.ProjectWorks.GetEmployeesProjects(employeeId);
+                foreach(var project in projects)
+                {
+                    var schedules = Database.Schedules.GetScheduleOnProjectWork(project.Id).ToList();
+                    if (schedules.Count != 0)
+                    {
+                        throw new PercentOrScheduleException();
+                    }
+                }
+                Database.Employees.SetWorkLoadType(employeeId, workLoadId);
+            }
+            else
+            {
+                throw new PercentOrScheduleException();
+            }
+        }
+
         public void DeleteEmployeeById(int id)
         {
             Database.Employees.DeleteEmployeeById(id);

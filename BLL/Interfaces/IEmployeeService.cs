@@ -29,6 +29,7 @@ namespace BLL.Interfaces
         void ChangeGitLink(int employeeId, string newGitLink);
         void ChangePhoneNumber(int employeeId, string newPhoneNumber);
         void ChangeRole(int employeeId, int roleId);
+        void ChangeWorkLoad(int employeeId, int workLoadId);
         void Dispose();
     }
 }

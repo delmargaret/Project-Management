@@ -492,5 +492,159 @@ namespace ProjectManagement.Tests
             Assert.IsTrue(expected.RoleId == 1);
             employeeService.DeleteEmployeeById(emp.Id);
         }
+
+        [TestMethod]
+        public void ChangeWorkLoadIfItsPercent()
+        {
+            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
+            ProjectService projectService = new ProjectService(uow, new Map<Project, ProjectDTO>());
+            ProjectWorkService projectWorkService = new ProjectWorkService(uow, new Map<ProjectWork, ProjectWorkDTO>());
+            EmployeeDTO employee = new EmployeeDTO
+            {
+                EmployeeName = "Екатерина",
+                EmployeeSurname = "Антонович",
+                EmployeePatronymic = "Алексеевна",
+                RoleId = 3,
+                Email = "katya@mail.ru",
+            };
+            var employeeOnWork = employeeService.CreateEmployee(employee);
+            var em = employeeService.GetEmployeeById(employeeOnWork.Id);
+
+            ProjectDTO project = new ProjectDTO
+            {
+                ProjectName = "проект 1",
+                ProjectDescription = "проект номер один",
+                ProjectStartDate = new DateTimeOffset(2021, 10, 6, 10, 15, 35, new TimeSpan(3, 0, 0)),
+                ProjectEndDate = new DateTimeOffset(2021, 10, 21, 10, 15, 35, new TimeSpan(3, 0, 0))
+            };
+            var proj = projectService.CreateProject(project);
+            var pr = projectService.GetProjectById(proj.Id);
+
+            ProjectWorkDTO projectWork = new ProjectWorkDTO
+            {
+                EmployeeId = em.Id,
+                ProjectId = pr.Id,
+                ProjectRoleId = 3
+            };
+            var pWork = projectWorkService.CreateProjectWork(projectWork);
+            var pw = projectWorkService.GetProjectWorkById(pWork.Id);
+            projectWorkService.AddWorkLoad(pw.Id, 30);
+            var actual = projectWorkService.GetProjectWorkById(pw.Id);
+
+            Assert.ThrowsException<PercentOrScheduleException>(() => employeeService.ChangeWorkLoad(em.Id, 2));
+
+            projectWorkService.DeleteProjectWorkById(actual.Id);
+            employeeService.DeleteEmployeeById(em.Id);
+            projectService.DeleteProjectById(pr.Id);
+        }
+
+        [TestMethod]
+        public void ChangeWorkLoadIfItsSchedule()
+        {
+            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
+            ProjectService projectService = new ProjectService(uow, new Map<Project, ProjectDTO>());
+            ScheduleServise scheduleServise = new ScheduleServise(uow, new Map<Schedule, ScheduleDTO>(), new Map<ScheduleDay, ScheduleDayDTO>());
+            ProjectWorkService projectWorkService = new ProjectWorkService(uow, new Map<ProjectWork, ProjectWorkDTO>());
+            EmployeeDTO employee = new EmployeeDTO
+            {
+                EmployeeName = "Екатерина",
+                EmployeeSurname = "Антонович",
+                EmployeePatronymic = "Алексеевна",
+                RoleId = 3,
+                Email = "katya@mail.ru",
+            };
+            var employeeOnWork = employeeService.CreateEmployee(employee);
+            var em = employeeService.GetEmployeeById(employeeOnWork.Id);
+
+            ProjectDTO project = new ProjectDTO
+            {
+                ProjectName = "проект 1",
+                ProjectDescription = "проект номер один",
+                ProjectStartDate = new DateTimeOffset(2021, 10, 6, 10, 15, 35, new TimeSpan(3, 0, 0)),
+                ProjectEndDate = new DateTimeOffset(2021, 10, 21, 10, 15, 35, new TimeSpan(3, 0, 0))
+            };
+            var proj = projectService.CreateProject(project);
+            var pr = projectService.GetProjectById(proj.Id);
+
+            ProjectWorkDTO projectWork = new ProjectWorkDTO
+            {
+                EmployeeId = em.Id,
+                ProjectId = pr.Id,
+                ProjectRoleId = 3
+            };
+            var pWork = projectWorkService.CreateProjectWork(projectWork);
+            var pw = projectWorkService.GetProjectWorkById(pWork.Id);
+            var actual = projectWorkService.GetProjectWorkById(pw.Id);
+            scheduleServise.CreateSchedule(new ScheduleDTO { ProjectWorkId = actual.Id, ScheduleDayId = 2 });
+            scheduleServise.CreateSchedule(new ScheduleDTO { ProjectWorkId = actual.Id, ScheduleDayId = 4 });
+
+            Assert.ThrowsException<PercentOrScheduleException>(() => employeeService.ChangeWorkLoad(em.Id, 1));
+
+            projectWorkService.DeleteProjectWorkById(actual.Id);
+            employeeService.DeleteEmployeeById(em.Id);
+            projectService.DeleteProjectById(pr.Id);
+        }
+
+        [TestMethod]
+        public void ChangeWorkLoad()
+        {
+            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
+            ProjectService projectService = new ProjectService(uow, new Map<Project, ProjectDTO>());
+            ProjectWorkService projectWorkService = new ProjectWorkService(uow, new Map<ProjectWork, ProjectWorkDTO>());
+            EmployeeDTO employee = new EmployeeDTO
+            {
+                EmployeeName = "Екатерина",
+                EmployeeSurname = "Антонович",
+                EmployeePatronymic = "Алексеевна",
+                RoleId = 3,
+                Email = "katya@mail.ru",
+            };
+            var employeeOnWork = employeeService.CreateEmployee(employee);
+            var em = employeeService.GetEmployeeById(employeeOnWork.Id);
+
+            ProjectDTO project = new ProjectDTO
+            {
+                ProjectName = "проект 1",
+                ProjectDescription = "проект номер один",
+                ProjectStartDate = new DateTimeOffset(2021, 10, 6, 10, 15, 35, new TimeSpan(3, 0, 0)),
+                ProjectEndDate = new DateTimeOffset(2021, 10, 21, 10, 15, 35, new TimeSpan(3, 0, 0))
+            };
+            var proj = projectService.CreateProject(project);
+            var pr = projectService.GetProjectById(proj.Id);
+
+            ProjectWorkDTO projectWork = new ProjectWorkDTO
+            {
+                EmployeeId = em.Id,
+                ProjectId = pr.Id,
+                ProjectRoleId = 3
+            };
+            var pWork = projectWorkService.CreateProjectWork(projectWork);
+            var pw = projectWorkService.GetProjectWorkById(pWork.Id);
+            projectWorkService.AddWorkLoad(pw.Id, 30);
+            var pw1 = projectWorkService.GetProjectWorkById(pw.Id);
+            projectWorkService.DeleteWorkLoad(pw1.Id);
+            var pw2 = projectWorkService.GetProjectWorkById(pw1.Id);
+
+            employeeService.ChangeWorkLoad(em.Id, 2);
+            var actual = employeeService.GetEmployeeById(em.Id);
+            EmployeeDTO expected = new EmployeeDTO
+            {
+                Id = em.Id,
+                EmployeeName = "Екатерина",
+                EmployeeSurname = "Антонович",
+                EmployeePatronymic = "Алексеевна",
+                RoleId = 3,
+                Email = "katya@mail.ru",
+                PercentOrScheduleId = 2
+            };
+
+            Assert.IsTrue(actual.Id == expected.Id && actual.EmployeeName == expected.EmployeeName &&
+                actual.EmployeeSurname == expected.EmployeeSurname && actual.EmployeePatronymic == expected.EmployeePatronymic &&
+                actual.RoleId == expected.RoleId && actual.Email == expected.Email && actual.PercentOrScheduleId == expected.PercentOrScheduleId);
+
+            projectWorkService.DeleteProjectWorkById(pw2.Id);
+            employeeService.DeleteEmployeeById(em.Id);
+            projectService.DeleteProjectById(pr.Id);
+        }
     }
 }
