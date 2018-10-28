@@ -59,6 +59,7 @@
     <Compile Include="EmployeeServiceTests.cs" />
     <Compile Include="ParticipationHistoryTests.cs" />
     <Compile Include="ProjectRoleServiceTests.cs" />
+    <Compile Include="ProjectServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScheduleServiceTests.cs" />
   </ItemGroup>

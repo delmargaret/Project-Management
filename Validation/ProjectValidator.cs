@@ -46,10 +46,6 @@ namespace Validation
             {
                 errors.Add(new ValidationResult("Неверная дата", new List<string>() { "ProjectStartDate", "ProjectEndDate" }));
             }
-            if (project.ProjectStatusId == 0)
-            {
-                errors.Add(new ValidationResult("Не указан идентификатор статуса проекта", new List<string>() { "ProjectStatusId" }));
-            }
             if (project.ProjectStatusId != 0 && (project.ProjectStatusId > 2 || project.ProjectStatusId < 1))
             {
                 errors.Add(new ValidationResult("Статуса проекта не существует", new List<string>() { "ProjectStatusId" }));
