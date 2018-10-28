@@ -25,6 +25,7 @@ namespace ConsoleApp
     {
         static void Main(string[] args)
         {
+            ProjectWorkValidator pwvalidator = new ProjectWorkValidator();
             EmployeeValidator evalidator = new EmployeeValidator();
             ParticipationHistoryValidator phvalidator = new ParticipationHistoryValidator();
             IUnitOfWork uow = new ContextUnitOfWork("ManagementContext");

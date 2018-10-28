@@ -84,7 +84,7 @@ namespace Repository.Repositories
             List<(string, string, string)> list = new List<(string, string, string)>();
             string name = " ";
             string role = " ";
-            string workload = " ";
+            string workload = "";
             var employeesOnProject = db.ProjectWorks.Where(item => item.ProjectId == projectId).ToList();
             foreach (var employee in employeesOnProject)
             {
@@ -107,8 +107,9 @@ namespace Repository.Repositories
                 {
                     workload = employee.WorkLoad + "%";
                 }
-                               (string, string, string) tuple = (name, role, workload);
+                (string, string, string) tuple = (name, role, workload);
                 list.Add(tuple);
+                workload = "";
             }
             if (list.Count() == 0)
             {
