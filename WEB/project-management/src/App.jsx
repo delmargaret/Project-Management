@@ -22,7 +22,7 @@ class RoleList extends Component{
         super(props);
         this.state = { roles: [] };
     }
-    // загрузка данных
+
     loadData() {
         var xhr = new XMLHttpRequest();
         xhr.open("get", this.props.apiUrl, true);
