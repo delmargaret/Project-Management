@@ -1,52 +1,30 @@
 import React, { Component } from 'react';
 import './App.css';
+import {
+    Route,
+    NavLink,
+    HashRouter
+  } from "react-router-dom";
+import AddProjectForm from "./components/AddProject";
+import RoleList from "./components/AddEmployee";
 
-class Role extends Component{
- 
-    constructor(props){
-        super(props);
-        this.state = {data: props.role};
+class App extends Component {
+    render() {
+      return (
+        <HashRouter>
+          <div>
+            <ul className="header">
+              <li><NavLink to="/">Сотрудники</NavLink></li>
+              <li><NavLink to="projects">Проекты</NavLink></li>
+            </ul>
+            <div className="content" id="content"> 
+                <Route exact path="/" component={RoleList}/>
+                <Route path="/projects" component={AddProjectForm}/>
+            </div>
+          </div>
+        </HashRouter>  
+      );
     }
-
-    render(){
-        return <div>
-                <p>Id: {this.state.data.id}</p>
-                <p>Название роли: {this.state.data.roleName}</p>
-        </div>;
-    }
-}
- 
-class RoleList extends Component{
- 
-    constructor(props){
-        super(props);
-        this.state = { roles: [] };
-    }
-
-    loadData() {
-        var xhr = new XMLHttpRequest();
-        xhr.open("get", this.props.apiUrl, true);
-        xhr.onload = function () {
-            var data = JSON.parse(xhr.responseText);
-            this.setState({ roles: data });
-        }.bind(this);
-        xhr.send();
-    }
-    componentDidMount() {
-        this.loadData();
-    }
-    render(){ 
-        return <div>
-                <h2>Список ролей</h2>
-                <div>
-                    {
-                    this.state.roles.map(function(role){                    
-                    return <Role key={role.id} role={role}/>
-                    })
-                    }
-                </div>
-        </div>;
-    }
-}
-
-export default RoleList;
+  }
+   
+  export default App;

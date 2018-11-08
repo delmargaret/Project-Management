@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import RoleList from './App';
+import App from './App';
 
-ReactDOM.render(<RoleList apiUrl="http://localhost:12124/api/Role/GetRoles"/>, document.getElementById('root'));
+ReactDOM.render(<App/>, document.getElementById('root'));

@@ -4,6 +4,7 @@ using BLL.Interfaces;
 using BLL.Mapping;
 using BLL.Services;
 using DAL.Entities;
+using Newtonsoft.Json;
 using ProjectManagement.Models;
 using Repository.Interfaces;
 using Repository.Repositories;
@@ -19,44 +20,22 @@ namespace ProjectManagement.Controllers
     [RoutePrefix("api/Role")]
     public class RoleController : ApiController
     {
-        IUnitOfWork uow = new ContextUnitOfWork("ManagementContext");
+        static IUnitOfWork uow = new ContextUnitOfWork("ManagementContext");
+        RoleService roleService = new RoleService(uow, new Map<Role, RoleDTO>());
 
         [Route("GetRoles")]
         [HttpGet]
-        public IEnumerable<RoleViewModel> GetRoles()
+        public IEnumerable<string> GetRoles()
         {
-            RoleService roleService = new RoleService(uow, new Map<Role, RoleDTO>());
-            IEnumerable<RoleDTO> roleDTOs = roleService.GetRoles();
-            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<RoleDTO, RoleViewModel>()).CreateMapper();
-            var roles = mapper.Map<IEnumerable<RoleDTO>, List<RoleViewModel>>(roleDTOs);
-            return roles;
-        }
-
-        // GET api/<controller>
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET api/<controller>/5
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/<controller>
-        public void Post([FromBody]string value)
-        {
-        }
-
-        // PUT api/<controller>/5
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/<controller>/5
-        public void Delete(int id)
-        {
+            List<RoleDTO> roles = roleService.GetRoles().ToList();
+            string[] result = new string[roles.Count];
+            int i = 0;
+            foreach(var role in roles)
+            {
+                result[i] = JsonConvert.SerializeObject(role);
+                i++;
+            }
+            return result;
         }
     }
 }

@@ -14,7 +14,7 @@ namespace ProjectManagement.Util
         {
             Bind<IEmployeeService>().To<EmployeeService>();
             Bind<IParticipationHistoryService>().To<ParticipationHistoryService>();
-            Bind<IProjectRoleService>().To<IProjectRoleService>();
+            Bind<IProjectRoleService>().To<ProjectRoleService>();
             Bind<IRoleService>().To<RoleService>();
         }
     }
