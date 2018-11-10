@@ -20,6 +20,19 @@ namespace Repository.Repositories
             this.db = context;
         }
 
+        public void FindSameEmployee(string name, string surname, string patronymic, string email, string git, string phone, int roleId, int workloadId)
+        {
+            List<Employee> list = new List<Employee>();
+            list = db.Employees.Where(item => item.EmployeeName == name &&
+            item.EmployeeSurname == surname && item.EmployeePatronymic == patronymic &&
+            item.Email == email && item.GitLink == git && item.PhoneNumber == phone &&
+            item.RoleId == roleId && item.PercentOrScheduleId == workloadId).ToList();
+            if (list.Count != 0)
+            {
+                throw new ObjectAlreadyExistsException();
+            }
+        }
+
         public void AddGitLink(int employeeId, string gitlink)
         {
             Employee employee = db.Employees.Find(employeeId);

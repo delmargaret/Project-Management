@@ -31,6 +31,9 @@ namespace BLL.Services
         public EmployeeDTO CreateEmployee(EmployeeDTO employeeDTO)
         {
             Role role = Database.Roles.GetRoleById(employeeDTO.RoleId);
+            Database.Employees.FindSameEmployee(employeeDTO.EmployeeName, employeeDTO.EmployeeSurname,
+                employeeDTO.EmployeePatronymic, employeeDTO.Email, employeeDTO.GitLink, employeeDTO.PhoneNumber,
+                employeeDTO.RoleId, employeeDTO.PercentOrScheduleId);
             Employee employee = new Employee
             {
                 EmployeeName = employeeDTO.EmployeeName,

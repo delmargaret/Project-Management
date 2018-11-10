@@ -15,6 +15,7 @@ namespace Repository.Interfaces
         IEnumerable<Schedule> FindSchedule(Func<Schedule, Boolean> predicate);
         IEnumerable<ScheduleDay> GetEmployeesFreeDays(int employeeId);
         Schedule CreateSchedule(Schedule item);
+        void FindSameSchedule(int projWorkId, int dayId);
         void UpdateSchedule(Schedule item);
         void DeleteScheduleById(int id);
         void DeleteScheduleByProjectWorkId(int projectWorkId);

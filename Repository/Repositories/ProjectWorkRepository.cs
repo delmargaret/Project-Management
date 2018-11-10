@@ -54,7 +54,15 @@ namespace Repository.Repositories
             var projects = db.ProjectWorks.Where(item => item.EmployeeId == employeeId);
             foreach(var project in projects)
             {
+                if (project.WorkLoad == null)
+                {
+                    throw new NotFoundException();
+                }
                 result += project.WorkLoad.Value;
+            }
+            if(result == 0)
+            {
+                throw new NotFoundException();
             }
             return result;
         }

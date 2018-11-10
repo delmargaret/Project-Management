@@ -20,6 +20,18 @@ namespace Repository.Repositories
             this.db = context;
         }
 
+        public void FindSameProject(string projName, string projDescr, DateTimeOffset start, DateTimeOffset end, int projStatus)
+        {
+            List<Project> list = new List<Project>();
+            list = db.Projects.Where(item => item.ProjectName == projName && 
+            item.ProjectDescription == projDescr && item.ProjectStartDate == start &&
+            item.ProjectEndDate == end && item.ProjectStatusId == projStatus).ToList();
+            if (list.Count != 0)
+            {
+                throw new ObjectAlreadyExistsException();
+            }
+        }
+
         public IEnumerable<Project> GetAllProjects()
         {
             if (db.Projects.Count() == 0)

@@ -15,6 +15,7 @@ namespace Repository.Interfaces
         ParticipationHistory GetLastEmployeesHistory(int projectWorkId);
         IEnumerable<ParticipationHistory> FindHistory(Func<ParticipationHistory, Boolean> predicate);
         ParticipationHistory CreateHistory(ParticipationHistory item);
+        void FindSameHistory(int projWorkId, DateTimeOffset start, DateTimeOffset end);
         void UpdateHistory(ParticipationHistory item);
         void DeleteHistory(int id);
         void ChangeHistoryStartDate(int id, DateTimeOffset start);

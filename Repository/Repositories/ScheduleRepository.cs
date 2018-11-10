@@ -69,6 +69,17 @@ namespace Repository.Repositories
             schedule.ScheduleDay = db.ScheduleDays.Find(scheduleDayId);
         }
 
+        public void FindSameSchedule(int projWorkId, int dayId)
+        {
+            List<Schedule> list = new List<Schedule>();
+            list = db.Schedules.Where(item => item.ProjectWorkId == projWorkId &&
+            item.ScheduleDayId == dayId).ToList();
+            if (list.Count != 0)
+            {
+                throw new ObjectAlreadyExistsException();
+            }
+        }
+
         public Schedule CreateSchedule(Schedule item)
         {
             var sch = db.Schedules.Add(item);

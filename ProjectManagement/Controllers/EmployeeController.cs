@@ -1,7 +1,9 @@
 ﻿using BLL.DTO;
+using BLL.Interfaces;
 using BLL.Mapping;
 using BLL.Services;
 using DAL.Entities;
+using Exeption;
 using Newtonsoft.Json;
 using Repository.Interfaces;
 using Repository.Repositories;
@@ -15,189 +17,320 @@ using Validation;
 
 namespace ProjectManagement.Controllers
 {
-    [RoutePrefix("api/Employee")]
     public class EmployeeController : ApiController
     {
         EmployeeValidator evalidator = new EmployeeValidator();
         static IUnitOfWork uow = new ContextUnitOfWork("ManagementContext");
-        EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
+        IEmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
 
-        [Route("GetEmployees")]
         [HttpGet]
-        public IEnumerable<string> GetAllEmployees()
+        public IHttpActionResult GetAllEmployees()
         {
-            List<EmployeeDTO> employees = employeeService.GetAllEmployees().ToList();
-            string[] result = new string[employees.Count];
-            int i = 0;
-            foreach (var em in employees)
+            try
             {
-                result[i] = JsonConvert.SerializeObject(em);
-                i++;
+                List<EmployeeDTO> employees = employeeService.GetAllEmployees().ToList();
+                string[] result = new string[employees.Count];
+                int i = 0;
+                foreach (var em in employees)
+                {
+                    result[i] = JsonConvert.SerializeObject(em);
+                    i++;
+                }
+                return Ok(result);
             }
-            return result;
-        }
-
-        [Route("GetEmployeeById/{id}")]
-        public string GetById(int id)
-        {
-            EmployeeDTO employee = employeeService.GetEmployeeById(id);
-            return JsonConvert.SerializeObject(employee);
-        }
-
-        [Route("GetEmployeeByEmail/{email}")]
-        public string GetByEmail(string email)
-        {
-            EmployeeDTO employee = employeeService.GetEmployeeByEmail(email);
-            return JsonConvert.SerializeObject(employee);
-        }
-
-        [Route("GetEmployeeBySurname/{surname}")]
-        public IEnumerable<string> GetBySurname(string surname)
-        {
-            List<EmployeeDTO> employees = employeeService.GetEmployeesBySurname(surname).ToList();
-            string[] result = new string[employees.Count];
-            int i = 0;
-            foreach (var em in employees)
+            catch(NotFoundException)
             {
-                result[i] = JsonConvert.SerializeObject(em);
-                i++;
+                return BadRequest("Сотрудники не найдены");
             }
-            return result;
         }
 
-        [Route("GetEmployeeBySurname/{surname}")]
-        public IEnumerable<string> GetByRoleId(int roleId)
+        [HttpGet]
+        public IHttpActionResult GetById(int id)
         {
-            List<EmployeeDTO> employees = employeeService.GetEmployeesByRoleId(roleId).ToList();
-            string[] result = new string[employees.Count];
-            int i = 0;
-            foreach (var em in employees)
+            try
             {
-                result[i] = JsonConvert.SerializeObject(em);
-                i++;
+                EmployeeDTO employee = employeeService.GetEmployeeById(id);
+                var result = JsonConvert.SerializeObject(employee);
+                return Ok(result);
             }
-            return result;
+            catch (NotFoundException)
+            {
+                return BadRequest("Сотрудник не найден");
+            }
+
         }
 
-        [Route("CreateEmployee")]
+        [HttpGet]
+        public IHttpActionResult GetByEmail(string email)
+        {
+            try
+            {
+                EmployeeDTO employee = employeeService.GetEmployeeByEmail(email);
+                var result = JsonConvert.SerializeObject(employee);
+                return Ok(result);
+            }
+            catch (NotFoundException)
+            {
+                return BadRequest("Сотрудник не найден");
+            }
+        }
+
+        [HttpGet]
+        public IHttpActionResult GetBySurname(string surname)
+        {
+            try
+            {
+                List<EmployeeDTO> employees = employeeService.GetEmployeesBySurname(surname).ToList();
+                string[] result = new string[employees.Count];
+                int i = 0;
+                foreach (var em in employees)
+                {
+                    result[i] = JsonConvert.SerializeObject(em);
+                    i++;
+                }
+                return Ok(result);
+            }
+            catch (NotFoundException)
+            {
+                return BadRequest("Сотрудники не найдены");
+            }
+        }
+
+        [HttpGet]
+        public IHttpActionResult GetByRoleId(int roleId)
+        {
+            try
+            {
+                List<EmployeeDTO> employees = employeeService.GetEmployeesByRoleId(roleId).ToList();
+                string[] result = new string[employees.Count];
+                int i = 0;
+                foreach (var em in employees)
+                {
+                    result[i] = JsonConvert.SerializeObject(em);
+                    i++;
+                }
+                return Ok(result);
+            }
+            catch (NotFoundException)
+            {
+                return BadRequest("Сотрудники не найдены");
+            }
+        }
+
         [HttpPost]
-        public IHttpActionResult CreateEmployee([FromBody]EmployeeDTO value)
+        public IHttpActionResult CreateEmployee([FromBody]EmployeeDTO employee)
         {
-            var result = value;
-            employeeService.CreateEmployee(value);
-            return Ok(value);
+            try
+            {
+                var result = employee;
+                var validationResult = evalidator.Validate(employee);
+                if(validationResult.Count != 0)
+                {
+                    return BadRequest("Объект не валиден");
+                }
+                employeeService.CreateEmployee(employee);
+                return Ok(employee);
+            }
+            catch (ObjectAlreadyExistsException)
+            {
+                return BadRequest("Сотрудник уже добавлен");
+            }
         }
 
-        [Route("DeleteEmployeeById/{id}")]
         [HttpDelete]
         public IHttpActionResult DeleteById(int id)
         {
-            employeeService.DeleteEmployeeById(id);
-            return Ok();
+            try
+            {
+                employeeService.DeleteEmployeeById(id);
+                return Ok();
+            }
+            catch (NotFoundException)
+            {
+                return BadRequest("Сотрудник не найден");
+            }
         }
 
-        [Route("DeleteEmployeeByEmail/{email}")]
         [HttpDelete]
         public IHttpActionResult DeleteByEmail(string email)
         {
-            employeeService.DeleteEmployeeByEmail(email);
-            return Ok();
+            try
+            {
+                employeeService.DeleteEmployeeByEmail(email);
+                return Ok();
+            }
+            catch (NotFoundException)
+            {
+                return BadRequest("Сотрудник не найден");
+            }
         }
 
-        [Route("AddGitLink/{id}")]
         [HttpPut]
         public IHttpActionResult AddGitLink(int id, [FromBody]string git)
         {
-            employeeService.AddGitLink(id, git);
-            return Ok();
+            try
+            {
+                employeeService.AddGitLink(id, git);
+                return Ok();
+            }
+            catch (NotFoundException)
+            {
+                return BadRequest("Сотрудник не найден");
+            }
         }
 
-        [Route("DeleteGitLink/{id}")]
         [HttpPut]
         public IHttpActionResult DeleteGitLink(int id)
         {
-            employeeService.DeleteGitLinkByEmployeeId(id);
-            return Ok();
+            try
+            {
+                employeeService.DeleteGitLinkByEmployeeId(id);
+                return Ok();
+            }
+            catch (NotFoundException)
+            {
+                return BadRequest("Сотрудник не найден");
+            }
         }
 
-        [Route("AddPhoneNumber/{id}")]
         [HttpPut]
         public IHttpActionResult AddPhoneNumber(int id, [FromBody]string number)
         {
-            employeeService.AddPhoneNumber(id, number);
-            return Ok();
+            try
+            {
+                employeeService.AddPhoneNumber(id, number);
+                return Ok();
+            }
+            catch (NotFoundException)
+            {
+                return BadRequest("Сотрудник не найден");
+            }
         }
 
-        [Route("DeletePhoneNumber/{id}")]
         [HttpPut]
         public IHttpActionResult DeletePhoneNumber(int id)
         {
-            employeeService.DeletePhoneNumberByEmployeeId(id);
-            return Ok();
+            try
+            {
+                employeeService.DeletePhoneNumberByEmployeeId(id);
+                return Ok();
+            }
+            catch (NotFoundException)
+            {
+                return BadRequest("Сотрудник не найден");
+            }
         }
 
-        [Route("ChangeName/{id}")]
         [HttpPut]
         public IHttpActionResult ChangeName(int id, [FromBody]string name)
         {
-            employeeService.ChangeName(id, name);
-            return Ok();
+            try
+            {
+                employeeService.ChangeName(id, name);
+                return Ok();
+            }
+            catch (NotFoundException)
+            {
+                return BadRequest("Сотрудник не найден");
+            }
         }
 
-        [Route("ChangeSurname/{id}")]
         [HttpPut]
         public IHttpActionResult ChangeSurname(int id, [FromBody]string surname)
         {
-            employeeService.ChangeSurname(id, surname);
-            return Ok();
+            try
+            {
+                employeeService.ChangeSurname(id, surname);
+                return Ok();
+            }
+            catch (NotFoundException)
+            {
+                return BadRequest("Сотрудник не найден");
+            }
         }
 
-        [Route("ChangePatronymic/{id}")]
         [HttpPut]
         public IHttpActionResult ChangePatronymic(int id, [FromBody]string patronymic)
         {
-            employeeService.ChangePatronymic(id, patronymic);
-            return Ok();
+            try
+            {
+                employeeService.ChangePatronymic(id, patronymic);
+                return Ok();
+            }
+            catch (NotFoundException)
+            {
+                return BadRequest("Сотрудник не найден");
+            }
         }
 
-        [Route("ChangeEmail/{id}")]
         [HttpPut]
         public IHttpActionResult ChangeEmail(int id, [FromBody]string email)
         {
-            employeeService.ChangeEmail(id, email);
-            return Ok();
+            try
+            {
+                employeeService.ChangeEmail(id, email);
+                return Ok();
+            }
+            catch (NotFoundException)
+            {
+                return BadRequest("Сотрудник не найден");
+            }
         }
 
-        [Route("ChangeGitLink/{id}")]
         [HttpPut]
         public IHttpActionResult ChangeGitLink(int id, [FromBody]string git)
         {
-            employeeService.ChangeGitLink(id, git);
-            return Ok();
+            try
+            {
+                employeeService.ChangeGitLink(id, git);
+                return Ok();
+            }
+            catch (NotFoundException)
+            {
+                return BadRequest("Сотрудник не найден");
+            }
         }
 
-        [Route("ChangePhoneNumber/{id}")]
         [HttpPut]
         public IHttpActionResult ChangePhoneNumber(int id, [FromBody]string number)
         {
-            employeeService.ChangePhoneNumber(id, number);
-            return Ok();
+            try
+            {
+                employeeService.ChangePhoneNumber(id, number);
+                return Ok();
+            }
+            catch (NotFoundException)
+            {
+                return BadRequest("Сотрудник не найден");
+            }
         }
 
-        [Route("ChangeRole/{id}")]
         [HttpPut]
         public IHttpActionResult ChangeRole(int id, [FromBody]int roleId)
         {
-            employeeService.ChangeRole(id, roleId);
-            return Ok();
+            try
+            {
+                employeeService.ChangeRole(id, roleId);
+                return Ok();
+            }
+            catch (NotFoundException)
+            {
+                return BadRequest("Объект не найден");
+            }
         }
 
-        [Route("ChangeWorkLoadType/{id}")]
         [HttpPut]
         public IHttpActionResult ChangeWorkLoad(int id, [FromBody]int loadType)
         {
-            employeeService.ChangeWorkLoad(id, loadType);
-            return Ok();
+            try
+            {
+                employeeService.ChangeWorkLoad(id, loadType);
+                return Ok();
+            }
+            catch (NotFoundException)
+            {
+                return BadRequest("Объект не найден");
+            }
         }
     }
 }

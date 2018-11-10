@@ -18,8 +18,14 @@ namespace ProjectManagement
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(
+                name: "MyApi",
+                routeTemplate: "{controller}/{action}/{id}",
+                defaults: new { id = RouteParameter.Optional }
+                );
+
+            config.Routes.MapHttpRoute(
                 name: "DefaultApi",
-                routeTemplate: "api/{controller}/{action}/{id}",
+                routeTemplate: "{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
         }

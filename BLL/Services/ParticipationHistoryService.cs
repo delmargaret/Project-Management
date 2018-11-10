@@ -36,6 +36,7 @@ namespace BLL.Services
             {
                 throw new InvalidDateException();
             }
+            Database.ParticipationHistories.FindSameHistory(historyDTO.ProjectWorkId, historyDTO.StartDate, historyDTO.EndDate);
             ParticipationHistory history = new ParticipationHistory
             {
                 ProjectWorkId = historyDTO.ProjectWorkId,

@@ -79,6 +79,8 @@ namespace BLL.Services
             {
                 throw new InvalidDateException();
             }
+            Database.Projects.FindSameProject(item.ProjectName, item.ProjectDescription, item.ProjectStartDate,
+                item.ProjectEndDate, item.ProjectStatusId);
             Project project = new Project
             {
                 ProjectName = item.ProjectName,

@@ -12,6 +12,7 @@ namespace Repository.Interfaces
         IEnumerable<Employee> GetAllEmployees();
         IEnumerable<Employee> GetEmployeesByRole(int roleId);
         IEnumerable<Employee> GetEmployeesBySurname(string surname);
+        void FindSameEmployee(string name, string surname, string patronymic, string email, string git, string phone, int roleId, int workloadId);
         Employee GetEmployeeById(int id);
         Employee GetEmployeeByEmail(string email);
         IEnumerable<Employee> FindEmployee(Func<Employee, Boolean> predicate);

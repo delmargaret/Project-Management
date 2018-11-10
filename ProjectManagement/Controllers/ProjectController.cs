@@ -1,7 +1,9 @@
 ﻿using BLL.DTO;
+using BLL.Interfaces;
 using BLL.Mapping;
 using BLL.Services;
 using DAL.Entities;
+using Exeption;
 using Newtonsoft.Json;
 using Repository.Interfaces;
 using Repository.Repositories;
@@ -11,55 +13,223 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Validation;
 
 namespace ProjectManagement.Controllers
 {
-    [RoutePrefix("api/Project")]
     public class ProjectController : ApiController
     {
         static IUnitOfWork uow = new ContextUnitOfWork("ManagementContext");
-        ProjectService projectService = new ProjectService(uow, new Map<Project, ProjectDTO>());
+        IProjectService projectService = new ProjectService(uow, new Map<Project, ProjectDTO>());
+        ProjectValidator pvalidator = new ProjectValidator();
         // GET api/<controller>
 
-        [Route("GetProjects")]
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IHttpActionResult GetProjects()
         {
-            List<ProjectDTO> projects = projectService.GetAllProjects().ToList();
-            string[] result = new string[projects.Count];
-            int i = 0;
-            foreach (var project in projects)
+            try
             {
-                result[i] = JsonConvert.SerializeObject(project);
-                i++;
+                List<ProjectDTO> projects = projectService.GetAllProjects().ToList();
+                string[] result = new string[projects.Count];
+                int i = 0;
+                foreach (var project in projects)
+                {
+                    result[i] = JsonConvert.SerializeObject(project);
+                    i++;
+                }
+                return Ok(result);
             }
-            return result;
+            catch (NotFoundException)
+            {
+                return BadRequest("Проекты не найдены");
+            }
         }
 
-        // GET api/<controller>/5
-        public string Get(int id)
+        [HttpGet]
+        public IHttpActionResult GetByStatusId(int statusId)
         {
-            return "value";
+            try
+            {
+                List<ProjectDTO> projects = projectService.GetAllProjectsByStatusId(statusId).ToList();
+                string[] result = new string[projects.Count];
+                int i = 0;
+                foreach (var project in projects)
+                {
+                    result[i] = JsonConvert.SerializeObject(project);
+                    i++;
+                }
+                return Ok(result);
+            }
+            catch (NotFoundException)
+            {
+                return BadRequest("Проекты не найдены");
+            }
         }
 
-        // POST api/<controller>
-        [Route("CreateProject")]
+        [HttpGet]
+        public IHttpActionResult GetEndingInNDays(int numberOfDays)
+        {
+            try
+            {
+                List<ProjectDTO> projects = projectService.GetProjectsEndingInNDays(numberOfDays).ToList();
+                string[] result = new string[projects.Count];
+                int i = 0;
+                foreach (var project in projects)
+                {
+                    result[i] = JsonConvert.SerializeObject(project);
+                    i++;
+                }
+                return Ok(result);
+            }
+            catch (NotFoundException)
+            {
+                return BadRequest("Проекты не найдены");
+            }
+        }
+
+        [HttpGet]
+        public IHttpActionResult GetById(int id)
+        {
+            try
+            {
+                ProjectDTO project = projectService.GetProjectById(id);
+                var result = JsonConvert.SerializeObject(project);
+                return Ok(result);
+            }
+            catch (NotFoundException)
+            {
+                return BadRequest("Проект не найден");
+            }
+        }
+
         [HttpPost]
-        public IHttpActionResult CreateProject([FromBody]ProjectDTO value)
+        public IHttpActionResult CreateProject([FromBody]ProjectDTO project)
         {
-            var res = value;
-            projectService.CreateProject(value);
-            return Ok(value);
+            try
+            {
+                var result = project;
+                var validationResult = pvalidator.Validate(project);
+                if (validationResult.Count != 0)
+                {
+                    return BadRequest("Объект не валиден");
+                }
+                projectService.CreateProject(project);
+                return Ok(project);
+            }
+            catch (ObjectAlreadyExistsException)
+            {
+                return BadRequest("Проект уже добавлен");
+            }
+            catch (InvalidDateException)
+            {
+                return BadRequest("Неверные даты");
+            }
         }
 
-        // PUT api/<controller>/5
-        public void Put(int id, [FromBody]string value)
+        [HttpDelete]
+        public IHttpActionResult DeleteById(int id)
         {
+            try
+            {
+                projectService.DeleteProjectById(id);
+                return Ok();
+            }
+            catch (NotFoundException)
+            {
+                return BadRequest("Проект не найден");
+            }
         }
 
-        // DELETE api/<controller>/5
-        public void Delete(int id)
+        [HttpPut]
+        public IHttpActionResult ChangeName(int id, [FromBody]string projName)
         {
+            try
+            {
+                projectService.ChangeProjectName(id, projName);
+                return Ok();
+            }
+            catch (NotFoundException)
+            {
+                return BadRequest("Проект не найден");
+            }
+        }
+
+        [HttpPut]
+        public IHttpActionResult ChangeDescription(int id, [FromBody]string projDescription)
+        {
+            try
+            {
+                projectService.ChangeProjectDescription(id, projDescription);
+                return Ok();
+            }
+            catch (NotFoundException)
+            {
+                return BadRequest("Проект не найден");
+            }
+        }
+
+        [HttpPut]
+        public IHttpActionResult ChangeStartDate(int id, [FromBody]DateTimeOffset start)
+        {
+            try
+            {
+                projectService.ChangeProjectStartDate(id, start);
+                return Ok();
+            }
+            catch (NotFoundException)
+            {
+                return BadRequest("Проект не найден");
+            }
+            catch (InvalidDateException)
+            {
+                return BadRequest("Неверные даты");
+            }
+        }
+
+        [HttpPut]
+        public IHttpActionResult ChangeEndDate(int id, [FromBody]DateTimeOffset end)
+        {
+            try
+            {
+                projectService.ChangeProjectEndDate(id, end);
+                return Ok();
+            }
+            catch (NotFoundException)
+            {
+                return BadRequest("Проект не найден");
+            }
+            catch (InvalidDateException)
+            {
+                return BadRequest("Неверные даты");
+            }
+        }
+
+        [HttpPut]
+        public IHttpActionResult ChangeProjectStatus(int id, [FromBody]int projStatusId)
+        {
+            try
+            {
+                projectService.ChangeProjectStatus(id, projStatusId);
+                return Ok();
+            }
+            catch (NotFoundException)
+            {
+                return BadRequest("Проект не найден");
+            }
+        }
+
+        [HttpPut]
+        public IHttpActionResult CloseProject(int id)
+        {
+            try
+            {
+                projectService.CloseProject(id);
+                return Ok();
+            }
+            catch (NotFoundException)
+            {
+                return BadRequest("Проект не найден");
+            }
         }
     }
 }

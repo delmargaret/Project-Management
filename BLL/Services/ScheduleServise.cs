@@ -61,6 +61,7 @@ namespace BLL.Services
             ProjectWork work = Database.ProjectWorks.GetProjectWorkById(item.ProjectWorkId);
             ScheduleDay day = Database.ScheduleDays.GetScheduleDayById(item.ScheduleDayId);
             Employee employee = Database.Employees.GetEmployeeById(work.EmployeeId);
+            Database.Schedules.FindSameSchedule(item.ProjectWorkId, item.ScheduleDayId);
             ScheduleDTO result = new ScheduleDTO();
             if (employee.PercentOrScheduleId == 3)
             {

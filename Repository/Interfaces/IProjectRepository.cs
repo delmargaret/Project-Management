@@ -15,6 +15,7 @@ namespace Repository.Interfaces
         Project GetProjectById(int id);
         IEnumerable<Project> FindProject(Func<Project, Boolean> predicate);
         Project CreateProject(Project item);
+        void FindSameProject(string projName, string projDescr, DateTimeOffset start, DateTimeOffset end, int projStatus);
         void UpdateProject(Project item);
         void DeleteProjectById(int id);
         void ChangeProjectName(int projectId, string newProjectName);

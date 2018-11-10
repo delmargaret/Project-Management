@@ -20,6 +20,17 @@ namespace Repository.Repositories
             this.db = context;
         }
 
+        public void FindSameHistory(int projWorkId, DateTimeOffset start, DateTimeOffset end)
+        {
+            List<ParticipationHistory> list = new List<ParticipationHistory>();
+            list = db.ParticipationHistories.Where(item => item.ProjectWorkId == projWorkId &&
+            item.StartDate == start && item.EndDate == end).ToList();
+            if (list.Count != 0)
+            {
+                throw new ObjectAlreadyExistsException();
+            }
+        }
+
         public IEnumerable<ParticipationHistory> GetAllHistories()
         {
             if (db.ParticipationHistories.Count() == 0)
