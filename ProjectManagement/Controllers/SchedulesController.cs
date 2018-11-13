@@ -17,7 +17,7 @@ using Validation;
 
 namespace ProjectManagement.Controllers
 {
-    public class ScheduleController : ApiController
+    public class SchedulesController : ApiController
     {
         static IUnitOfWork uow = new ContextUnitOfWork("ManagementContext");
         IScheduleService scheduleServise = new ScheduleServise(uow, new Map<Schedule, ScheduleDTO>(), new Map<ScheduleDay, ScheduleDayDTO>());

@@ -17,7 +17,7 @@ using Validation;
 
 namespace ProjectManagement.Controllers
 {
-    public class EmployeeController : ApiController
+    public class EmployeesController : ApiController
     {
         EmployeeValidator evalidator = new EmployeeValidator();
         static IUnitOfWork uow = new ContextUnitOfWork("ManagementContext");
@@ -40,7 +40,7 @@ namespace ProjectManagement.Controllers
             }
             catch(NotFoundException)
             {
-                return BadRequest("Сотрудники не найдены");
+                return Ok();
             }
         }
 

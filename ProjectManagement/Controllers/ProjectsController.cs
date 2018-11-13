@@ -17,7 +17,7 @@ using Validation;
 
 namespace ProjectManagement.Controllers
 {
-    public class ProjectController : ApiController
+    public class ProjectsController : ApiController
     {
         static IUnitOfWork uow = new ContextUnitOfWork("ManagementContext");
         IProjectService projectService = new ProjectService(uow, new Map<Project, ProjectDTO>());
@@ -41,7 +41,7 @@ namespace ProjectManagement.Controllers
             }
             catch (NotFoundException)
             {
-                return BadRequest("Проекты не найдены");
+                return Ok();
             }
         }
 
@@ -62,7 +62,7 @@ namespace ProjectManagement.Controllers
             }
             catch (NotFoundException)
             {
-                return BadRequest("Проекты не найдены");
+                return Ok();
             }
         }
 
@@ -98,7 +98,7 @@ namespace ProjectManagement.Controllers
             }
             catch (NotFoundException)
             {
-                return BadRequest("Проект не найден");
+                return Ok();
             }
         }
 

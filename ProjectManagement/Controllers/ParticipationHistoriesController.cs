@@ -17,7 +17,7 @@ using Validation;
 
 namespace ProjectManagement.Controllers
 {
-    public class ParticipationHistoryController : ApiController
+    public class ParticipationHistoriesController : ApiController
     {
         static IUnitOfWork uow = new ContextUnitOfWork("ManagementContext");
         IParticipationHistoryService participationHistoryService = new ParticipationHistoryService(uow, new Map<ParticipationHistory, ParticipationHistoryDTO>());
@@ -45,11 +45,11 @@ namespace ProjectManagement.Controllers
         }
 
         [HttpGet]
-        public IHttpActionResult GetAllEmployeesHistoriesOnProject(int projectWorkId)
+        public IHttpActionResult GetAllEmployeesHistoriesOnProject(int projWorkId)
         {
             try
             {
-                var histories = participationHistoryService.GetAllEmployeesHistoriesOnProject(projectWorkId).ToList();
+                var histories = participationHistoryService.GetAllEmployeesHistoriesOnProject(projWorkId).ToList();
                 string[] result = new string[histories.Count];
                 int i = 0;
                 foreach (var history in histories)

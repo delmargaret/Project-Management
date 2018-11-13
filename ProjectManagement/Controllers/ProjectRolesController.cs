@@ -16,7 +16,7 @@ using System.Web.Http;
 
 namespace ProjectManagement.Controllers
 {
-    public class ProjectRoleController : ApiController
+    public class ProjectRolesController : ApiController
     {
         static IUnitOfWork uow = new ContextUnitOfWork("ManagementContext");
         IProjectRoleService projectRoleService = new ProjectRoleService(uow, new Map<ProjectRole, ProjectRoleDTO>());

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using System.Web.Http.Routing.Constraints;
 
 namespace ProjectManagement
 {
@@ -18,16 +19,35 @@ namespace ProjectManagement
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(
-                name: "MyApi",
-                routeTemplate: "{controller}/{action}/{id}",
-                defaults: new { id = RouteParameter.Optional }
+                name: "Def",
+                routeTemplate: "{controller}",
+                defaults: new { }
                 );
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
-            );
+                defaults: new { },
+                constraints: new { id = new IntRouteConstraint() }
+                );
+
+            config.Routes.MapHttpRoute(
+                name: "Defaul",
+                routeTemplate: "{controller}/{req}",
+                defaults: new { req = new AlphaRouteConstraint() }
+                );
+
+            config.Routes.MapHttpRoute(
+                name: "MyApi",
+                routeTemplate: "{controller}/{action}/{id}",
+                defaults: new { },
+                constraints: new {  id = new IntRouteConstraint() }
+                );
+
+            config.Routes.MapHttpRoute(
+                name: "MyAp",
+                routeTemplate: "{controller}/{action}"
+                );
         }
     }
 }

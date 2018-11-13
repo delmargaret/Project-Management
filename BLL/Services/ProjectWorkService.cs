@@ -143,6 +143,13 @@ namespace BLL.Services
             return Map.ListMap(projectWorks);
         }
 
+        public IEnumerable<ProjectWorkDTO> GetEmployeesOnProject(int projectId)
+        {
+            var project = Database.Projects.GetProjectById(projectId);
+            var projectWorks = Database.ProjectWorks.GetEmployeesOnProject(project.Id);
+            return Map.ListMap(projectWorks);
+        }
+
         public int CalculateEmployeesWorkload(int employeeId)
         {
             var employee = Database.Employees.GetEmployeeById(employeeId);
@@ -154,14 +161,14 @@ namespace BLL.Services
             return Database.ProjectWorks.CalculateEmployeesWorkload(employee.Id);
         }
 
-        public IEnumerable<(string name, string role, string workload)> GetNamesAndLoadOnProject(int projectId)
+        public IEnumerable<(int id, string name, string role, string workload)> GetNamesAndLoadOnProject(int projectId)
         {
             var project = Database.Projects.GetProjectById(projectId);
             var projectWorks = Database.ProjectWorks.FindProjectWork(item=>item.ProjectId==projectId);
             return Database.ProjectWorks.GetNamesAndLoadOnProject(project.Id); 
         }
 
-        public IEnumerable<(string name, string role)> GetNamesOnProject(int projectId)
+        public IEnumerable<(int id, string name, string role)> GetNamesOnProject(int projectId)
         {
             var project = Database.Projects.GetProjectById(projectId);
             var projectWorks = Database.ProjectWorks.GetNamesOnProject(project.Id);

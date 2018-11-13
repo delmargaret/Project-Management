@@ -1,10 +1,22 @@
 import React, { Component } from 'react';
-import Modal from 'react-modal';
+import * as employeeService from '../../src/services/employeeService';
+import * as roleService from '../../src/services/roleService';
+import {Table, Button, Modal, FormGroup, FormControl} from 'react-bootstrap';
+import "./AddEmployee.css";
 
 class EmployeeList extends Component{
     render(){ 
-        return <div>
-                    <table>
+        return <div id="scrolltable">
+            <Table>
+            <thead>
+                <tr>
+                <th>Фамилия</th>
+                <th>Имя</th>
+                <th>Отчество</th>
+                <th>E-mail</th>
+                <th>Id роли</th>
+                </tr>
+            </thead>
                         <tbody>
                         {
                     this.props.emp.map((employee) => {  
@@ -20,8 +32,8 @@ class EmployeeList extends Component{
                     })
                     }
                         </tbody>
-                    </table>
-                </div>
+                </Table>
+        </div>
             }
 }
 
@@ -30,8 +42,7 @@ class AddEmployeeForm extends Component{
     constructor(props){
         super(props);
         this.state = {name: "", surname: "", patronymic: "",
-                    email: "", nameIsValid: true, surnameIsValid: true, 
-                    patronymicIsValid: true, roleIdIsValid: true};
+                    email: "", roleIdIsValid: true};
  
         this.onSubmit = this.onSubmit.bind(this);
         this.onNameChange = this.onNameChange.bind(this);
@@ -39,15 +50,21 @@ class AddEmployeeForm extends Component{
         this.onPatronymicChange = this.onPatronymicChange.bind(this);
         this.onEmailChange = this.onEmailChange.bind(this);
     }
-    validateName(name){
-        return name.length>=2;
-    }
-    validateSurname(surname){
-        return surname.length>=2;
-    }
-    validatePatronymic(patronymic){
-        return patronymic.length>=2;
-    }
+    validateSurname() {
+        if (this.state.surname.length > 1) return 'success';
+        if (this.state.surname.length > 0) return 'error';
+        return null;
+      }
+      validateName() {
+        if (this.state.name.length > 1) return 'success';
+        if (this.state.name.length > 0) return 'error';
+        return null;
+      }
+      validatePatronymic() {
+        if (this.state.patronymic.length > 1) return 'success';
+        if (this.state.patronymic.length > 0) return 'error';
+        return null;
+      }
     validateRole(roleId){
         return roleId>0 && roleId<4;
     }
@@ -71,19 +88,12 @@ class AddEmployeeForm extends Component{
         var email = this.state.email.trim();
         var roleid = this.props.roleid;
 
-        var nameValid = this.validateName(name);
-        this.setState({nameIsValid: nameValid});
-        var surnameValid = this.validateSurname(surname);
-        this.setState({surnameIsValid: surnameValid});
-        var patronymicValid = this.validatePatronymic(patronymic);
-        this.setState({patronymicIsValid: patronymicValid});
         var roleValid = this.validateRole(roleid);
         this.setState({roleIdIsValid: roleValid});
         if (!name || !surname || !patronymic || !email || roleid<0 || roleid>3) {
             return;
         }
-        if(this.state.nameIsValid===true && this.state.surnameIsValid===true && 
-            this.state.patronymicIsValid===true && this.state.roleIdIsValid===true){
+        if(this.state.roleIdIsValid===true){
                 this.props.onEmployeeSubmit({ name: name, surname: surname,
                     patronymic: patronymic, email: email, roleId: roleid});
                     this.setState({name: "", surname: "", patronymic: "",
@@ -91,110 +101,100 @@ class AddEmployeeForm extends Component{
             }
     }
     render() {
-        var nameError = this.state.nameIsValid===true?"":" * Введите имя";
-        var surnameError = this.state.surnameIsValid===true?"":" * Введите фамилию";
-        var patronymicError = this.state.patronymicIsValid===true?"":" * Введите отчество";
         return (
           <form onSubmit={this.onSubmit}>
-              <p>
-                  <input type="text"
-                         placeholder="Фамилия"
-                         value={this.state.surname}
-                         onChange={this.onSurnameChange} />
-                    <label>{surnameError}</label>
-              </p>
-              <p>
-                  <input type="text"
-                         placeholder="Имя"
-                         value={this.state.name}
-                         onChange={this.onNameChange} />
-                    <label>{nameError}</label>
-              </p>
-              <p>
-                  <input type="text"
-                         placeholder="Отчество"
-                         value={this.state.patronymic}
-                         onChange={this.onPatronymicChange} />
-                    <label>{patronymicError}</label>
-              </p>
-              <p>
-                  <input type="email"
-                         placeholder="E-mail"
-                         value={this.state.email}
-                         onChange={this.onEmailChange} />
-              </p>
-            <input type="submit" value="Добавить" />
+                <FormGroup controlId="formBasicText"
+                    validationState={this.validateSurname()}>
+                <FormControl
+                    type="text"
+                    placeholder="Фамилия"
+                    value={this.state.surname}
+                    onChange={this.onSurnameChange} />
+                <FormControl.Feedback />
+                </FormGroup>
+
+                <FormGroup controlId="formBasicText"
+                    validationState={this.validateName()}>
+                <FormControl
+                    type="text"
+                    placeholder="Имя"
+                    value={this.state.name}
+                    onChange={this.onNameChange} />
+                <FormControl.Feedback />
+                </FormGroup>
+
+                <FormGroup controlId="formBasicText"
+                    validationState={this.validatePatronymic()}>
+                <FormControl
+                    type="text"
+                    placeholder="Отчество"
+                    value={this.state.patronymic}
+                    onChange={this.onPatronymicChange} />
+                <FormControl.Feedback />
+                </FormGroup>
+
+                <FormGroup controlId="formControlsEmail">
+                <FormControl
+                    type="email"
+                    placeholder="E-mail"
+                    value={this.state.email}
+                    onChange={this.onEmailChange} />
+                <FormControl.Feedback />
+                </FormGroup>
+            <Button type="submit">Добавить</Button>
           </form>
         );
     }
 }
- 
-const customStyles = {
-    content : {
-      top                   : '50%',
-      left                  : '50%',
-      right                 : 'auto',
-      bottom                : 'auto',
-      marginRight           : '-50%',
-      transform             : 'translate(-50%, -50%)'
-    }
-  };
-  
-Modal.setAppElement(document.getElementById('root'));
 
 class RoleList extends Component{
  
     constructor(props){
         super(props);
-        this.state = { roles: [], activeRole: 0, employees: [], modalIsOpen: false};
+        this.state = { roles: [], activeRole: 0, employees: [], modalIsOpen: false, show: false};
         this.onAddEmployee = this.onAddEmployee.bind(this);
+        this.loadRoles = this.loadRoles.bind(this);
+        this.loadEmployees = this.loadEmployees.bind(this);
         this.onClick = this.onClick.bind(this);
-        this.openModal = this.openModal.bind(this);
-        this.afterOpenModal = this.afterOpenModal.bind(this);
-        this.closeModal = this.closeModal.bind(this);
+        this.handleShow = this.handleShow.bind(this);
+        this.handleClose = this.handleClose.bind(this);
     }
-    openModal() {
-        this.setState({modalIsOpen: true});
+    handleClose() {
+        this.setState({ show: false });
       }
-    afterOpenModal() {
-
+    handleShow() {
+        this.setState({ show: true });
       }
-    closeModal() {
-        this.setState({modalIsOpen: false});
-        this.loadEmployees();
-      }
+    
     loadRoles() {
-        var xhr = new XMLHttpRequest();
-        xhr.open("get", "http://localhost:12124/api/Role/GetRoles", true);
-        xhr.onload = function () {
-            var data = JSON.parse(xhr.responseText);
-            this.setState({ roles: data });
-        }.bind(this);
-        xhr.send();
+        roleService.getRoles().then(res => { this.setState({roles: res.data}) });
     }
     loadEmployees() {
-        var xhr = new XMLHttpRequest();
-        xhr.open("get", "http://localhost:12124/api/Employee/GetEmployees", true);
-        xhr.onload = function () {
-            var data = JSON.parse(xhr.responseText);
-            this.setState({ employees: data });
-        }.bind(this);
-        xhr.send();
+        employeeService.getEmployees().then(res => { this.setState({employees: res.data}) }).catch(error => {
+            if (error.response) {
+                return null;
+              }
+        });
+    }
+    renderEmployeeList(){
+        if(this.state.employees.length!==0){
+            return <EmployeeList emp={this.state.employees}/>
+        }
+        else return <div>Сотрудники не найдены</div>
     }
     componentDidMount() {
         this.loadRoles();
         this.loadEmployees();
     }
+
     onAddEmployee(employee) {
         if (employee) {
- 
             var data = JSON.stringify({"EmployeeName":employee.name, "EmployeeSurname":employee.surname,
         "EmployeePatronymic": employee.patronymic, "Email": employee.email, "RoleId": employee.roleId});
-            fetch("http://localhost:12124/api/Employee/CreateEmployee", {
-                method: 'POST', 
-                body: data,
-                type: "json",
-                headers: {"Content-Type": "application/json"}
+        employeeService.createEmployee(data).then(res => {
+            if (res !== null) {
+                this.loadEmployees();
+                }
             });
         }
     }
@@ -202,17 +202,20 @@ class RoleList extends Component{
         this.setState({
             activeRole: id
         })
-        this.openModal();
+        this.handleShow();
     }
     render(){ 
+        var addrolename = "";
         const activerole = this.state.activeRole;
+        if(activerole===1){addrolename="Добавить ресурсного менеджера";}
+        if(activerole===2){addrolename="Добавить проектного менеджера";}
+        if(activerole===3){addrolename="Добавить сотрудника";}
         const roledata = this.state.roles;
-        const employeedata = this.state.employees;
         if (!roledata) return <div>Загрузка...</div>; 
         return <div>
                 <h2>Добавить сотрудника</h2>
                 <div>
-                    <table>
+                    <Table>
                         <tbody>
                         {
                     this.state.roles.map((role) => {  
@@ -221,25 +224,22 @@ class RoleList extends Component{
                         return <tr key={id}>
                             <td>{data.Id}.</td>
                             <td>{data.RoleName}</td>
-                            <td><button onClick={() => this.onClick(id)}>
-                                Добавить</button>
+                            <td><Button onClick={() => this.onClick(id)}>
+                                Добавить</Button>
                             </td>
                         </tr>              
                     })
                     }
                         </tbody>
-                    </table>
-                    <EmployeeList emp={employeedata}/>
+                    </Table>
+                    {this.renderEmployeeList()}
                 </div>
-                <Modal
-                    isOpen={this.state.modalIsOpen}
-                    onAfterOpen={this.afterOpenModal}
-                    onRequestClose={this.closeModal}
-                    style={customStyles}
-                    contentLabel="Example Modal">
-                    <button onClick={this.closeModal}>close</button>
-                    <AddEmployeeForm roleid = {activerole} onEmployeeSubmit={this.onAddEmployee}/>
-        </Modal>
+                    <Modal show={this.state.show} onHide={this.handleClose}>
+                        <Modal.Header closeButton>{addrolename}</Modal.Header>
+                        <Modal.Body>
+                            <AddEmployeeForm roleid = {activerole} onEmployeeSubmit={this.onAddEmployee}/>
+                        </Modal.Body>
+                    </Modal>
         </div>;
      }
 }

@@ -1,54 +1,74 @@
 import React, { Component } from 'react';
+import {Table, Button, FormGroup, FormControl, Form, Modal} from 'react-bootstrap';
+import * as projectService from '../../src/services/projectService';
+import "./AddProject.css";
 
 class ProjectList extends Component{
     render(){ 
-        return <div>
-                    <table>
+        return <div id="scroll">
+            <Table>
+            <thead>
+                <tr>
+                <th>Название</th>
+                <th>Описание</th>
+                <th>Дата начала</th>
+                <th>Дата окончания</th>
+                <th>Статус</th>
+                </tr>
+            </thead>
                         <tbody>
                         {
                     this.props.proj.map((project) => {  
                         var data = JSON.parse(project); 
                         var id = data.Id;  
+                        var statusname = "";
+                        if(data.ProjectStatusId===1){statusname="Открыт";}
+                        if(data.ProjectStatusId===2){statusname="Закрыт";}
                         return <tr key={id}>
                             <td>{data.ProjectName}</td>
                             <td>{data.ProjectDescription}</td>
                             <td>{data.ProjectStartDate}</td>
                             <td>{data.ProjectEndDate}</td>
-                            <td>{data.ProjectStatusId}</td>
+                            <td>{statusname}</td>
                         </tr>              
                     })
                     }
                         </tbody>
-                    </table>
-                </div>
+                </Table>
+        </div>
             }
 }
 
 class AddProjectForm extends Component{
- 
     constructor(props){
         super(props);
         this.state = {name: "", description: "", startDate: "",
-        endDate: "", projects: [], nameIsValid: true, descriptionIsValid: true, 
-        startDateIsValid: true, endDateIsValid: true};
- 
+        endDate: "", projects: []};
+
         this.onSubmit = this.onSubmit.bind(this);
         this.onNameChange = this.onNameChange.bind(this);
         this.onDescriptionChange = this.onDescriptionChange.bind(this);
         this.onStartDateChange = this.onStartDateChange.bind(this);
         this.onEndDateChange = this.onEndDateChange.bind(this);
-        this.loadProjects = this.loadProjects.bind(this);
     }
-    validateName(name){
-        return name.length>=2;
+    validateName(){
+        if (this.state.name.length > 2) return 'success';
+        if (this.state.name.length > 0) return 'error';
+        return null;
     }
-    validateDescription(description){
-        return description.length>10 && description.length<1024;
+    validateDescription(){
+        if (this.state.description.length > 5) return 'success';
+        if (this.state.description.length > 0) return 'error';
+        if (this.state.description.length > 1024) return 'error';
+        return null;
     }
-    //validateEndDate(startDate, endDate){
-        //endDate>startDate
-        //return endDate>Date.now();
-    //}
+ 
+    validateEndDate(){
+        if (Date.parse(this.state.endDate)>Date.parse(this.state.startDate)) return 'success';
+        if (Date.parse(this.state.endDate)<Date.parse(this.state.startDate)) return 'error';
+        if (Date.parse(this.state.endDate)>Date.now()) return 'success';
+        if (Date.parse(this.state.endDate)<Date.now()) return 'error';
+    }
     onNameChange(e) {
         var val = e.target.value;
         this.setState({name: val});
@@ -62,36 +82,10 @@ class AddProjectForm extends Component{
         this.setState({startDate: val});
     }
     onEndDateChange(e) {
-        var val = e.target.value; 
+        var val = e.target.value;
         this.setState({endDate: val});
     }
-    loadProjects() {
-        var xhr = new XMLHttpRequest();
-        xhr.open("get", "http://localhost:12124/api/Project/GetProjects", true);
-        xhr.onload = function () {
-            var data = JSON.parse(xhr.responseText);
-            this.setState({ projects: data });
-        }.bind(this);
-        xhr.send();
-    }
-    componentDidMount() {
-        this.loadProjects();
-    }
-    onProjectSubmit(project) {
-        if (project) {
- 
-            var data = JSON.stringify({"ProjectName":project.name, "ProjectDescription":project.description,
-        "ProjectStartDate": project.startDate, "ProjectEndDate": project.endDate});
-             console.log(data);
-            fetch("http://localhost:12124/api/Project/CreateProject", {
-                method: 'POST', 
-                body: data,
-                type: "json",
-                headers: {"Content-Type": "application/json"}
-            });
-        }
-        this.loadProjects();
-    }
+
     onSubmit(e) {
         e.preventDefault();
         var name = this.state.name.trim();
@@ -99,69 +93,127 @@ class AddProjectForm extends Component{
         var startDate = this.state.startDate;
         var endDate = this.state.endDate;
 
-        var nameValid = this.validateName(name);
-        this.setState({nameIsValid: nameValid});
-        var descriptionValid = this.validateDescription(description);
-        this.setState({descriptionIsValid: descriptionValid});
-        //var endDateValid = this.validateEndDate(startDate, endDate);
-        //this.setState({endDateIsValid: endDateValid});
         if (!name || !description || !startDate || !endDate) {
             return;
         }
-        if(this.state.nameIsValid===true && this.state.descriptionIsValid===true &&
-            this.state.startDateIsValid===true && this.state.endDateIsValid===true){
-                this.onProjectSubmit({ name: name, description: description,
-                    startDate: startDate, endDate: endDate});
-                    this.setState({name: "", description: "", startDate: "",
-                    endDate: ""});
-            }
+        this.props.onProjectSubmit({ name: name, description: description,
+            startDate: startDate, endDate: endDate});
+            this.setState({name: "", description: "", startDate: "",
+            endDate: ""});
     }
     render() {
-        var nameError = this.state.nameIsValid===true?"":"* Введите имя";
-        var descriptionError = this.state.descriptionIsValid===true?"":" * Неверная длина описания";
-        var startDateError = this.state.startDateIsValid===true?"":" * Неверная дата начала проекта";
-        var endDateError = this.state.endDateIsValid===true?"":" * Неверная дата окончания проекта";
-        if(this.state.projects.length!==0){
-            
-        }
-        return (
-            <div>
-                <h2>Добавить проект</h2>
-                <form onSubmit={this.onSubmit}>
-              <p>
-                  <input type="text"
-                         placeholder="Название проекта"
-                         value={this.state.name}
-                         onChange={this.onNameChange} />
-                    <label>{nameError}</label>
-              </p>
-              <p>
-                  <textarea placeholder="Описание проекта"
+            return (
+                    <Form  onSubmit={this.onSubmit}>
+                    <FormGroup controlId="formBasicName"
+                     validationState={this.validateName()}>
+                        <FormControl
+                            type="text"
+                            placeholder="Название проекта"
+                            value={this.state.name}
+                            onChange={this.onNameChange} />
+                        <FormControl.Feedback />
+                    </FormGroup>
+
+                    <FormGroup controlId="formBasicDescription"
+                     validationState={this.validateDescription()}>
+                        <FormControl
+                            componentClass="textarea"
+                            placeholder="Описание проекта"
                             value={this.state.description}
                             onChange={this.onDescriptionChange} />
-                    <label>{descriptionError}</label>    
-              </p>
-              <p>
-                  <input type="date"
-                         placeholder="Дата начала проекта"
-                         value={this.state.startDate}
-                         onChange={this.onStartDateChange} />
-                    <label>{startDateError}</label>
-              </p>
-              <p>
-                  <input type="date"
-                         placeholder="Дата окончания проекта"
-                         value={this.state.endDate}
-                         onChange={this.onEndDateChange} />
-                    <label>{endDateError}</label>
-              </p>
-            <input type="submit" value="Добавить" />
-          </form>
-          <ProjectList proj={this.state.projects}/>
-            </div>
-          
-        );
+                        <FormControl.Feedback />
+                    </FormGroup>
+
+                    <FormGroup controlId="formBasicStart"
+                     validationState={this.validateEndDate()}>
+                        <FormControl
+                            type="date"
+                            placeholder="Дата начала"
+                            value={this.state.startDate}
+                            onChange={this.onStartDateChange} />
+                        <FormControl.Feedback />
+                    </FormGroup>
+
+                    <FormGroup controlId="formBasicEnd"
+                     validationState={this.validateEndDate()}>
+                        <FormControl
+                            type="date"
+                            placeholder="Дата окончания"
+                            value={this.state.endDate}
+                            onChange={this.onEndDateChange} />
+                        <FormControl.Feedback />
+                    </FormGroup>
+                <Button type="submit">Добавить</Button>
+                    </Form>                
+            );        
     }
 }
 
-export default AddProjectForm;
+class AddProjectPage extends Component{
+    constructor(props){
+        super(props);
+        this.state = { projects: [], show: false};
+        this.onAddProject = this.onAddProject.bind(this);
+        this.loadProjects = this.loadProjects.bind(this);
+        this.onClick = this.onClick.bind(this);
+        this.handleShow = this.handleShow.bind(this);
+        this.handleClose = this.handleClose.bind(this);
+    }
+    handleClose() {
+        this.setState({ show: false });
+      }
+    handleShow() {
+        this.setState({ show: true });
+      }
+    loadProjects() {
+        projectService.getProjects().then(res => { 
+            if(res!==null) this.setState({projects: res.data}) }).catch(error => {
+                if (error.response) {
+                    return null;
+                  }
+            });
+        }
+    renderProjectList(){
+        if(this.state.projects.length===0){
+            return <div>Проекты не найдены</div>     
+        }
+        else return <ProjectList proj={this.state.projects}/>
+    }
+    componentDidMount(){
+        this.loadProjects();
+    }
+    onAddProject(project) {
+        if (project) {
+            var data = JSON.stringify({"ProjectName":project.name, "ProjectDescription":project.description,
+        "ProjectStartDate": project.startDate, "ProjectEndDate": project.endDate});
+        projectService.createProject(data).then(res => {
+            if (res !== null) {
+                this.loadProjects();
+                }
+            });
+        }
+    }
+    onClick(){
+        this.handleShow();
+    }
+    render(){ 
+        return <div>
+                <h2>Добавить проект</h2>
+                <div>
+                    <Button  bsSize="large" id="addprojectbtn" onClick={() => this.onClick()}>Новый проект</Button>
+                </div>
+                <div>
+                    <h3>Проекты</h3>
+                {this.renderProjectList()}
+                </div>
+                    <Modal show={this.state.show} onHide={this.handleClose}>
+                        <Modal.Header closeButton></Modal.Header>
+                        <Modal.Body>
+                            <AddProjectForm onProjectSubmit={this.onAddProject}/>
+                        </Modal.Body>
+                    </Modal>
+        </div>;
+     }
+}
+
+export default AddProjectPage;

@@ -48,6 +48,15 @@ namespace Repository.Repositories
             return db.ProjectWorks.Where(item => item.EmployeeId == employeeId && item.Project.ProjectStatusId == 1);
         }
 
+        public IEnumerable<ProjectWork> GetEmployeesOnProject(int projectId)
+        {
+            if (db.ProjectWorks.Where(item => item.ProjectId == projectId).Count() == 0)
+            {
+                throw new NotFoundException();
+            }
+            return db.ProjectWorks.Where(item => item.ProjectId == projectId);
+        }
+
         public int CalculateEmployeesWorkload(int employeeId)
         {
             int result = 0;
@@ -67,17 +76,19 @@ namespace Repository.Repositories
             return result;
         }
 
-        public IEnumerable<(string name, string role)> GetNamesOnProject(int projectId)
+        public IEnumerable<(int id, string name, string role)> GetNamesOnProject(int projectId)
         {
-            List<(string, string)> list=new List<(string, string)>();
+            List<(int, string, string)> list=new List<(int, string, string)>();
+            int id = 0;
             string name = " ";
             string role = " ";
             var employeesOnProject = db.ProjectWorks.Where(item => item.ProjectId == projectId).ToList();
             foreach(var employee in employeesOnProject)
             {
+                id = employee.EmployeeId;
                 name = db.Employees.Find(employee.EmployeeId).EmployeeSurname + " " + db.Employees.Find(employee.EmployeeId).EmployeeName + " " + db.Employees.Find(employee.EmployeeId).EmployeePatronymic;
                 role = db.ProjectRoles.Find(employee.ProjectRoleId).ProjectRoleName;
-                (string, string) tuple = (name, role);
+                (int, string, string) tuple = (id, name, role);
                 list.Add(tuple);
             }
             if (list.Count() == 0)
@@ -87,15 +98,17 @@ namespace Repository.Repositories
             return list;
         }
 
-        public IEnumerable<(string name, string role, string workload)> GetNamesAndLoadOnProject(int projectId)
+        public IEnumerable<(int id, string name, string role, string workload)> GetNamesAndLoadOnProject(int projectId)
         {
-            List<(string, string, string)> list = new List<(string, string, string)>();
+            List<(int, string, string, string)> list = new List<(int, string, string, string)>();
+            int id = 0;
             string name = " ";
             string role = " ";
             string workload = "";
             var employeesOnProject = db.ProjectWorks.Where(item => item.ProjectId == projectId).ToList();
             foreach (var employee in employeesOnProject)
             {
+                id = employee.EmployeeId;
                 name = db.Employees.Find(employee.EmployeeId).EmployeeSurname + " " + db.Employees.Find(employee.EmployeeId).EmployeeName + " " + db.Employees.Find(employee.EmployeeId).EmployeePatronymic;
                 role = db.ProjectRoles.Find(employee.ProjectRoleId).ProjectRoleName;
                 Employee em = db.Employees.Find(employee.EmployeeId);
@@ -115,7 +128,7 @@ namespace Repository.Repositories
                 {
                     workload = employee.WorkLoad + "%";
                 }
-                (string, string, string) tuple = (name, role, workload);
+                (int, string, string, string) tuple = (id, name, role, workload);
                 list.Add(tuple);
                 workload = "";
             }

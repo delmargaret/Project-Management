@@ -17,7 +17,7 @@ using Validation;
 
 namespace ProjectManagement.Controllers
 {
-    public class ProjectWorkController : ApiController
+    public class ProjectWorksController : ApiController
     {
         static IUnitOfWork uow = new ContextUnitOfWork("ManagementContext");
         IProjectWorkService projectWorkService = new ProjectWorkService(uow, new Map<ProjectWork, ProjectWorkDTO>());
@@ -40,16 +40,16 @@ namespace ProjectManagement.Controllers
             }
             catch (NotFoundException)
             {
-                return BadRequest("Нет ни одного участия в проекте");
+                return Ok();
             }
         }
 
         [HttpGet]
-        public IHttpActionResult GetNames(int projectId)
+        public IHttpActionResult GetNames(int projId)
         {
             try
             {
-                var works = projectWorkService.GetNamesOnProject(projectId).ToList();
+                var works = projectWorkService.GetNamesOnProject(projId).ToList();
                 string[] result = new string[works.Count];
                 int i = 0;
                 foreach (var work in works)
@@ -61,7 +61,7 @@ namespace ProjectManagement.Controllers
             }
             catch (NotFoundException)
             {
-                return BadRequest("Сотрудники на проекте не найдены");
+                return Ok();
             }
         }
 
@@ -82,16 +82,16 @@ namespace ProjectManagement.Controllers
             }
             catch (NotFoundException)
             {
-                return BadRequest("Сотрудники на проекте не найдены");
+                return Ok();
             }
         }
 
         [HttpGet]
-        public IHttpActionResult GetEmployeesProjects(int employeeId)
+        public IHttpActionResult GetEmployeesProjects(int empId)
         {
             try
             {
-                var works = projectWorkService.GetEmployeesProjects(employeeId).ToList();
+                var works = projectWorkService.GetEmployeesProjects(empId).ToList();
                 string[] result = new string[works.Count];
                 int i = 0;
                 foreach (var work in works)
@@ -103,7 +103,28 @@ namespace ProjectManagement.Controllers
             }
             catch (NotFoundException)
             {
-                return BadRequest("Проекты отсутствуют");
+                return Ok();
+            }
+        }
+
+        [HttpGet]
+        public IHttpActionResult GetEmployeesOnProjects(int prjctId)
+        {
+            try
+            {
+                var works = projectWorkService.GetEmployeesOnProject(prjctId).ToList();
+                string[] result = new string[works.Count];
+                int i = 0;
+                foreach (var work in works)
+                {
+                    result[i] = JsonConvert.SerializeObject(work);
+                    i++;
+                }
+                return Ok(result);
+            }
+            catch (NotFoundException)
+            {
+                return Ok();
             }
         }
 
@@ -118,7 +139,7 @@ namespace ProjectManagement.Controllers
             }
             catch (NotFoundException)
             {
-                return BadRequest("Участие в проекте не найдено");
+                return Ok();
             }
         }
 
@@ -180,11 +201,11 @@ namespace ProjectManagement.Controllers
         }
 
         [HttpDelete]
-        public IHttpActionResult DeleteEmployeeFromProject(int projectId, int employeeId)
+        public IHttpActionResult DeleteEmployeeFromProject(int prId, int emId)
         {
             try
             {
-                projectWorkService.DeleteEmployeeFromProject(projectId, employeeId);
+                projectWorkService.DeleteEmployeeFromProject(prId, emId);
                 return Ok();
             }
             catch (NotFoundException)
