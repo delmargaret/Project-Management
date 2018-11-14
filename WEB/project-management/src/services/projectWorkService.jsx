@@ -3,7 +3,7 @@ import * as method from './methods';
 export function getProjectWorks(){
     return method.get('projectWorks');
 }
-export function getProjectWorksById(id){
+export function getProjectWorkById(id){
     return method.get('projectWorks/'+ id);
 }
 export function getNames(projId){

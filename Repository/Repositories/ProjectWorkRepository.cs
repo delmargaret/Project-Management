@@ -85,7 +85,7 @@ namespace Repository.Repositories
             var employeesOnProject = db.ProjectWorks.Where(item => item.ProjectId == projectId).ToList();
             foreach(var employee in employeesOnProject)
             {
-                id = employee.EmployeeId;
+                id = employee.Id;
                 name = db.Employees.Find(employee.EmployeeId).EmployeeSurname + " " + db.Employees.Find(employee.EmployeeId).EmployeeName + " " + db.Employees.Find(employee.EmployeeId).EmployeePatronymic;
                 role = db.ProjectRoles.Find(employee.ProjectRoleId).ProjectRoleName;
                 (int, string, string) tuple = (id, name, role);
@@ -108,7 +108,7 @@ namespace Repository.Repositories
             var employeesOnProject = db.ProjectWorks.Where(item => item.ProjectId == projectId).ToList();
             foreach (var employee in employeesOnProject)
             {
-                id = employee.EmployeeId;
+                id = employee.Id;
                 name = db.Employees.Find(employee.EmployeeId).EmployeeSurname + " " + db.Employees.Find(employee.EmployeeId).EmployeeName + " " + db.Employees.Find(employee.EmployeeId).EmployeePatronymic;
                 role = db.ProjectRoles.Find(employee.ProjectRoleId).ProjectRoleName;
                 Employee em = db.Employees.Find(employee.EmployeeId);

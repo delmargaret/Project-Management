@@ -1,15 +1,117 @@
 import React, { Component } from 'react';
-import {Table, Button, Modal, FormGroup, FormControl} from 'react-bootstrap';
+import {Table, Button, Modal, FormGroup, FormControl, Form} from 'react-bootstrap';
 import * as projectService from '../../src/services/projectService';
 import * as projectWorkService from '../../src/services/projectWorkService';
 import * as projectRoleService from '../../src/services/projectRoleService';
 import * as employeeService from '../../src/services/employeeService';
 import "./ProjectManager.css";
 
+class AddWorkLoadForm extends Component{
+ 
+    constructor(props){
+        super(props);
+        this.state = {percent: 0};
+ 
+        this.onSubmit = this.onSubmit.bind(this);
+        this.onPercentChange = this.onPercentChange.bind(this);  
+    }
+    validatePercent() {
+        if (parseInt(this.state.percent) < 100) return 'success';
+        if (parseInt(this.state.percent) > 100) return 'error';
+        if (!parseInt(this.state.percent)) return 'error';
+        return null;
+      }
+    onPercentChange(e) {
+        this.setState({percent: e.target.value});
+    }
+    
+    onSubmit(e) {
+        e.preventDefault();
+        var percent = this.state.percent;
+
+        if (!percent) {
+            return;
+        }
+        this.props.onWorkLoadSubmit(percent);
+            this.setState({percent: 0});
+    }
+    render() {
+        if(this.props.workloadType===1||this.props.workloadType===3){
+            return(
+                <div>
+                    <h3>Добавить процент</h3>
+                <Form onSubmit={this.onSubmit}>
+                    <FormGroup controlId="formBasicPercent"
+                     validationState={this.validatePercent()}>
+                        <FormControl 
+                            type="number"
+                            placeholder="Процент загруженности"
+                            value={this.state.percent}
+                            onChange={this.onPercentChange} />
+                        <FormControl.Feedback />
+                    </FormGroup>
+                    <Button type="submit">Добавить</Button>
+                </Form>
+                </div>   
+            )
+        }
+    }
+}
+
 class NamesAndLoadList extends Component{
+    constructor(props){
+        super(props);
+        this.state = {actualWork:0, percentOrScheduleId: 0, show: false};
+        this.onAddWorkLoad = this.onAddWorkLoad.bind(this);
+        this.renderSchedule = this.renderSchedule.bind(this);  
+        this.handleShow = this.handleShow.bind(this);
+        this.handleClose = this.handleClose.bind(this);   
+        this.onWorkLoadClick = this.onWorkLoadClick.bind(this);
+    }
+    handleClose() {
+        this.setState({ show: false });
+      }
+    handleShow() {
+        this.setState({ show: true });
+      }
+    onWorkLoadClick(workId){
+        if(workId){
+            this.setState({actualWork: workId});
+            projectWorkService.getProjectWorkById(workId).then(res =>{
+                if(res!==null){
+                    var empId = JSON.parse(res.data).EmployeeId;
+                    employeeService.getEmployeeById(empId).then(result =>{
+                        if(result!==null){
+                            var workLoad = JSON.parse(result.data).PercentOrScheduleId;
+                            this.setState({percentOrScheduleId: workLoad});
+                            this.handleShow();
+                        }
+                    });
+                }
+            });
+        }
+    }
+    onAddWorkLoad(workLoad){
+        if (workLoad) {
+        projectWorkService.addWorkLoad(this.state.actualWork, workLoad).then(res =>{
+            if(res!==null){
+                this.props.changed();
+            }
+        });
+        }
+    }
+    renderSchedule(data){
+        if(data.Item4==="0%" || data.Item4==="" || data.Item4==="%")
+        {
+            return <th><Button onClick={() => this.onWorkLoadClick(data.Item1)}>Добавить загруженность</Button></th>
+        }
+        else {return <th>{data.Item4}</th>}
+    }
     render(){ 
-        return <div id="namesandloadscroll">
-            <Table>
+        var workloadId = this.state.percentOrScheduleId;
+        return <div>
+                <div  id="namesandloadscroll">
+                <Table>
             <thead>
                 <tr>
                 <th>Имя</th>
@@ -25,12 +127,20 @@ class NamesAndLoadList extends Component{
                         return <tr key={id}>
                             <td>{data.Item2}</td>
                             <td>{data.Item3}</td>
-                            <td>{data.Item4}</td>
+                            {this.renderSchedule(data)}
                         </tr>              
                     })
                     }
                         </tbody>
                 </Table>
+                </div>
+                <Modal show={this.state.show} onHide={this.handleClose}>
+                        <Modal.Header closeButton>Загруженность</Modal.Header>
+                        <Modal.Body>
+                        <AddWorkLoadForm workloadType={workloadId} 
+                            onWorkLoadSubmit={this.onAddWorkLoad}/>
+                        </Modal.Body>
+                    </Modal>
         </div>
             }
 }
@@ -183,6 +293,7 @@ class ProjectManagerPage extends Component{
         this.handleShow2 = this.handleShow2.bind(this);
         this.handleClose2 = this.handleClose2.bind(this);
         this.onAddEmployee = this.onAddEmployee.bind(this);
+        this.changeWorkLoad = this.changeWorkLoad.bind(this);
     }
     handleClose() {
         this.setState({ show: false });
@@ -229,18 +340,21 @@ class ProjectManagerPage extends Component{
         else return <OpenProjectList proj={this.state.projects} onCl={this.onCloseProject} 
             openModal={this.onOpenModal}/>
     }
+    changeWorkLoad(){
+        this.loadEmployeesOnProject(this.state.Project.Id);
+    }
     renderEmployeeList(){
         if(this.state.employees.length===0){
             return <div>Участники отсутствуют</div>     
         }
-        else return <NamesAndLoadList works={this.state.employees}/>
+        else return <NamesAndLoadList works={this.state.employees} projectId={this.state.Project.Id} changed={this.changeWorkLoad}/>
     }
     componentDidMount(){
         this.loadOpenProjects();
     }
+
     onAddEmployee(work) {
         if (work) {
-            console.log(work);
             var data = JSON.stringify({"EmployeeId":work.EmployeeId, "ProjectId":work.ProjectId,
         "ProjectRoleId": work.ProjectRoleId});
         projectWorkService.createProjectWork(data).then(res => {
