@@ -14,6 +14,7 @@ namespace BLL.Interfaces
         IEnumerable<(int id, string name, string role, string workload)> GetNamesAndLoadOnProject(int projectId);
         IEnumerable<ProjectWorkDTO> GetEmployeesProjects(int employeeId);
         IEnumerable<ProjectWorkDTO> GetEmployeesOnProject(int projectId);
+        int GetWorkLoadType(int projectWorkId);
         ProjectWorkDTO GetProjectWorkById(int id);
         int CalculateEmployeesWorkload(int employeeId);
         ProjectWorkDTO CreateProjectWork(ProjectWorkDTO item);

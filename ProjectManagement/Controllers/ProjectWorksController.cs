@@ -66,6 +66,12 @@ namespace ProjectManagement.Controllers
         }
 
         [HttpGet]
+        public IHttpActionResult GetWorkLoadType(int projectWorkId)
+        {
+            var result = projectWorkService.GetWorkLoadType(projectWorkId);
+            return Ok(result);
+        }
+        [HttpGet]
         public IHttpActionResult GetNamesAndLoad(int projectId)
         {
             try

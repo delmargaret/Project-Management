@@ -59,6 +59,14 @@ namespace BLL.Services
             Database.Save();
         }
 
+        public int GetWorkLoadType(int projectWorkId)
+        {
+            var work = Database.ProjectWorks.GetProjectWorkById(projectWorkId);
+            var employeeId = work.EmployeeId;
+            var type = Database.Employees.GetEmployeeById(employeeId).PercentOrScheduleId;
+            return type;
+        }
+
         public void AddWorkLoad(int projectWorkId, int workLoad)
         {
             var projectWork = Database.ProjectWorks.GetProjectWorkById(projectWorkId);
@@ -78,7 +86,7 @@ namespace BLL.Services
             Database.ProjectWorks.AddWorkLoad(projectWork.Id, workLoad);
             Database.Save();
         }
-
+        
         public void DeleteWorkLoad(int projectWorkId)
         {
             var projectWork = Database.ProjectWorks.GetProjectWorkById(projectWorkId);

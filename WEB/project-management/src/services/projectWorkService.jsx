@@ -15,6 +15,9 @@ export function getNamesAndLoad(projectId){
 export function getEmployeesProjects(empId){
     return method.get('projectWorks/?empId=' + empId);
 }
+export function getWorkLoadType(projectWorkId){
+    return method.get('projectWorks/?projectWorkId=' + projectWorkId);
+}
 export function getEmployeesOnProject(prjctId){
     return method.get('projectWorks/?prjctId=' + prjctId);
 }

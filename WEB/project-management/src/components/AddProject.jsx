@@ -54,6 +54,7 @@ class AddProjectForm extends Component{
     validateName(){
         if (this.state.name.length > 2) return 'success';
         if (this.state.name.length > 0) return 'error';
+        if (this.state.name.length > 25) return 'error';
         return null;
     }
     validateDescription(){

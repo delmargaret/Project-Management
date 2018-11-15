@@ -61,7 +61,7 @@ namespace ProjectManagement.Controllers
             }
             catch (NotFoundException)
             {
-                return BadRequest("Расписание не найдено");
+                return Ok();
             }
         }
 
@@ -85,13 +85,19 @@ namespace ProjectManagement.Controllers
         {
             try
             {
-                var days = scheduleServise.GetEmployeesFreeDays(employeeId);
-                var result = JsonConvert.SerializeObject(days);
+                var days = scheduleServise.GetEmployeesFreeDays(employeeId).ToList();
+                string[] result = new string[days.Count];
+                int i = 0;
+                foreach (var day in days)
+                {
+                    result[i] = JsonConvert.SerializeObject(day);
+                    i++;
+                }
                 return Ok(result);
             }
             catch (NotFoundException)
             {
-                return BadRequest("Объект не найден");
+                return Ok();
             }
         }
 
