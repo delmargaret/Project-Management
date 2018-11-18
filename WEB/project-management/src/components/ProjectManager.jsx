@@ -10,14 +10,6 @@ import ScheduleDayList from './AddSchedule';
 import "./ProjectManager.css";
 
 class AddWorkLoadForm extends Component{
- 
-    _isMounted = false;
-    get isMounted() {
-        return this._isMounted;
-    }
-    set isMounted(value) {
-        this._isMounted = value;
-    }
     constructor(props){
         super(props);
         this.state = {percent: 0, workLoadType: 0, freeDays: [], daysOnProject: []};
@@ -37,8 +29,7 @@ class AddWorkLoadForm extends Component{
                 var empId = JSON.parse(res.data).EmployeeId;
                 scheduleService.getEmployeesFreeDays(empId).then(result =>
                      { 
-                        if(this.isMounted){
-                            this.setState({freeDays: result.data}); }}).catch(error => {
+                            this.setState({freeDays: result.data}); }).catch(error => {
                         if (error.response) {
                         return null;
                       }
@@ -49,8 +40,7 @@ class AddWorkLoadForm extends Component{
     loadDaysOnProject(){
         scheduleService.getScheduleOnProjectWork(this.props.workId).then(res =>{
             if(res!==null){
-                if(this.isMounted){
-                    this.setState({daysOnProject: res.data});}}}).catch(error => {
+                    this.setState({daysOnProject: res.data});}}).catch(error => {
                     if (error.response) {
                     return null;
                 }
@@ -83,14 +73,16 @@ class AddWorkLoadForm extends Component{
         if (!day || !projectWorkId) {
             return;
         }
-        this.props.onScheduleDaySubmit({projectWorkId: projectWorkId, scheduleDayId: day});
+
+        var data = JSON.stringify({"ProjectWorkId":projectWorkId, 
+        "ScheduleDayId":day});
+        scheduleService.createSchedule(data).then(res =>{
+            if(res!==null){     
+                this.loadFreeDays();
+                this.props.onScheduleDaySubmit();   
+            }
+        });
         this.setState({day: 0});
-    }
-    componentDidUpdate(){
-        this.loadFreeDays();
-    }
-    componentWillUnmount(){
-        this.isMounted = false;
     }
     renderFreeDays(){
         if(this.state.freeDays.length===0){
@@ -130,9 +122,7 @@ class AddWorkLoadForm extends Component{
         this.props.onWorkLoadSubmit(percent);
             this.setState({percent: 0});
     }
-
     componentDidMount(){
-        this.isMounted = true;
         projectWorkService.getWorkLoadType(this.props.workId).then(res =>{
             if(res!==null){
                 var load = JSON.parse(res.data);
@@ -160,7 +150,7 @@ class AddWorkLoadForm extends Component{
         </div>   
     }
     render() {
-        if(!this.state.workLoadType) return <div>Загрузка...</div>
+        if(!this.state.workLoadType||!this.state.daysOnProject) return <div>Загрузка...</div>
         if(this.state.workLoadType===3){
             return(
                 <div>
@@ -190,30 +180,12 @@ class AddWorkLoadForm extends Component{
     }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 class ChangeProjectWorkForm extends Component{
     constructor(props){
         super(props);
         this.state = {projWorkId:0, projectName: "", employeeName: "", role: "", workLoad: "",
         roles: [], percentOrScheduleId: 0, projectRoleId: 0, show1: false, show2: false,
-        percent: 0, daysOnProject: []};
+        percent: 0, daysOnProject: [], freeDays: [], dayId: 0};
 
         this.loadRoles = this.loadRoles.bind(this);
         this.handleClose1 = this.handleClose1.bind(this);
@@ -229,6 +201,12 @@ class ChangeProjectWorkForm extends Component{
         this.onNewPercentSubmit = this.onNewPercentSubmit.bind(this);
         this.onPercentChange = this.onPercentChange.bind(this);
         this.loadDaysOnProject = this.loadDaysOnProject.bind(this);
+        this.onDayDelete = this.onDayDelete.bind(this);
+        this.validateDay = this.validateDay.bind(this);
+        this.loadFreeDays = this.loadFreeDays.bind(this);
+        this.renderFreeDays = this.renderFreeDays.bind(this);
+        this.onDayChange = this.onDayChange.bind(this);
+        this.onScheduleSubmit = this.onScheduleSubmit.bind(this);
     }
     handleClose1() {
         this.setState({ show1: false });
@@ -253,6 +231,11 @@ class ChangeProjectWorkForm extends Component{
         if (this.state.projectRoleId === 0) return 'error';
         return null;
     }
+    validateDay(){
+        if (this.state.dayId !== 0) return 'success';
+        if (this.state.dayId === 0) return 'error';
+        return null;
+    }
     onProjectRoleIdChange(e) {
         this.setState({projectRoleId: e.target.value});
     }
@@ -270,6 +253,89 @@ class ChangeProjectWorkForm extends Component{
                 return null;
             }
         });
+    }
+    loadFreeDays(){
+        projectWorkService.getProjectWorkById(this.state.projWorkId).then(res =>{
+            if(res!==null){
+                var empId = JSON.parse(res.data).EmployeeId;
+                scheduleService.getEmployeesFreeDays(empId).then(result =>
+                     { 
+                        this.setState({freeDays: result.data}); }).catch(error => {
+                        if (error.response) {
+                        return null;
+                      }
+                });
+            }
+        });
+    }
+    onDayChange(e){
+        this.setState({dayId: e.target.value});
+    }
+    onScheduleSubmit(e){
+        e.preventDefault();
+        var day = this.state.dayId;
+        var projectWorkId = this.state.projWorkId;
+        var dayName = "";
+                        if(day==="1"){dayName="Понедельник";}
+                        if(day==="2"){dayName="Вторник";}
+                        if(day==="3"){dayName="Среда";}
+                        if(day==="4"){dayName="Четверг";}
+                        if(day==="5"){dayName="Пятница";}
+                        if(day==="6"){dayName="Суббота";}
+        if (!day || !projectWorkId) {
+            return;
+        }
+
+        var data = JSON.stringify({"ProjectWorkId":projectWorkId, 
+        "ScheduleDayId":day});
+        scheduleService.createSchedule(data).then(res =>{
+            if(res!==null){     
+                this.loadFreeDays();
+                this.loadDaysOnProject();
+                this.props.onChangedDay();  
+                var load = "";
+                    this.state.daysOnProject.forEach((d) =>{
+                        var data = JSON.parse(d);
+                        var dayId = data.ScheduleDayId;
+                        var dayName = "";
+                        if(dayId===1){dayName="Понедельник";}
+                        if(dayId===2){dayName="Вторник";}
+                        if(dayId===3){dayName="Среда";}
+                        if(dayId===4){dayName="Четверг";}
+                        if(dayId===5){dayName="Пятница";}
+                        if(dayId===6){dayName="Суббота";}
+                        load = load + dayName + " ";
+                    });
+                    if(load===""||load===" "){
+                        load = "---";
+                    }
+                    else load = load + dayName;
+                    this.setState({workLoad: load}); 
+            }
+        });
+        this.setState({day: 0});
+    }
+    renderFreeDays(){
+        if(this.state.freeDays.length===0){
+            return(<div>Свободных дней нет</div> );
+            } 
+            else return <Form onSubmit={this.onScheduleSubmit}>
+            <FormGroup validationState={this.validateDay()}>
+                <FormControl componentClass="select" onChange={this.onDayChange}>
+                <option>Выберите день</option>
+                    {
+                        this.state.freeDays.map((day) => { 
+                            var data = JSON.parse(day);
+                            var id = data.Id;                              
+                            return <option key={id} value={id} >
+                            {data.ScheduleDayName}
+                            </option>
+                            }) 
+                    }
+                </FormControl>
+            </FormGroup>
+            <Button type="submit">Добавить</Button>
+            </Form>
     }
     validatePercent() {
         if (parseInt(this.state.percent) < 100) return 'success';
@@ -293,6 +359,36 @@ class ChangeProjectWorkForm extends Component{
         this.handleClose2();
             this.setState({percent: 0});
     }
+    onDayDelete(id){
+        if(id){
+            scheduleService.deleteById(id).then(res =>{
+                if(res!==null){
+                    this.loadDaysOnProject();
+                    this.loadFreeDays();
+                    var load = "";
+                    this.state.daysOnProject.forEach((day) =>{
+                        var data = JSON.parse(day);
+                        if(data.Id===id) return;
+                        var dayId = data.ScheduleDayId;
+                        var dayName = "";
+                        if(dayId===1){dayName="Понедельник";}
+                        if(dayId===2){dayName="Вторник";}
+                        if(dayId===3){dayName="Среда";}
+                        if(dayId===4){dayName="Четверг";}
+                        if(dayId===5){dayName="Пятница";}
+                        if(dayId===6){dayName="Суббота";}
+                        load = load + dayName + " ";
+                    });
+                    if(load===""||load===" "){
+                        load = "---";
+                    }
+                    console.log(load);
+                    this.setState({workLoad: load});
+                }
+            });
+        }
+        this.props.onChangedDay();
+    }
     renderWorkLoad(){
         if(!this.state.percentOrScheduleId) return <div>Загрузка</div>
         if(this.state.percentOrScheduleId===1){
@@ -309,8 +405,38 @@ class ChangeProjectWorkForm extends Component{
         </Form>
         }
         if(this.state.percentOrScheduleId===2){
+            if(this.state.daysOnProject.length===0) return <div>Расписание не добавлено</div>
             return <div>
-                
+                {this.renderFreeDays()}
+                <Table>
+            <thead>
+                <tr>
+                <th>Дни</th>
+                </tr>
+            </thead>
+                        <tbody>
+                        {
+                    this.state.daysOnProject.map((day) => { 
+                        var data = JSON.parse(day);
+                        var id = data.Id;
+                        var dayId = data.ScheduleDayId;
+                        var dayName = "";
+                        if(dayId===1){dayName="Понедельник";}
+                        if(dayId===2){dayName="Вторник";}
+                        if(dayId===3){dayName="Среда";}
+                        if(dayId===4){dayName="Четверг";}
+                        if(dayId===5){dayName="Пятница";}
+                        if(dayId===6){dayName="Суббота";}
+                        return <tr key={id}>
+                            <td>{dayName}</td>
+                            <td><Button onClick={() => this.onDayDelete(id)}>
+                            Удалить</Button>
+                            </td>
+                        </tr>              
+                    })
+                    }
+                        </tbody>
+                </Table>
             </div>
         }
     }
@@ -318,7 +444,6 @@ class ChangeProjectWorkForm extends Component{
         this.setState({projWorkId: this.props.projectWorkId});
         this.setState({workLoad: this.props.load});
         this.loadRoles();
-        this.
         projectWorkService.getProjectWorkById(this.props.projectWorkId).then(res =>{
             if(res!==null){
                 var empId = JSON.parse(res.data).EmployeeId;
@@ -332,6 +457,7 @@ class ChangeProjectWorkForm extends Component{
                         this.setState({percentOrScheduleId: loadType});
                         if(loadType===2){
                             this.loadDaysOnProject();
+                            this.loadFreeDays();
                         }
                     }
                 });
@@ -506,16 +632,8 @@ class NamesAndLoadList extends Component{
             });
         }
     }
-    onAddSchedule(schedule){
-        if (schedule) {
-            var data = JSON.stringify({"ProjectWorkId":schedule.projectWorkId, 
-            "ScheduleDayId":schedule.scheduleDayId});
-        scheduleService.createSchedule(data).then(res =>{
-            if(res!==null){
-                this.props.changed();
-            }
-        });
-        }
+    onAddSchedule(){
+        this.props.changed();
     }
     onChangeRole(roleId){
         if(roleId){
@@ -538,9 +656,9 @@ class NamesAndLoadList extends Component{
     renderSchedule(data){
         if(data.Item4==="0%" || data.Item4==="" || data.Item4==="%")
         {
-            return <th><Button onClick={() => this.onWorkLoadClick(data.Item1)}>Добавить загруженность</Button></th>
+            return <td><Button onClick={() => this.onWorkLoadClick(data.Item1)}>Добавить загруженность</Button></td>
         }
-        else {return <th>{data.Item4}</th>}
+        else {return <td>{data.Item4}</td>}
     }
     render(){ 
         return <div>
@@ -587,7 +705,7 @@ class NamesAndLoadList extends Component{
                     <Modal.Body>
                         <ChangeProjectWorkForm projectWorkId={this.state.actualWork} 
                         onSubmitRole={this.onChangeRole} load={this.state.actualWorkLoad}
-                        onSubmitNewPercent={this.onChangePercent}/>
+                        onSubmitNewPercent={this.onChangePercent} onChangedDay={this.props.changeDay}/>
                     </Modal.Body>
                 </Modal>
         </div>
@@ -746,6 +864,7 @@ class ProjectManagerPage extends Component{
     this.onAddEmployee = this.onAddEmployee.bind(this);
     this.changeWorkLoad = this.changeWorkLoad.bind(this);
     this.deleteProjectWork = this.deleteProjectWork.bind(this);
+    this.changeDay = this.changeDay.bind(this);
     }
     handleClose() {
         this.setState({ show: false });
@@ -800,7 +919,8 @@ class ProjectManagerPage extends Component{
             return <div>Участники отсутствуют</div>     
         }
         else return <NamesAndLoadList works={this.state.employees} projectId={this.state.Project.Id} 
-        changed={this.changeWorkLoad} onDeleteEmployeeFromProject={this.deleteProjectWork}/>
+        changed={this.changeWorkLoad} onDeleteEmployeeFromProject={this.deleteProjectWork}
+        changeDay={this.changeDay}/>
         }
     componentDidMount(){
         this.loadOpenProjects();
@@ -813,6 +933,9 @@ class ProjectManagerPage extends Component{
                 }
             });
         }
+    }
+    changeDay(){
+        this.loadEmployeesOnProject(this.state.Project.Id);
     }
     onAddEmployee(work) {
         if (work) {
