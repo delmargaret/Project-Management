@@ -15,14 +15,12 @@ namespace BLL.Services
     public class ScheduleServise : IScheduleService
     {
         IUnitOfWork Database { get; set; }
-        Map<Schedule, ScheduleDTO> Map { get; set; }
-        Map<ScheduleDay, ScheduleDayDTO> DayMap { get; set; }
+        Map<Schedule, ScheduleDTO> Map = new Map<Schedule, ScheduleDTO>();
+        Map<ScheduleDay, ScheduleDayDTO> DayMap = new Map<ScheduleDay, ScheduleDayDTO>();
 
-        public ScheduleServise(IUnitOfWork uow, Map<Schedule, ScheduleDTO> map, Map<ScheduleDay, ScheduleDayDTO> dayMap)
+        public ScheduleServise(IUnitOfWork uow)
         {
             Database = uow;
-            Map = map;
-            DayMap = dayMap;
         }
 
         public void Dispose()
@@ -56,6 +54,13 @@ namespace BLL.Services
             return DayMap.ListMap(freedays);
         }
 
+        public IEnumerable<ScheduleDayDTO> GetEmployeesSchedule(int employeeId)
+        {
+            Employee employee = Database.Employees.GetEmployeeById(employeeId);
+            var schedule = Database.Schedules.GetEmployeesSchedule(employee.Id);
+            return DayMap.ListMap(schedule);
+        }
+
         public ScheduleDTO CreateSchedule(ScheduleDTO item)
         {
             ProjectWork work = Database.ProjectWorks.GetProjectWorkById(item.ProjectWorkId);
@@ -67,6 +72,7 @@ namespace BLL.Services
             {
                 employee.PercentOrScheduleId = 2;
                 employee.PercentOrSchedule = Database.WorkLoads.GetTypeById(2);
+                Database.Save();
                 Schedule sch = new Schedule
                 {
                     ProjectWorkId = item.ProjectWorkId,

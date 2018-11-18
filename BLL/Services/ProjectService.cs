@@ -15,12 +15,11 @@ namespace BLL.Services
     public class ProjectService : IProjectService
     {
         IUnitOfWork Database { get; set; }
-        Map<Project, ProjectDTO> Map { get; set; }
+        Map<Project, ProjectDTO> Map = new Map<Project, ProjectDTO>();
 
-        public ProjectService(IUnitOfWork uow, Map<Project, ProjectDTO> map)
+        public ProjectService(IUnitOfWork uow)
         {
             Database = uow;
-            Map = map;
         }
 
         public void Dispose()
@@ -114,6 +113,53 @@ namespace BLL.Services
         public IEnumerable<ProjectDTO> GetAllProjects()
         {
             var projects = Database.Projects.GetAllProjects();
+            return Map.ListMap(projects);
+        }
+
+        public IEnumerable<ProjectDTO> SortByNameAsc()
+        {
+            var projects = Database.Projects.SortByNameAsc();
+            return Map.ListMap(projects);
+        }
+
+        public IEnumerable<ProjectDTO> SortByNameDesc()
+        {
+            var projects = Database.Projects.SortByNameDesc();
+            return Map.ListMap(projects);
+        }
+
+        public IEnumerable<ProjectDTO> SortByStartDateAsc()
+        {
+            var projects = Database.Projects.SortByStartDateAsc();
+            return Map.ListMap(projects);
+        }
+        public IEnumerable<ProjectDTO> SortByStartDateDesc()
+        {
+            var projects = Database.Projects.SortByStartDateDesc();
+            return Map.ListMap(projects);
+        }
+
+        public IEnumerable<ProjectDTO> SortByEndDateAsc()
+        {
+            var projects = Database.Projects.SortByEndDateAsc();
+            return Map.ListMap(projects);
+        }
+
+        public IEnumerable<ProjectDTO> SortByEndDateDesc()
+        {
+            var projects = Database.Projects.SortByEndDateDesc();
+            return Map.ListMap(projects);
+        }
+
+        public IEnumerable<ProjectDTO> SortByStatusAsc()
+        {
+            var projects = Database.Projects.SortByStatusAsc();
+            return Map.ListMap(projects);
+        }
+
+        public IEnumerable<ProjectDTO> SortByStatusDesc()
+        {
+            var projects = Database.Projects.SortByStatusDesc();
             return Map.ListMap(projects);
         }
 

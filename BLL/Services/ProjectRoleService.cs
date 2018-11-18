@@ -14,12 +14,11 @@ namespace BLL.Services
     public class ProjectRoleService : IProjectRoleService
     {
         IUnitOfWork Database { get; set; }
-        Map<ProjectRole, ProjectRoleDTO> Map { get; set; }
+        Map<ProjectRole, ProjectRoleDTO> Map = new Map<ProjectRole, ProjectRoleDTO>();
 
-        public ProjectRoleService(IUnitOfWork uow, Map<ProjectRole, ProjectRoleDTO> map)
+        public ProjectRoleService(IUnitOfWork uow)
         {
             Database = uow;
-            Map = map;
         }
 
         public ProjectRoleDTO CreateProjectRole(string projectRoleName)

@@ -41,6 +41,78 @@ namespace Repository.Repositories
             return db.Projects;
         }
 
+        public IEnumerable<Project> SortByNameAsc()
+        {
+            if (db.Projects.Count() == 0)
+            {
+                throw new NotFoundException();
+            }
+            return db.Projects.OrderBy(item => item.ProjectName);
+        }
+
+        public IEnumerable<Project> SortByNameDesc()
+        {
+            if (db.Projects.Count() == 0)
+            {
+                throw new NotFoundException();
+            }
+            return db.Projects.OrderByDescending(item => item.ProjectName);
+        }
+
+        public IEnumerable<Project> SortByStartDateAsc()
+        {
+            if (db.Projects.Count() == 0)
+            {
+                throw new NotFoundException();
+            }
+            return db.Projects.OrderBy(item => item.ProjectStartDate);
+        }
+
+        public IEnumerable<Project> SortByStartDateDesc()
+        {
+            if (db.Projects.Count() == 0)
+            {
+                throw new NotFoundException();
+            }
+            return db.Projects.OrderByDescending(item => item.ProjectStartDate);
+        }
+
+        public IEnumerable<Project> SortByEndDateAsc()
+        {
+            if (db.Projects.Count() == 0)
+            {
+                throw new NotFoundException();
+            }
+            return db.Projects.OrderBy(item => item.ProjectEndDate);
+        }
+
+        public IEnumerable<Project> SortByEndDateDesc()
+        {
+            if (db.Projects.Count() == 0)
+            {
+                throw new NotFoundException();
+            }
+            return db.Projects.OrderByDescending(item => item.ProjectEndDate);
+        }
+
+        public IEnumerable<Project> SortByStatusAsc()
+        {
+            if (db.Projects.Count() == 0)
+            {
+                throw new NotFoundException();
+            }
+            return db.Projects.OrderBy(item => item.ProjectStatusId);
+        }
+
+        public IEnumerable<Project> SortByStatusDesc()
+        {
+            if (db.Projects.Count() == 0)
+            {
+                throw new NotFoundException();
+            }
+            return db.Projects.OrderByDescending(item => item.ProjectStatusId);
+        }
+
         public IEnumerable<Project> GetAllProjectsByStatusId(int projectStatusId)
         {
             if(db.Projects.Where(item => item.ProjectStatusId == projectStatusId).Count() == 0)

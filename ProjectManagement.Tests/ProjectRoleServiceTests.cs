@@ -18,7 +18,7 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void CreateProjectRoleTest()
         {
-            ProjectRoleService projectRoleService = new ProjectRoleService(uow, new Map<ProjectRole, ProjectRoleDTO>());
+            ProjectRoleService projectRoleService = new ProjectRoleService(uow);
 
             var projectRole = projectRoleService.CreateProjectRole("abc");
             ProjectRoleDTO actual = projectRoleService.GetProjectRoleById(projectRole.Id);
@@ -35,7 +35,7 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void GetProjectRolesTest()
         {
-            ProjectRoleService projectRoleService = new ProjectRoleService(uow, new Map<ProjectRole, ProjectRoleDTO>());
+            ProjectRoleService projectRoleService = new ProjectRoleService(uow);
 
             var projects = projectRoleService.GetProjectRoles().ToList();
             Assert.AreEqual(projects.Count, 7);
@@ -44,7 +44,7 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void ChangeProjectRoleNameTest()
         {
-            ProjectRoleService projectRoleService = new ProjectRoleService(uow, new Map<ProjectRole, ProjectRoleDTO>());
+            ProjectRoleService projectRoleService = new ProjectRoleService(uow);
 
             var projectRole = projectRoleService.CreateProjectRole("abc");
             ProjectRoleDTO actual = projectRoleService.GetProjectRoleById(projectRole.Id);

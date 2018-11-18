@@ -32,9 +32,8 @@ namespace ProjectManagement
                 );
 
             config.Routes.MapHttpRoute(
-                name: "Defaul",
-                routeTemplate: "{controller}/{req}",
-                defaults: new { req = new AlphaRouteConstraint() }
+                name: "MyAp",
+                routeTemplate: "{controller}/{action}"
                 );
 
             config.Routes.MapHttpRoute(
@@ -42,11 +41,6 @@ namespace ProjectManagement
                 routeTemplate: "{controller}/{action}/{id}",
                 defaults: new { },
                 constraints: new {  id = new IntRouteConstraint() }
-                );
-
-            config.Routes.MapHttpRoute(
-                name: "MyAp",
-                routeTemplate: "{controller}/{action}"
                 );
         }
     }

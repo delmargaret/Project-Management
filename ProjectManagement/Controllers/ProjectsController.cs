@@ -19,17 +19,196 @@ namespace ProjectManagement.Controllers
 {
     public class ProjectsController : ApiController
     {
-        static IUnitOfWork uow = new ContextUnitOfWork("ManagementContext");
-        IProjectService projectService = new ProjectService(uow, new Map<Project, ProjectDTO>());
+        IProjectService projectService = new ProjectService(new ContextUnitOfWork("ManagementContext"));
         ProjectValidator pvalidator = new ProjectValidator();
-        // GET api/<controller>
 
+        //IProjectService projectService;
+        //public ProjectsController(IProjectService serv)
+        //{
+        //    projectService = serv;
+        //}
         [HttpGet]
         public IHttpActionResult GetProjects()
         {
             try
             {
                 List<ProjectDTO> projects = projectService.GetAllProjects().ToList();
+                string[] result = new string[projects.Count];
+                int i = 0;
+                foreach (var project in projects)
+                {
+                    result[i] = JsonConvert.SerializeObject(project);
+                    i++;
+                }
+                return Ok(result);
+            }
+            catch (NotFoundException)
+            {
+                return Ok();
+            }
+        }
+
+        [ActionName("sortByNameAsc")]
+        [HttpGet]
+        public IHttpActionResult GetByNameAsc()
+        {
+            try
+            {
+                List<ProjectDTO> projects = projectService.SortByNameAsc().ToList();
+                string[] result = new string[projects.Count];
+                int i = 0;
+                foreach (var project in projects)
+                {
+                    result[i] = JsonConvert.SerializeObject(project);
+                    i++;
+                }
+                return Ok(result);
+            }
+            catch (NotFoundException)
+            {
+                return Ok();
+            }
+        }
+
+        [ActionName("sortByNameDesc")]
+        [HttpGet]
+        public IHttpActionResult GetByNameDesc()
+        {
+            try
+            {
+                List<ProjectDTO> projects = projectService.SortByNameDesc().ToList();
+                string[] result = new string[projects.Count];
+                int i = 0;
+                foreach (var project in projects)
+                {
+                    result[i] = JsonConvert.SerializeObject(project);
+                    i++;
+                }
+                return Ok(result);
+            }
+            catch (NotFoundException)
+            {
+                return Ok();
+            }
+        }
+
+        [ActionName("sortByStartDateAsc")]
+        [HttpGet]
+        public IHttpActionResult GetByStartDateAsc()
+        {
+            try
+            {
+                List<ProjectDTO> projects = projectService.SortByStartDateAsc().ToList();
+                string[] result = new string[projects.Count];
+                int i = 0;
+                foreach (var project in projects)
+                {
+                    result[i] = JsonConvert.SerializeObject(project);
+                    i++;
+                }
+                return Ok(result);
+            }
+            catch (NotFoundException)
+            {
+                return Ok();
+            }
+        }
+
+        [ActionName("sortByStartDateDesc")]
+        [HttpGet]
+        public IHttpActionResult GetByStartDateDesc()
+        {
+            try
+            {
+                List<ProjectDTO> projects = projectService.SortByStartDateDesc().ToList();
+                string[] result = new string[projects.Count];
+                int i = 0;
+                foreach (var project in projects)
+                {
+                    result[i] = JsonConvert.SerializeObject(project);
+                    i++;
+                }
+                return Ok(result);
+            }
+            catch (NotFoundException)
+            {
+                return Ok();
+            }
+        }
+
+        [ActionName("sortByEndDateAsc")]
+        [HttpGet]
+        public IHttpActionResult GetByEndDateAsc()
+        {
+            try
+            {
+                List<ProjectDTO> projects = projectService.SortByEndDateAsc().ToList();
+                string[] result = new string[projects.Count];
+                int i = 0;
+                foreach (var project in projects)
+                {
+                    result[i] = JsonConvert.SerializeObject(project);
+                    i++;
+                }
+                return Ok(result);
+            }
+            catch (NotFoundException)
+            {
+                return Ok();
+            }
+        }
+
+        [ActionName("sortByEndDateDesc")]
+        [HttpGet]
+        public IHttpActionResult GetByEndDateDesc()
+        {
+            try
+            {
+                List<ProjectDTO> projects = projectService.SortByEndDateDesc().ToList();
+                string[] result = new string[projects.Count];
+                int i = 0;
+                foreach (var project in projects)
+                {
+                    result[i] = JsonConvert.SerializeObject(project);
+                    i++;
+                }
+                return Ok(result);
+            }
+            catch (NotFoundException)
+            {
+                return Ok();
+            }
+        }
+
+        [ActionName("sortByStatusAsc")]
+        [HttpGet]
+        public IHttpActionResult GetByStatusAsc()
+        {
+            try
+            {
+                List<ProjectDTO> projects = projectService.SortByStatusAsc().ToList();
+                string[] result = new string[projects.Count];
+                int i = 0;
+                foreach (var project in projects)
+                {
+                    result[i] = JsonConvert.SerializeObject(project);
+                    i++;
+                }
+                return Ok(result);
+            }
+            catch (NotFoundException)
+            {
+                return Ok();
+            }
+        }
+
+        [ActionName("sortByStatusDesc")]
+        [HttpGet]
+        public IHttpActionResult GetByStatusDesc()
+        {
+            try
+            {
+                List<ProjectDTO> projects = projectService.SortByStatusDesc().ToList();
                 string[] result = new string[projects.Count];
                 int i = 0;
                 foreach (var project in projects)

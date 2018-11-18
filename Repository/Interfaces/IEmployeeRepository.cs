@@ -10,6 +10,10 @@ namespace Repository.Interfaces
     public interface IEmployeeRepository
     {
         IEnumerable<Employee> GetAllEmployees();
+        IEnumerable<Employee> SortEmployeesBySurnameAsc();
+        IEnumerable<Employee> SortEmployeesByRoleAsc();
+        IEnumerable<Employee> SortEmployeesBySurnameDesc();
+        IEnumerable<Employee> SortEmployeesByRoleDesc();
         IEnumerable<Employee> GetEmployeesByRole(int roleId);
         IEnumerable<Employee> GetEmployeesBySurname(string surname);
         void FindSameEmployee(string name, string surname, string patronymic, string email, string git, string phone, int roleId, int workloadId);

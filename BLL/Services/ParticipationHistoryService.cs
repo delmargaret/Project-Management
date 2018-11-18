@@ -15,12 +15,11 @@ namespace BLL.Services
     public class ParticipationHistoryService : IParticipationHistoryService
     {
         IUnitOfWork Database { get; set; }
-        Map<ParticipationHistory, ParticipationHistoryDTO> Map { get; set; }
+        Map<ParticipationHistory, ParticipationHistoryDTO> Map = new Map<ParticipationHistory, ParticipationHistoryDTO>();
 
-        public ParticipationHistoryService(IUnitOfWork uow, Map<ParticipationHistory, ParticipationHistoryDTO> map)
+        public ParticipationHistoryService(IUnitOfWork uow)
         {
             Database = uow;
-            Map = map;
         }
 
         public void Dispose()

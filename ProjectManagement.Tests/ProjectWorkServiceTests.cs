@@ -21,9 +21,9 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void CreateProjectWorkTest()
         {
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
-            ProjectService projectService = new ProjectService(uow, new Map<Project, ProjectDTO>());
-            ProjectWorkService projectWorkService = new ProjectWorkService(uow, new Map<ProjectWork, ProjectWorkDTO>());
+            EmployeeService employeeService = new EmployeeService(uow);
+            ProjectService projectService = new ProjectService(uow);
+            ProjectWorkService projectWorkService = new ProjectWorkService(uow);
             EmployeeDTO employee = new EmployeeDTO
             {
                 EmployeeName = "Екатерина",
@@ -73,9 +73,9 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void DeleteEmployeeFromProjectTest()
         {
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
-            ProjectService projectService = new ProjectService(uow, new Map<Project, ProjectDTO>());
-            ProjectWorkService projectWorkService = new ProjectWorkService(uow, new Map<ProjectWork, ProjectWorkDTO>());
+            EmployeeService employeeService = new EmployeeService(uow);
+            ProjectService projectService = new ProjectService(uow);
+            ProjectWorkService projectWorkService = new ProjectWorkService(uow);
             EmployeeDTO employee1 = new EmployeeDTO
             {
                 EmployeeName = "Екатерина",
@@ -141,16 +141,16 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void DeleteProjectWorkByIdIfItsNotFound()
         {
-            ProjectWorkService projectWorkService = new ProjectWorkService(uow, new Map<ProjectWork, ProjectWorkDTO>());
+            ProjectWorkService projectWorkService = new ProjectWorkService(uow);
             Assert.ThrowsException<NotFoundException>(() => projectWorkService.DeleteProjectWorkById(1235));
         }
 
         [TestMethod]
         public void GetAllProjectWorksTest()
         {
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
-            ProjectService projectService = new ProjectService(uow, new Map<Project, ProjectDTO>());
-            ProjectWorkService projectWorkService = new ProjectWorkService(uow, new Map<ProjectWork, ProjectWorkDTO>());
+            EmployeeService employeeService = new EmployeeService(uow);
+            ProjectService projectService = new ProjectService(uow);
+            ProjectWorkService projectWorkService = new ProjectWorkService(uow);
             EmployeeDTO employee1 = new EmployeeDTO
             {
                 EmployeeName = "Екатерина",
@@ -216,9 +216,9 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void CreateProjectWorkIfItsAlreadyExistsTest()
         {
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
-            ProjectService projectService = new ProjectService(uow, new Map<Project, ProjectDTO>());
-            ProjectWorkService projectWorkService = new ProjectWorkService(uow, new Map<ProjectWork, ProjectWorkDTO>());
+            EmployeeService employeeService = new EmployeeService(uow);
+            ProjectService projectService = new ProjectService(uow);
+            ProjectWorkService projectWorkService = new ProjectWorkService(uow);
             EmployeeDTO employee = new EmployeeDTO
             {
                 EmployeeName = "Екатерина",
@@ -259,9 +259,9 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void GetEmployeesProjectsTest()
         {
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
-            ProjectService projectService = new ProjectService(uow, new Map<Project, ProjectDTO>());
-            ProjectWorkService projectWorkService = new ProjectWorkService(uow, new Map<ProjectWork, ProjectWorkDTO>());
+            EmployeeService employeeService = new EmployeeService(uow);
+            ProjectService projectService = new ProjectService(uow);
+            ProjectWorkService projectWorkService = new ProjectWorkService(uow);
             EmployeeDTO employee1 = new EmployeeDTO
             {
                 EmployeeName = "Екатерина",
@@ -326,9 +326,9 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void CalculateEmployeesWorkloadTest()
         {
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
-            ProjectService projectService = new ProjectService(uow, new Map<Project, ProjectDTO>());
-            ProjectWorkService projectWorkService = new ProjectWorkService(uow, new Map<ProjectWork, ProjectWorkDTO>());
+            EmployeeService employeeService = new EmployeeService(uow);
+            ProjectService projectService = new ProjectService(uow);
+            ProjectWorkService projectWorkService = new ProjectWorkService(uow);
             EmployeeDTO employee1 = new EmployeeDTO
             {
                 EmployeeName = "Екатерина",
@@ -395,10 +395,10 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void GetNamesAndLoadOnProjectTest()
         {
-            ScheduleServise scheduleServise = new ScheduleServise(uow, new Map<Schedule, ScheduleDTO>(), new Map<ScheduleDay, ScheduleDayDTO>());
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
-            ProjectService projectService = new ProjectService(uow, new Map<Project, ProjectDTO>());
-            ProjectWorkService projectWorkService = new ProjectWorkService(uow, new Map<ProjectWork, ProjectWorkDTO>());
+            ScheduleServise scheduleServise = new ScheduleServise(uow);
+            EmployeeService employeeService = new EmployeeService(uow);
+            ProjectService projectService = new ProjectService(uow);
+            ProjectWorkService projectWorkService = new ProjectWorkService(uow);
             EmployeeDTO employee1 = new EmployeeDTO
             {
                 EmployeeName = "Екатерина",
@@ -469,10 +469,10 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void GetNamesOnProjectTest()
         {
-            ScheduleServise scheduleServise = new ScheduleServise(uow, new Map<Schedule, ScheduleDTO>(), new Map<ScheduleDay, ScheduleDayDTO>());
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
-            ProjectService projectService = new ProjectService(uow, new Map<Project, ProjectDTO>());
-            ProjectWorkService projectWorkService = new ProjectWorkService(uow, new Map<ProjectWork, ProjectWorkDTO>());
+            ScheduleServise scheduleServise = new ScheduleServise(uow);
+            EmployeeService employeeService = new EmployeeService(uow);
+            ProjectService projectService = new ProjectService(uow);
+            ProjectWorkService projectWorkService = new ProjectWorkService(uow);
             EmployeeDTO employee1 = new EmployeeDTO
             {
                 EmployeeName = "Екатерина",
@@ -542,9 +542,9 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void ChangeEmployeeTest()
         {
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
-            ProjectService projectService = new ProjectService(uow, new Map<Project, ProjectDTO>());
-            ProjectWorkService projectWorkService = new ProjectWorkService(uow, new Map<ProjectWork, ProjectWorkDTO>());
+            EmployeeService employeeService = new EmployeeService(uow);
+            ProjectService projectService = new ProjectService(uow);
+            ProjectWorkService projectWorkService = new ProjectWorkService(uow);
             EmployeeDTO employee1 = new EmployeeDTO
             {
                 EmployeeName = "Екатерина",
@@ -608,9 +608,9 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void ChangeEmployeesProjectRoleTest()
         {
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
-            ProjectService projectService = new ProjectService(uow, new Map<Project, ProjectDTO>());
-            ProjectWorkService projectWorkService = new ProjectWorkService(uow, new Map<ProjectWork, ProjectWorkDTO>());
+            EmployeeService employeeService = new EmployeeService(uow);
+            ProjectService projectService = new ProjectService(uow);
+            ProjectWorkService projectWorkService = new ProjectWorkService(uow);
             EmployeeDTO employee1 = new EmployeeDTO
             {
                 EmployeeName = "Екатерина",
@@ -662,9 +662,9 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void ChangeProjectTest()
         {
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
-            ProjectService projectService = new ProjectService(uow, new Map<Project, ProjectDTO>());
-            ProjectWorkService projectWorkService = new ProjectWorkService(uow, new Map<ProjectWork, ProjectWorkDTO>());
+            EmployeeService employeeService = new EmployeeService(uow);
+            ProjectService projectService = new ProjectService(uow);
+            ProjectWorkService projectWorkService = new ProjectWorkService(uow);
             EmployeeDTO employee1 = new EmployeeDTO
             {
                 EmployeeName = "Екатерина",
@@ -726,9 +726,9 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void ChangeWorkLoadTest()
         {
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
-            ProjectService projectService = new ProjectService(uow, new Map<Project, ProjectDTO>());
-            ProjectWorkService projectWorkService = new ProjectWorkService(uow, new Map<ProjectWork, ProjectWorkDTO>());
+            EmployeeService employeeService = new EmployeeService(uow);
+            ProjectService projectService = new ProjectService(uow);
+            ProjectWorkService projectWorkService = new ProjectWorkService(uow);
             EmployeeDTO employee1 = new EmployeeDTO
             {
                 EmployeeName = "Екатерина",
@@ -784,9 +784,9 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void DeleteWorkLoadTest()
         {
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
-            ProjectService projectService = new ProjectService(uow, new Map<Project, ProjectDTO>());
-            ProjectWorkService projectWorkService = new ProjectWorkService(uow, new Map<ProjectWork, ProjectWorkDTO>());
+            EmployeeService employeeService = new EmployeeService(uow);
+            ProjectService projectService = new ProjectService(uow);
+            ProjectWorkService projectWorkService = new ProjectWorkService(uow);
             EmployeeDTO employee1 = new EmployeeDTO
             {
                 EmployeeName = "Екатерина",

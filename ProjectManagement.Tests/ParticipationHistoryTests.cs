@@ -21,10 +21,10 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void CreateHistoryTest()
         {
-            ParticipationHistoryService participationHistoryService = new ParticipationHistoryService(uow, new Map<ParticipationHistory, ParticipationHistoryDTO>());
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
-            ProjectService projectService = new ProjectService(uow, new Map<Project, ProjectDTO>());
-            ProjectWorkService projectWorkService = new ProjectWorkService(uow, new Map<ProjectWork, ProjectWorkDTO>());
+            ParticipationHistoryService participationHistoryService = new ParticipationHistoryService(uow);
+            EmployeeService employeeService = new EmployeeService(uow);
+            ProjectService projectService = new ProjectService(uow);
+            ProjectWorkService projectWorkService = new ProjectWorkService(uow);
             EmployeeDTO employee = new EmployeeDTO
             {
                 EmployeeName = "Екатерина",
@@ -85,10 +85,10 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void GetLastEmployeesHistoryTest()
         {
-            ParticipationHistoryService participationHistoryService = new ParticipationHistoryService(uow, new Map<ParticipationHistory, ParticipationHistoryDTO>());
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
-            ProjectService projectService = new ProjectService(uow, new Map<Project, ProjectDTO>());
-            ProjectWorkService projectWorkService = new ProjectWorkService(uow, new Map<ProjectWork, ProjectWorkDTO>());
+            ParticipationHistoryService participationHistoryService = new ParticipationHistoryService(uow);
+            EmployeeService employeeService = new EmployeeService(uow);
+            ProjectService projectService = new ProjectService(uow);
+            ProjectWorkService projectWorkService = new ProjectWorkService(uow);
             EmployeeDTO employee = new EmployeeDTO
             {
                 EmployeeName = "Екатерина",
@@ -161,10 +161,10 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void GetAllHistoriesTest()
         {
-            ParticipationHistoryService participationHistoryService = new ParticipationHistoryService(uow, new Map<ParticipationHistory, ParticipationHistoryDTO>());
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
-            ProjectService projectService = new ProjectService(uow, new Map<Project, ProjectDTO>());
-            ProjectWorkService projectWorkService = new ProjectWorkService(uow, new Map<ProjectWork, ProjectWorkDTO>());
+            ParticipationHistoryService participationHistoryService = new ParticipationHistoryService(uow);
+            EmployeeService employeeService = new EmployeeService(uow);
+            ProjectService projectService = new ProjectService(uow);
+            ProjectWorkService projectWorkService = new ProjectWorkService(uow);
             EmployeeDTO employee = new EmployeeDTO
             {
                 EmployeeName = "Екатерина",
@@ -261,10 +261,10 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void GetAllEmployeesHistoriesOnProjectTest()
         {
-            ParticipationHistoryService participationHistoryService = new ParticipationHistoryService(uow, new Map<ParticipationHistory, ParticipationHistoryDTO>());
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
-            ProjectService projectService = new ProjectService(uow, new Map<Project, ProjectDTO>());
-            ProjectWorkService projectWorkService = new ProjectWorkService(uow, new Map<ProjectWork, ProjectWorkDTO>());
+            ParticipationHistoryService participationHistoryService = new ParticipationHistoryService(uow);
+            EmployeeService employeeService = new EmployeeService(uow);
+            ProjectService projectService = new ProjectService(uow);
+            ProjectWorkService projectWorkService = new ProjectWorkService(uow);
             EmployeeDTO employee = new EmployeeDTO
             {
                 EmployeeName = "Екатерина",
@@ -361,10 +361,10 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void ChangeHistoryStartDateTest()
         {
-            ParticipationHistoryService participationHistoryService = new ParticipationHistoryService(uow, new Map<ParticipationHistory, ParticipationHistoryDTO>());
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
-            ProjectService projectService = new ProjectService(uow, new Map<Project, ProjectDTO>());
-            ProjectWorkService projectWorkService = new ProjectWorkService(uow, new Map<ProjectWork, ProjectWorkDTO>());
+            ParticipationHistoryService participationHistoryService = new ParticipationHistoryService(uow);
+            EmployeeService employeeService = new EmployeeService(uow);
+            ProjectService projectService = new ProjectService(uow);
+            ProjectWorkService projectWorkService = new ProjectWorkService(uow);
             EmployeeDTO employee = new EmployeeDTO
             {
                 EmployeeName = "Екатерина",
@@ -428,10 +428,10 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void ChangeHistoryStartDateIfItsNotValidTest()
         {
-            ParticipationHistoryService participationHistoryService = new ParticipationHistoryService(uow, new Map<ParticipationHistory, ParticipationHistoryDTO>());
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
-            ProjectService projectService = new ProjectService(uow, new Map<Project, ProjectDTO>());
-            ProjectWorkService projectWorkService = new ProjectWorkService(uow, new Map<ProjectWork, ProjectWorkDTO>());
+            ParticipationHistoryService participationHistoryService = new ParticipationHistoryService(uow);
+            EmployeeService employeeService = new EmployeeService(uow);
+            ProjectService projectService = new ProjectService(uow);
+            ProjectWorkService projectWorkService = new ProjectWorkService(uow);
             EmployeeDTO employee = new EmployeeDTO
             {
                 EmployeeName = "Екатерина",
@@ -484,10 +484,10 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void ChangeHistoryEndDateTest()
         {
-            ParticipationHistoryService participationHistoryService = new ParticipationHistoryService(uow, new Map<ParticipationHistory, ParticipationHistoryDTO>());
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
-            ProjectService projectService = new ProjectService(uow, new Map<Project, ProjectDTO>());
-            ProjectWorkService projectWorkService = new ProjectWorkService(uow, new Map<ProjectWork, ProjectWorkDTO>());
+            ParticipationHistoryService participationHistoryService = new ParticipationHistoryService(uow);
+            EmployeeService employeeService = new EmployeeService(uow);
+            ProjectService projectService = new ProjectService(uow);
+            ProjectWorkService projectWorkService = new ProjectWorkService(uow);
             EmployeeDTO employee = new EmployeeDTO
             {
                 EmployeeName = "Екатерина",
@@ -551,10 +551,10 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void ChangeHistoryEndDateIfItsNotValidTest()
         {
-            ParticipationHistoryService participationHistoryService = new ParticipationHistoryService(uow, new Map<ParticipationHistory, ParticipationHistoryDTO>());
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
-            ProjectService projectService = new ProjectService(uow, new Map<Project, ProjectDTO>());
-            ProjectWorkService projectWorkService = new ProjectWorkService(uow, new Map<ProjectWork, ProjectWorkDTO>());
+            ParticipationHistoryService participationHistoryService = new ParticipationHistoryService(uow);
+            EmployeeService employeeService = new EmployeeService(uow);
+            ProjectService projectService = new ProjectService(uow);
+            ProjectWorkService projectWorkService = new ProjectWorkService(uow);
             EmployeeDTO employee = new EmployeeDTO
             {
                 EmployeeName = "Екатерина",

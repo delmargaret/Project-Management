@@ -18,9 +18,13 @@ namespace ProjectManagement.Controllers
 {
     public class ProjectRolesController : ApiController
     {
-        static IUnitOfWork uow = new ContextUnitOfWork("ManagementContext");
-        IProjectRoleService projectRoleService = new ProjectRoleService(uow, new Map<ProjectRole, ProjectRoleDTO>());
+        IProjectRoleService projectRoleService = new ProjectRoleService(new ContextUnitOfWork("ManagementContext"));
 
+        //IProjectRoleService projectRoleService;
+        //public ProjectRolesController(IProjectRoleService serv)
+        //{
+        //    projectRoleService = serv;
+        //}
         [HttpGet]
         public IHttpActionResult GetProjectRoles()
         {

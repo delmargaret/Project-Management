@@ -49,7 +49,7 @@ namespace DAL.DataContext
 
             db.Roles.Add(new Role { Id = 1, RoleName = "Ресурсный менеджер" });
             db.Roles.Add(new Role { Id = 2, RoleName = "Проектный менеджер" });
-            db.Roles.Add(new Role { Id = 3, RoleName = "Сотрудник" });
+            db.Roles.Add(new Role { Id = 3, RoleName = "Разработчик" });
 
             db.ProjectStatuses.Add(new ProjectStatus { Id = 1, ProjectStatusName = "Открыт" });
             db.ProjectStatuses.Add(new ProjectStatus { Id = 2, ProjectStatusName = "Закрыт" });

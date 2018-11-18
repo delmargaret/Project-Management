@@ -1,7 +1,19 @@
 import * as method from './methods';
 
 export function getEmployees(){
-    return method.get('employees');
+    return method.get('employees/getAllEmployees');
+}
+export function sortBySurnameAsc(){
+    return method.get('employees/sortBySurnameAsc');
+}
+export function sortBySurnameDesc(){
+    return method.get('employees/sortBySurnameDesc');
+}
+export function sortByRoleAsc(){
+    return method.get('employees/sortByRoleAsc');
+}
+export function sortByRoleDesc(){
+    return method.get('employees/sortByRoleDesc');
 }
 export function getEmployeeById(id){
     return method.get('employees/'+ id);

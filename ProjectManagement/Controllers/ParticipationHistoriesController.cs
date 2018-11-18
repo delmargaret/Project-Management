@@ -19,10 +19,14 @@ namespace ProjectManagement.Controllers
 {
     public class ParticipationHistoriesController : ApiController
     {
-        static IUnitOfWork uow = new ContextUnitOfWork("ManagementContext");
-        IParticipationHistoryService participationHistoryService = new ParticipationHistoryService(uow, new Map<ParticipationHistory, ParticipationHistoryDTO>());
+        IParticipationHistoryService participationHistoryService = new ParticipationHistoryService(new ContextUnitOfWork("ManagementContext"));
         ParticipationHistoryValidator phvalidator = new ParticipationHistoryValidator();
 
+        //IParticipationHistoryService participationHistoryService;
+        //public ParticipationHistoriesController(IParticipationHistoryService serv)
+        //{
+        //    participationHistoryService = serv;
+        //}
         [HttpGet]
         public IHttpActionResult GetAllHistories()
         {

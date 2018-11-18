@@ -7,3 +7,8 @@
     height: 350px;
     overflow-y: scroll;
 }
+
+#sortProjectsSelect{
+    width: 25%;
+    box-align: left 
+}

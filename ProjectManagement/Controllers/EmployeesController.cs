@@ -20,8 +20,13 @@ namespace ProjectManagement.Controllers
     public class EmployeesController : ApiController
     {
         EmployeeValidator evalidator = new EmployeeValidator();
-        static IUnitOfWork uow = new ContextUnitOfWork("ManagementContext");
-        IEmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
+        IEmployeeService employeeService = new EmployeeService(new ContextUnitOfWork("ManagementContext"));
+
+        //IEmployeeService employeeService { get; set; }
+        //public EmployeesController(IEmployeeService serv)
+        //{
+        //    employeeService = serv;
+        //}
 
         [HttpGet]
         public IHttpActionResult GetAllEmployees()
@@ -38,7 +43,95 @@ namespace ProjectManagement.Controllers
                 }
                 return Ok(result);
             }
-            catch(NotFoundException)
+            catch (NotFoundException)
+            {
+                return Ok();
+            }
+        }
+
+        [ActionName("sortBySurnameAsc")]
+        [HttpGet]
+        public IHttpActionResult GetBySurnameAsc()
+        {
+            try
+            {
+                List<EmployeeDTO> employees = employeeService.SortEmployeesBySurnameAsc().ToList();
+                string[] result = new string[employees.Count];
+                int i = 0;
+                foreach (var em in employees)
+                {
+                    result[i] = JsonConvert.SerializeObject(em);
+                    i++;
+                }
+                return Ok(result);
+            }
+            catch (NotFoundException)
+            {
+                return Ok();
+            }
+        }
+
+        [ActionName("sortBySurnameDesc")]
+        [HttpGet]
+        public IHttpActionResult GetBySurnameDesc()
+        {
+            try
+            {
+                List<EmployeeDTO> employees = employeeService.SortEmployeesBySurnameDesc().ToList();
+                string[] result = new string[employees.Count];
+                int i = 0;
+                foreach (var em in employees)
+                {
+                    result[i] = JsonConvert.SerializeObject(em);
+                    i++;
+                }
+                return Ok(result);
+            }
+            catch (NotFoundException)
+            {
+                return Ok();
+            }
+        }
+
+        [ActionName("sortByRoleAsc")]
+        [HttpGet]
+        public IHttpActionResult GetByRoleAsc()
+        {
+            try
+            {
+                List<EmployeeDTO> employees = employeeService.SortEmployeesByRoleAsc().ToList();
+                string[] result = new string[employees.Count];
+                int i = 0;
+                foreach (var em in employees)
+                {
+                    result[i] = JsonConvert.SerializeObject(em);
+                    i++;
+                }
+                return Ok(result);
+            }
+            catch (NotFoundException)
+            {
+                return Ok();
+            }
+        }
+
+        [ActionName("sortByRoleDesc")]
+        [HttpGet]
+        public IHttpActionResult GetByRoleDesc()
+        {
+            try
+            {
+                List<EmployeeDTO> employees = employeeService.SortEmployeesByRoleDesc().ToList();
+                string[] result = new string[employees.Count];
+                int i = 0;
+                foreach (var em in employees)
+                {
+                    result[i] = JsonConvert.SerializeObject(em);
+                    i++;
+                }
+                return Ok(result);
+            }
+            catch (NotFoundException)
             {
                 return Ok();
             }

@@ -12,6 +12,9 @@ export function getScheduleOnProjectWork(projectWorkId){
 export function getEmployeesFreeDays(employeeId){
     return method.get('schedules/?employeeId=' + employeeId);
 }
+export function getEmployeesSchedule(empId){
+    return method.get('schedules/?empId=' + empId);
+}
 export function createSchedule(data){
     return method.post('schedules', data);
 }

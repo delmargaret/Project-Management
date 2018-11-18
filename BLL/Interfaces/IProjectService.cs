@@ -10,6 +10,14 @@ namespace BLL.Interfaces
     public interface IProjectService
     {
         IEnumerable<ProjectDTO> GetAllProjects();
+        IEnumerable<ProjectDTO> SortByNameAsc();
+        IEnumerable<ProjectDTO> SortByNameDesc();
+        IEnumerable<ProjectDTO> SortByStartDateAsc();
+        IEnumerable<ProjectDTO> SortByStartDateDesc();
+        IEnumerable<ProjectDTO> SortByEndDateAsc();
+        IEnumerable<ProjectDTO> SortByEndDateDesc();
+        IEnumerable<ProjectDTO> SortByStatusAsc();
+        IEnumerable<ProjectDTO> SortByStatusDesc();
         IEnumerable<ProjectDTO> GetAllProjectsByStatusId(int statusId);
         IEnumerable<ProjectDTO> GetProjectsEndingInNDays(int numberOfDays);
         ProjectDTO GetProjectById(int id);

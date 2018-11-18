@@ -11,7 +11,7 @@ namespace BLL.Infrastructure
 {
     public class ServiceModule : NinjectModule
     {
-        private string connectionString;
+        private readonly string connectionString;
         public ServiceModule(string connection)
         {
             connectionString = connection;

@@ -21,7 +21,7 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void CreateEmployeeTest()
         {
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
+            EmployeeService employeeService = new EmployeeService(uow);
 
             EmployeeDTO employee = new EmployeeDTO
             {
@@ -57,7 +57,7 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void CreateEmployeeIfItIsNotValidTest()
         {
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
+            EmployeeService employeeService = new EmployeeService(uow);
 
             EmployeeDTO actual = new EmployeeDTO
             {
@@ -79,7 +79,7 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void DeleteEmployeeByIdTest()
         {
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
+            EmployeeService employeeService = new EmployeeService(uow);
 
             var em = employeeService.CreateEmployee(new EmployeeDTO
             {
@@ -97,14 +97,14 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void DeleteEmployeeByIdIfItsNullTest()
         {
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
+            EmployeeService employeeService = new EmployeeService(uow);
             Assert.ThrowsException<NotFoundException>(() => employeeService.DeleteEmployeeById(152364));
         }
 
         [TestMethod]
         public void DeleteEmployeeBySurnameTest()
         {
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
+            EmployeeService employeeService = new EmployeeService(uow);
 
             var katya = employeeService.CreateEmployee(new EmployeeDTO
             {
@@ -131,14 +131,14 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void DeleteEmployeeBySurnameIfItsNullTest()
         {
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
+            EmployeeService employeeService = new EmployeeService(uow);
             Assert.ThrowsException<NotFoundException>(() => employeeService.DeleteEmployeeBySurname("Петров"));
         }
 
         [TestMethod]
         public void DeleteEmployeeByEmailTest()
         {
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
+            EmployeeService employeeService = new EmployeeService(uow);
 
             var katya = employeeService.CreateEmployee(new EmployeeDTO
             {
@@ -155,14 +155,14 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void DeleteEmployeeByEmailIfItsNullTest()
         {
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
+            EmployeeService employeeService = new EmployeeService(uow);
             Assert.ThrowsException<NotFoundException>(() => employeeService.DeleteEmployeeByEmail("hjskfsklsxc@gmail.ru"));
         }
 
         [TestMethod]
         public void GetEmployeeByIdTest()
         {
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
+            EmployeeService employeeService = new EmployeeService(uow);
             EmployeeDTO expected = new EmployeeDTO
             {
                 EmployeeName = "Екатерина",
@@ -179,14 +179,14 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void GetEmployeeByIdIfItsNullTest()
         {
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
+            EmployeeService employeeService = new EmployeeService(uow);
             Assert.ThrowsException<NotFoundException>(() => employeeService.GetEmployeeById(3692));
         }
 
         [TestMethod]
         public void GetAllEmployeesTest()
         {
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
+            EmployeeService employeeService = new EmployeeService(uow);
 
             employeeService.CreateEmployee(new EmployeeDTO
             {
@@ -213,7 +213,7 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void GetEmployeesByRoleIdTest()
         {
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
+            EmployeeService employeeService = new EmployeeService(uow);
 
             employeeService.CreateEmployee(new EmployeeDTO
             {
@@ -240,14 +240,14 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void GetEmployeesByRoleIdIfRoleNotFoundTest()
         {
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
+            EmployeeService employeeService = new EmployeeService(uow);
             Assert.ThrowsException<NotFoundException>(() => employeeService.GetEmployeesByRoleId(9));
         }
 
         [TestMethod]
         public void GetEmployeesByRoleIdIfEmployeesNotFoundTest()
         {
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
+            EmployeeService employeeService = new EmployeeService(uow);
             employeeService.CreateEmployee(new EmployeeDTO
             {
                 EmployeeName = "Екатерина",
@@ -272,7 +272,7 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void AddGitLinkTest()
         {
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
+            EmployeeService employeeService = new EmployeeService(uow);
             EmployeeDTO employee = new EmployeeDTO
             {
                 EmployeeName = "Екатерина",
@@ -292,7 +292,7 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void DeleteGitLinkByEmployeeIdTest()
         {
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
+            EmployeeService employeeService = new EmployeeService(uow);
             EmployeeDTO employee = new EmployeeDTO
             {
                 EmployeeName = "Екатерина",
@@ -313,7 +313,7 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void AddPhoneNumberTest()
         {
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
+            EmployeeService employeeService = new EmployeeService(uow);
             EmployeeDTO employee = new EmployeeDTO
             {
                 EmployeeName = "Екатерина",
@@ -333,7 +333,7 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void DeletePhoneNumberByEmployeeIdTest()
         {
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
+            EmployeeService employeeService = new EmployeeService(uow);
             EmployeeDTO employee = new EmployeeDTO
             {
                 EmployeeName = "Екатерина",
@@ -354,7 +354,7 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void ChangeNameTest()
         {
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
+            EmployeeService employeeService = new EmployeeService(uow);
             EmployeeDTO employee = new EmployeeDTO
             {
                 EmployeeName = "Екатерина",
@@ -374,7 +374,7 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void ChangeSurnameTest()
         {
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
+            EmployeeService employeeService = new EmployeeService(uow);
             EmployeeDTO employee = new EmployeeDTO
             {
                 EmployeeName = "Екатерина",
@@ -394,7 +394,7 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void ChangePatronymicTest()
         {
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
+            EmployeeService employeeService = new EmployeeService(uow);
             EmployeeDTO employee = new EmployeeDTO
             {
                 EmployeeName = "Екатерина",
@@ -414,7 +414,7 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void ChangeEmailTest()
         {
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
+            EmployeeService employeeService = new EmployeeService(uow);
             EmployeeDTO employee = new EmployeeDTO
             {
                 EmployeeName = "Екатерина",
@@ -434,7 +434,7 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void ChangeGitLinkTest()
         {
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
+            EmployeeService employeeService = new EmployeeService(uow);
             EmployeeDTO employee = new EmployeeDTO
             {
                 EmployeeName = "Екатерина",
@@ -455,7 +455,7 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void ChangePhoneNumberTest()
         {
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
+            EmployeeService employeeService = new EmployeeService(uow);
             EmployeeDTO employee = new EmployeeDTO
             {
                 EmployeeName = "Екатерина",
@@ -476,7 +476,7 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void ChangeRoleTest()
         {
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
+            EmployeeService employeeService = new EmployeeService(uow);
             EmployeeDTO employee = new EmployeeDTO
             {
                 EmployeeName = "Екатерина",
@@ -496,9 +496,9 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void ChangeWorkLoadIfItsPercent()
         {
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
-            ProjectService projectService = new ProjectService(uow, new Map<Project, ProjectDTO>());
-            ProjectWorkService projectWorkService = new ProjectWorkService(uow, new Map<ProjectWork, ProjectWorkDTO>());
+            EmployeeService employeeService = new EmployeeService(uow);
+            ProjectService projectService = new ProjectService(uow);
+            ProjectWorkService projectWorkService = new ProjectWorkService(uow);
             EmployeeDTO employee = new EmployeeDTO
             {
                 EmployeeName = "Екатерина",
@@ -541,10 +541,10 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void ChangeWorkLoadIfItsSchedule()
         {
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
-            ProjectService projectService = new ProjectService(uow, new Map<Project, ProjectDTO>());
-            ScheduleServise scheduleServise = new ScheduleServise(uow, new Map<Schedule, ScheduleDTO>(), new Map<ScheduleDay, ScheduleDayDTO>());
-            ProjectWorkService projectWorkService = new ProjectWorkService(uow, new Map<ProjectWork, ProjectWorkDTO>());
+            EmployeeService employeeService = new EmployeeService(uow);
+            ProjectService projectService = new ProjectService(uow);
+            ScheduleServise scheduleServise = new ScheduleServise(uow);
+            ProjectWorkService projectWorkService = new ProjectWorkService(uow);
             EmployeeDTO employee = new EmployeeDTO
             {
                 EmployeeName = "Екатерина",
@@ -588,9 +588,9 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void ChangeWorkLoad()
         {
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
-            ProjectService projectService = new ProjectService(uow, new Map<Project, ProjectDTO>());
-            ProjectWorkService projectWorkService = new ProjectWorkService(uow, new Map<ProjectWork, ProjectWorkDTO>());
+            EmployeeService employeeService = new EmployeeService(uow);
+            ProjectService projectService = new ProjectService(uow);
+            ProjectWorkService projectWorkService = new ProjectWorkService(uow);
             EmployeeDTO employee = new EmployeeDTO
             {
                 EmployeeName = "Екатерина",

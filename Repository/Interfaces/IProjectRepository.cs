@@ -10,6 +10,14 @@ namespace Repository.Interfaces
     public interface IProjectRepository
     {
         IEnumerable<Project> GetAllProjects();
+        IEnumerable<Project> SortByNameAsc();
+        IEnumerable<Project> SortByNameDesc();
+        IEnumerable<Project> SortByStartDateAsc();
+        IEnumerable<Project> SortByStartDateDesc();
+        IEnumerable<Project> SortByEndDateAsc();
+        IEnumerable<Project> SortByEndDateDesc();
+        IEnumerable<Project> SortByStatusAsc();
+        IEnumerable<Project> SortByStatusDesc();
         IEnumerable<Project> GetAllProjectsByStatusId(int projectStatusId);
         IEnumerable<Project> GetProjectsEndingInNDays(int numberOfDays);
         Project GetProjectById(int id);

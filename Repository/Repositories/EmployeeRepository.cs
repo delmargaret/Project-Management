@@ -211,6 +211,42 @@ namespace Repository.Repositories
             return db.Employees;
         }
 
+        public IEnumerable<Employee> SortEmployeesBySurnameAsc()
+        {
+            if (db.Employees.Count() == 0)
+            {
+                throw new NotFoundException();
+            }
+            return db.Employees.OrderBy(item => item.EmployeeSurname);
+        }
+
+        public IEnumerable<Employee> SortEmployeesBySurnameDesc()
+        {
+            if (db.Employees.Count() == 0)
+            {
+                throw new NotFoundException();
+            }
+            return db.Employees.OrderByDescending(item => item.EmployeeSurname);
+        }
+
+        public IEnumerable<Employee> SortEmployeesByRoleAsc()
+        {
+            if (db.Employees.Count() == 0)
+            {
+                throw new NotFoundException();
+            }
+            return db.Employees.OrderBy(item => item.RoleId);
+        }
+
+        public IEnumerable<Employee> SortEmployeesByRoleDesc()
+        {
+            if (db.Employees.Count() == 0)
+            {
+                throw new NotFoundException();
+            }
+            return db.Employees.OrderByDescending(item => item.RoleId);
+        }
+
         public Employee GetEmployeeByEmail(string email)
         {
             List<Employee> list = new List<Employee>();

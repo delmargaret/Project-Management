@@ -15,12 +15,11 @@ namespace BLL.Services
     public class ProjectWorkService : IProjectWorkService
     {
         IUnitOfWork Database { get; set; }
-        Map<ProjectWork, ProjectWorkDTO> Map { get; set; }
+        Map<ProjectWork, ProjectWorkDTO> Map = new Map<ProjectWork, ProjectWorkDTO>();
 
-        public ProjectWorkService(IUnitOfWork uow, Map<ProjectWork, ProjectWorkDTO> map)
+        public ProjectWorkService(IUnitOfWork uow)
         {
             Database = uow;
-            Map = map;
         }
 
         public void Dispose()

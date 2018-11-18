@@ -21,7 +21,7 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void CreateProjectTest()
         {
-            ProjectService projectService = new ProjectService(uow, new Map<Project, ProjectDTO>());
+            ProjectService projectService = new ProjectService(uow);
 
             ProjectDTO project = new ProjectDTO
             {
@@ -54,7 +54,7 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void CreateProjectIfItsNotValidTest()
         {
-            ProjectService projectService = new ProjectService(uow, new Map<Project, ProjectDTO>());
+            ProjectService projectService = new ProjectService(uow);
 
             ProjectDTO project = new ProjectDTO
             {
@@ -76,7 +76,7 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void GetAllProjectsByStatusIdTest()
         {
-            ProjectService projectService = new ProjectService(uow, new Map<Project, ProjectDTO>());
+            ProjectService projectService = new ProjectService(uow);
 
             ProjectDTO project1 = new ProjectDTO
             {
@@ -126,7 +126,7 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void GetAllProjectsTest()
         {
-            ProjectService projectService = new ProjectService(uow, new Map<Project, ProjectDTO>());
+            ProjectService projectService = new ProjectService(uow);
 
             ProjectDTO project1 = new ProjectDTO
             {
@@ -176,7 +176,7 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void GetProjectsEndingInNDaysTest()
         {
-            ProjectService projectService = new ProjectService(uow, new Map<Project, ProjectDTO>());
+            ProjectService projectService = new ProjectService(uow);
 
             ProjectDTO project1 = new ProjectDTO
             {
@@ -225,7 +225,7 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void ChangeProjectDescriptionTest()
         {
-            ProjectService projectService = new ProjectService(uow, new Map<Project, ProjectDTO>());
+            ProjectService projectService = new ProjectService(uow);
 
             ProjectDTO project = new ProjectDTO
             {
@@ -248,7 +248,7 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void ChangeProjectNameTest()
         {
-            ProjectService projectService = new ProjectService(uow, new Map<Project, ProjectDTO>());
+            ProjectService projectService = new ProjectService(uow);
 
             ProjectDTO project = new ProjectDTO
             {
@@ -271,7 +271,7 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void ChangeProjectStartDateTest()
         {
-            ProjectService projectService = new ProjectService(uow, new Map<Project, ProjectDTO>());
+            ProjectService projectService = new ProjectService(uow);
 
             ProjectDTO project = new ProjectDTO
             {
@@ -294,7 +294,7 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void ChangeProjectEndDateTest()
         {
-            ProjectService projectService = new ProjectService(uow, new Map<Project, ProjectDTO>());
+            ProjectService projectService = new ProjectService(uow);
 
             ProjectDTO project = new ProjectDTO
             {
@@ -317,7 +317,7 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void ChangeProjectStatusTest()
         {
-            ProjectService projectService = new ProjectService(uow, new Map<Project, ProjectDTO>());
+            ProjectService projectService = new ProjectService(uow);
 
             ProjectDTO project = new ProjectDTO
             {
@@ -340,7 +340,7 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void GetProjectByIdIfItsNotFound()
         {
-            ProjectService projectService = new ProjectService(uow, new Map<Project, ProjectDTO>());
+            ProjectService projectService = new ProjectService(uow);
             Assert.ThrowsException<NotFoundException>(() => projectService.GetProjectById(123548));
         }
     }

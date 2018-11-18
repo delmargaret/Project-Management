@@ -15,12 +15,11 @@ namespace BLL.Services
     public class RoleService : IRoleService
     {
         IUnitOfWork Database { get; set; }
-        Map<Role, RoleDTO> Map { get; set; }
+        Map<Role, RoleDTO> Map = new Map<Role, RoleDTO>();
 
-        public RoleService(IUnitOfWork uow, Map<Role, RoleDTO> map)
+        public RoleService(IUnitOfWork uow)
         {
             Database = uow;
-            Map = map;
         }
 
         public RoleDTO CreateRole(string roleName)

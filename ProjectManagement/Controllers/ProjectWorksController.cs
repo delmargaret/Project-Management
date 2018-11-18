@@ -19,10 +19,14 @@ namespace ProjectManagement.Controllers
 {
     public class ProjectWorksController : ApiController
     {
-        static IUnitOfWork uow = new ContextUnitOfWork("ManagementContext");
-        IProjectWorkService projectWorkService = new ProjectWorkService(uow, new Map<ProjectWork, ProjectWorkDTO>());
+        IProjectWorkService projectWorkService = new ProjectWorkService(new ContextUnitOfWork("ManagementContext"));
         ProjectWorkValidator pwvalidator = new ProjectWorkValidator();
 
+        //IProjectWorkService projectWorkService;
+        //public ProjectWorksController(IProjectWorkService serv)
+        //{
+        //    projectWorkService = serv;
+        //}
         [HttpGet]
         public IHttpActionResult GetProjectWorks()
         {
@@ -160,7 +164,7 @@ namespace ProjectManagement.Controllers
             }
             catch (NotFoundException)
             {
-                return BadRequest("Объект не найден");
+                return Ok();
             }
             catch (PercentOrScheduleException)
             {

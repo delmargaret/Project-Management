@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import * as employeeService from '../../src/services/employeeService';
 import * as roleService from '../../src/services/roleService';
-import {Table, Button, Modal, FormGroup, FormControl} from 'react-bootstrap';
+
+
+import {Table, Button, Modal, FormGroup, FormControl, Form} from 'react-bootstrap';
 import "./AddEmployee.css";
 
 class EmployeeList extends Component{
@@ -14,7 +16,8 @@ class EmployeeList extends Component{
                 <th>Имя</th>
                 <th>Отчество</th>
                 <th>E-mail</th>
-                <th>Id роли</th>
+                <th>Роль</th>
+                <th></th>
                 </tr>
             </thead>
                         <tbody>
@@ -22,12 +25,21 @@ class EmployeeList extends Component{
                     this.props.emp.map((employee) => {  
                         var data = JSON.parse(employee); 
                         var id = data.Id;  
+                        var role = "";
+                        var roleId = data.RoleId;
+                        if(roleId===1){role="Ресурсный менеджер";}
+                        if(roleId===2){role="Проектный менеджер";}
+                        if(roleId===3){role="Разработчик";}
+                        
                         return <tr key={id}>
                             <td>{data.EmployeeSurname}</td>
                             <td>{data.EmployeeName}</td>
                             <td>{data.EmployeePatronymic}</td>
                             <td>{data.Email}</td>
-                            <td>{data.RoleId}</td>
+                            <td>{role}</td>
+                            <td><Button onClick={() => this.props.onDeleteEmployee(id)}>
+                            Удалить</Button>
+                            </td>
                         </tr>              
                     })
                     }
@@ -151,13 +163,21 @@ class RoleList extends Component{
  
     constructor(props){
         super(props);
-        this.state = { roles: [], activeRole: 0, employees: [], modalIsOpen: false, show: false};
+        this.state = { roles: [], activeRole: 0, employees: [], modalIsOpen: false, show: false, sortId: 0,
+        roleAsc: [], roleDesc: [], surnameAsc: [], surnameDesc: []};
         this.onAddEmployee = this.onAddEmployee.bind(this);
         this.loadRoles = this.loadRoles.bind(this);
         this.loadEmployees = this.loadEmployees.bind(this);
         this.onClick = this.onClick.bind(this);
         this.handleShow = this.handleShow.bind(this);
         this.handleClose = this.handleClose.bind(this);
+        this.deleteEmployee = this.deleteEmployee.bind(this);
+        this.sortEmployeesByRoleAsc = this.sortEmployeesByRoleAsc.bind(this);
+        this.sortEmployeesByRoleDesc = this.sortEmployeesByRoleDesc.bind(this);
+        this.sortEmployeesBySurnameAsc = this.sortEmployeesBySurnameAsc.bind(this);
+        this.sortEmployeesBySurnameDesc = this.sortEmployeesBySurnameDesc.bind(this);
+        this.onSortChange = this.onSortChange.bind(this);
+        this.onSort = this.onSort.bind(this);
     }
     handleClose() {
         this.setState({ show: false });
@@ -165,7 +185,15 @@ class RoleList extends Component{
     handleShow() {
         this.setState({ show: true });
       }
-    
+    deleteEmployee(id) {
+        if (id) {
+        employeeService.deleteById(id).then(res => {
+            if (res !== null) {
+                this.loadEmployees();
+                }
+            });
+        }
+    }
     loadRoles() {
         roleService.getRoles().then(res => { this.setState({roles: res.data}) });
     }
@@ -176,9 +204,51 @@ class RoleList extends Component{
               }
         });
     }
-    renderEmployeeList(){
+    sortEmployeesBySurnameAsc(){
+        employeeService.sortBySurnameAsc().then(res => { this.setState({employees: res.data}) }).catch(error => {
+            if (error.response) {
+                return null;
+              }
+        });
+    }
+    sortEmployeesBySurnameDesc(){
+        employeeService.sortBySurnameDesc().then(res => { this.setState({employees: res.data}) }).catch(error => {
+            if (error.response) {
+                return null;
+              }
+        });
+    }
+    sortEmployeesByRoleAsc(){
+        employeeService.sortByRoleAsc().then(res => { this.setState({employees: res.data}) }).catch(error => {
+            if (error.response) {
+                return null;
+              }
+        });
+    }
+    sortEmployeesByRoleDesc(){
+        employeeService.sortByRoleDesc().then(res => { this.setState({employees: res.data}) }).catch(error => {
+            if (error.response) {
+                return null;
+              }
+        });
+    }
+    renderEmployeeList(employees){
         if(this.state.employees.length!==0){
-            return <EmployeeList emp={this.state.employees}/>
+            return <div>
+                <Form id="SortSelect">
+                    <FormGroup>
+                        <FormControl componentClass="select" value={this.state.sortId}
+                        onChange={this.onSortChange} onClick={() => this.onSort()}>
+                        <option value={0}>Сортировать по</option>
+                        <option value={1}>Фамилии(по возрастанию)</option>
+                        <option value={2}>Фамилии(по убыванию)</option>
+                        <option value={3}>Роли(по возрастанию)</option>
+                        <option value={4}>Роли(по убыванию)</option>
+                        </FormControl>
+                    </FormGroup>
+                    </Form>
+                    <EmployeeList emp={employees} onDeleteEmployee={this.deleteEmployee}/>
+            </div> 
         }
         else return <div>Сотрудники не найдены</div>
     }
@@ -186,7 +256,7 @@ class RoleList extends Component{
         this.loadRoles();
         this.loadEmployees();
     }
-
+    
     onAddEmployee(employee) {
         if (employee) {
             var data = JSON.stringify({"EmployeeName":employee.name, "EmployeeSurname":employee.surname,
@@ -194,9 +264,30 @@ class RoleList extends Component{
         employeeService.createEmployee(data).then(res => {
             if (res !== null) {
                 this.loadEmployees();
+                this.handleClose();
                 }
             });
         }
+    }
+    onSortChange(e){
+        this.setState({sortId: e.target.value});
+    }
+    onSort(){
+        var sortId = this.state.sortId;
+        console.log(sortId==="2");
+        if(sortId==="1"){
+            this.sortEmployeesBySurnameAsc();
+        }
+        if(sortId==="2"){
+            this.sortEmployeesBySurnameDesc();
+        }
+        if(sortId==="3"){
+            this.sortEmployeesByRoleAsc();
+        }
+        if(sortId==="4"){
+            this.sortEmployeesByRoleDesc();
+        }
+        else this.loadEmployees();
     }
     onClick(id){
         this.setState({
@@ -209,11 +300,11 @@ class RoleList extends Component{
         const activerole = this.state.activeRole;
         if(activerole===1){addrolename="Добавить ресурсного менеджера";}
         if(activerole===2){addrolename="Добавить проектного менеджера";}
-        if(activerole===3){addrolename="Добавить сотрудника";}
+        if(activerole===3){addrolename="Добавить разработчика";}
         const roledata = this.state.roles;
         if (!roledata) return <div>Загрузка...</div>; 
-        return <div>
-                <h2>Добавить сотрудника</h2>
+            return <div>
+                <h2>Сотрудники</h2>
                 <div>
                     <Table>
                         <tbody>
@@ -232,7 +323,7 @@ class RoleList extends Component{
                     }
                         </tbody>
                     </Table>
-                    {this.renderEmployeeList()}
+                    {this.renderEmployeeList(this.state.employees)}
                 </div>
                     <Modal show={this.state.show} onHide={this.handleClose}>
                         <Modal.Header closeButton>{addrolename}</Modal.Header>
@@ -240,7 +331,7 @@ class RoleList extends Component{
                             <AddEmployeeForm roleid = {activerole} onEmployeeSubmit={this.onAddEmployee}/>
                         </Modal.Body>
                     </Modal>
-        </div>;
+        </div>;        
      }
 }
 

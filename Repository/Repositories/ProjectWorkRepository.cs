@@ -63,11 +63,10 @@ namespace Repository.Repositories
             var projects = db.ProjectWorks.Where(item => item.EmployeeId == employeeId);
             foreach(var project in projects)
             {
-                if (project.WorkLoad == null)
+                if (db.Projects.Find(project.ProjectId).ProjectStatusId == 1)
                 {
-                    throw new NotFoundException();
+                    result += project.WorkLoad.Value;
                 }
-                result += project.WorkLoad.Value;
             }
             if(result == 0)
             {

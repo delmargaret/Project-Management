@@ -21,10 +21,10 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void CreateScheduleTest()
         {
-            ScheduleServise scheduleServise = new ScheduleServise(uow, new Map<Schedule, ScheduleDTO>(), new Map<ScheduleDay, ScheduleDayDTO>());
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
-            ProjectService projectService = new ProjectService(uow, new Map<Project, ProjectDTO>());
-            ProjectWorkService projectWorkService = new ProjectWorkService(uow, new Map<ProjectWork, ProjectWorkDTO>());
+            ScheduleServise scheduleServise = new ScheduleServise(uow);
+            EmployeeService employeeService = new EmployeeService(uow);
+            ProjectService projectService = new ProjectService(uow);
+            ProjectWorkService projectWorkService = new ProjectWorkService(uow);
 
             EmployeeDTO employee = new EmployeeDTO
             {
@@ -82,10 +82,10 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void GetScheduleOnProjectWorkTest()
         {
-            ScheduleServise scheduleServise = new ScheduleServise(uow, new Map<Schedule, ScheduleDTO>(), new Map<ScheduleDay, ScheduleDayDTO>());
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
-            ProjectService projectService = new ProjectService(uow, new Map<Project, ProjectDTO>());
-            ProjectWorkService projectWorkService = new ProjectWorkService(uow, new Map<ProjectWork, ProjectWorkDTO>());
+            ScheduleServise scheduleServise = new ScheduleServise(uow);
+            EmployeeService employeeService = new EmployeeService(uow);
+            ProjectService projectService = new ProjectService(uow);
+            ProjectWorkService projectWorkService = new ProjectWorkService(uow);
 
             EmployeeDTO employee = new EmployeeDTO
             {
@@ -149,10 +149,10 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void GetEmployeesFreeDaysTest()
         {
-            ScheduleServise scheduleServise = new ScheduleServise(uow, new Map<Schedule, ScheduleDTO>(), new Map<ScheduleDay, ScheduleDayDTO>());
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
-            ProjectService projectService = new ProjectService(uow, new Map<Project, ProjectDTO>());
-            ProjectWorkService projectWorkService = new ProjectWorkService(uow, new Map<ProjectWork, ProjectWorkDTO>());
+            ScheduleServise scheduleServise = new ScheduleServise(uow);
+            EmployeeService employeeService = new EmployeeService(uow);
+            ProjectService projectService = new ProjectService(uow);
+            ProjectWorkService projectWorkService = new ProjectWorkService(uow);
 
             EmployeeDTO employee = new EmployeeDTO
             {
@@ -216,10 +216,10 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void DeleteScheduleByProjectWorkIdTest()
         {
-            ScheduleServise scheduleServise = new ScheduleServise(uow, new Map<Schedule, ScheduleDTO>(), new Map<ScheduleDay, ScheduleDayDTO>());
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
-            ProjectService projectService = new ProjectService(uow, new Map<Project, ProjectDTO>());
-            ProjectWorkService projectWorkService = new ProjectWorkService(uow, new Map<ProjectWork, ProjectWorkDTO>());
+            ScheduleServise scheduleServise = new ScheduleServise(uow);
+            EmployeeService employeeService = new EmployeeService(uow);
+            ProjectService projectService = new ProjectService(uow);
+            ProjectWorkService projectWorkService = new ProjectWorkService(uow);
 
             EmployeeDTO employee = new EmployeeDTO
             {
@@ -281,10 +281,10 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void ChangeScheduleDayTest()
         {
-            ScheduleServise scheduleServise = new ScheduleServise(uow, new Map<Schedule, ScheduleDTO>(), new Map<ScheduleDay, ScheduleDayDTO>());
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
-            ProjectService projectService = new ProjectService(uow, new Map<Project, ProjectDTO>());
-            ProjectWorkService projectWorkService = new ProjectWorkService(uow, new Map<ProjectWork, ProjectWorkDTO>());
+            ScheduleServise scheduleServise = new ScheduleServise(uow);
+            EmployeeService employeeService = new EmployeeService(uow);
+            ProjectService projectService = new ProjectService(uow);
+            ProjectWorkService projectWorkService = new ProjectWorkService(uow);
 
             EmployeeDTO employee = new EmployeeDTO
             {
@@ -345,10 +345,10 @@ namespace ProjectManagement.Tests
         [TestMethod]
         public void CreateScheduleIfEmployeeHasWorkloadTest()
         {
-            ScheduleServise scheduleServise = new ScheduleServise(uow, new Map<Schedule, ScheduleDTO>(), new Map<ScheduleDay, ScheduleDayDTO>());
-            EmployeeService employeeService = new EmployeeService(uow, new Map<Employee, EmployeeDTO>());
-            ProjectService projectService = new ProjectService(uow, new Map<Project, ProjectDTO>());
-            ProjectWorkService projectWorkService = new ProjectWorkService(uow, new Map<ProjectWork, ProjectWorkDTO>());
+            ScheduleServise scheduleServise = new ScheduleServise(uow);
+            EmployeeService employeeService = new EmployeeService(uow);
+            ProjectService projectService = new ProjectService(uow);
+            ProjectWorkService projectWorkService = new ProjectWorkService(uow);
 
             EmployeeDTO employee = new EmployeeDTO
             {

@@ -19,10 +19,14 @@ namespace ProjectManagement.Controllers
 {
     public class SchedulesController : ApiController
     {
-        static IUnitOfWork uow = new ContextUnitOfWork("ManagementContext");
-        IScheduleService scheduleServise = new ScheduleServise(uow, new Map<Schedule, ScheduleDTO>(), new Map<ScheduleDay, ScheduleDayDTO>());
         ScheduleValidator svalidator = new ScheduleValidator();
+        IScheduleService scheduleServise = new ScheduleServise(new ContextUnitOfWork("ManagementContext"));
 
+        //IScheduleService scheduleServise;
+        //public SchedulesController(IScheduleService serv)
+        //{
+        //    scheduleServise = serv;
+        //}
         [HttpGet]
         public IHttpActionResult GetAllSchedules()
         {
@@ -86,6 +90,27 @@ namespace ProjectManagement.Controllers
             try
             {
                 var days = scheduleServise.GetEmployeesFreeDays(employeeId).ToList();
+                string[] result = new string[days.Count];
+                int i = 0;
+                foreach (var day in days)
+                {
+                    result[i] = JsonConvert.SerializeObject(day);
+                    i++;
+                }
+                return Ok(result);
+            }
+            catch (NotFoundException)
+            {
+                return Ok();
+            }
+        }
+
+        [HttpGet]
+        public IHttpActionResult GetEmployeesSchedule(int empId)
+        {
+            try
+            {
+                var days = scheduleServise.GetEmployeesSchedule(empId).ToList();
                 string[] result = new string[days.Count];
                 int i = 0;
                 foreach (var day in days)

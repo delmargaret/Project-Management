@@ -15,12 +15,11 @@ namespace BLL.Services
     public class EmployeeService : IEmployeeService
     {
         IUnitOfWork Database { get; set; }
-        Map<Employee, EmployeeDTO> Map { get; set; }
+        Map<Employee, EmployeeDTO> Map = new Map<Employee, EmployeeDTO>();
 
-        public EmployeeService(IUnitOfWork uow, Map<Employee, EmployeeDTO> map)
+        public EmployeeService(IUnitOfWork uow)
         {
             Database = uow;
-            Map = map;
         }
 
         public void Dispose()
@@ -130,6 +129,30 @@ namespace BLL.Services
         public IEnumerable<EmployeeDTO> GetAllEmployees()
         {
             var employees = Database.Employees.GetAllEmployees();
+            return Map.ListMap(employees);
+        }
+
+        public IEnumerable<EmployeeDTO> SortEmployeesBySurnameAsc()
+        {
+            var employees = Database.Employees.SortEmployeesBySurnameAsc();
+            return Map.ListMap(employees);
+        }
+
+        public IEnumerable<EmployeeDTO> SortEmployeesBySurnameDesc()
+        {
+            var employees = Database.Employees.SortEmployeesBySurnameDesc();
+            return Map.ListMap(employees);
+        }
+
+        public IEnumerable<EmployeeDTO> SortEmployeesByRoleAsc()
+        {
+            var employees = Database.Employees.SortEmployeesByRoleAsc();
+            return Map.ListMap(employees);
+        }
+
+        public IEnumerable<EmployeeDTO> SortEmployeesByRoleDesc()
+        {
+            var employees = Database.Employees.SortEmployeesByRoleDesc();
             return Map.ListMap(employees);
         }
 
