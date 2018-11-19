@@ -33,6 +33,37 @@ namespace Repository.Repositories
             }
         }
 
+        public IEnumerable<Employee> FindEmployeesNotOnProject(int projectId)
+        {
+            List<Employee> employees = db.Employees.ToList();
+            if (employees.Count == 0)
+            {
+                throw new NotFoundException();
+            }
+            List<ProjectWork> works = db.ProjectWorks.Where(item => item.ProjectId == projectId).ToList();
+            List<Employee> loadEmployees = new List<Employee>();
+
+            foreach (var emp in employees)
+            {
+                foreach (var work in works)
+                {
+                    if (work.EmployeeId == emp.Id)
+                    {
+                        loadEmployees.Add(emp);
+                    }
+                }
+            }
+            if (loadEmployees.Count == employees.Count)
+            {
+                throw new NotFoundException();
+            }
+            foreach(var emp in loadEmployees)
+            {
+                employees.Remove(db.Employees.Find(emp.Id));
+            }
+            return employees;
+        }
+
         public void AddGitLink(int employeeId, string gitlink)
         {
             Employee employee = db.Employees.Find(employeeId);

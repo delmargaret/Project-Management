@@ -15,6 +15,7 @@ namespace BLL.Interfaces
         void DeleteEmployeeByEmail(string email);
         EmployeeDTO GetEmployeeById(int id);
         EmployeeDTO GetEmployeeByEmail(string email);
+        IEnumerable<EmployeeDTO> FindEmployeesNotOnProject(int projectId);
         IEnumerable<EmployeeDTO> GetEmployeesBySurname(string surname);
         IEnumerable<EmployeeDTO> GetAllEmployees();
         IEnumerable<EmployeeDTO> SortEmployeesBySurnameAsc();

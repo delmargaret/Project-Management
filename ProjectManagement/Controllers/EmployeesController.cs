@@ -49,6 +49,27 @@ namespace ProjectManagement.Controllers
             }
         }
 
+        [HttpGet]
+        public IHttpActionResult GetEmployeesNotOnProjects(int projectId)
+        {
+            try
+            {
+                var employees = employeeService.FindEmployeesNotOnProject(projectId).ToList();
+                string[] result = new string[employees.Count];
+                int i = 0;
+                foreach (var employee in employees)
+                {
+                    result[i] = JsonConvert.SerializeObject(employee);
+                    i++;
+                }
+                return Ok(result);
+            }
+            catch (NotFoundException)
+            {
+                return Ok();
+            }
+        }
+
         [ActionName("sortBySurnameAsc")]
         [HttpGet]
         public IHttpActionResult GetBySurnameAsc()

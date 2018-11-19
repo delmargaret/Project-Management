@@ -3,6 +3,9 @@ import * as method from './methods';
 export function getEmployees(){
     return method.get('employees/getAllEmployees');
 }
+export function getEmployeesNotOnProject(projectId){
+    return method.get('employees/?projectId=' + projectId);
+}
 export function sortBySurnameAsc(){
     return method.get('employees/sortBySurnameAsc');
 }

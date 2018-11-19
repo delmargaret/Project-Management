@@ -52,6 +52,12 @@ namespace BLL.Services
             return Map.ObjectMap(emp);
         }
 
+        public IEnumerable<EmployeeDTO> FindEmployeesNotOnProject(int projectId)
+        {
+            var employees = Database.Employees.FindEmployeesNotOnProject(projectId);
+            return Map.ListMap(employees);
+        }
+
         public void ChangeWorkLoad(int employeeId, int workLoadId)
         {
             var employee = Database.Employees.GetEmployeeById(employeeId);

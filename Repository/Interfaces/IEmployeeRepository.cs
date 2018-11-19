@@ -16,6 +16,7 @@ namespace Repository.Interfaces
         IEnumerable<Employee> SortEmployeesByRoleDesc();
         IEnumerable<Employee> GetEmployeesByRole(int roleId);
         IEnumerable<Employee> GetEmployeesBySurname(string surname);
+        IEnumerable<Employee> FindEmployeesNotOnProject(int projectId);
         void FindSameEmployee(string name, string surname, string patronymic, string email, string git, string phone, int roleId, int workloadId);
         Employee GetEmployeeById(int id);
         Employee GetEmployeeByEmail(string email);

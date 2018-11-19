@@ -782,7 +782,8 @@ class AddEmployeeForm extends Component{
         this.setState({projectRoleId: e.target.value});
     }
     loadEmployees(){
-        employeeService.getEmployees().then(res => { this.setState({employees: res.data}) }).catch(error => {
+        employeeService.getEmployeesNotOnProject(this.props.projId).then(res => 
+            { this.setState({employees: res.data}) }).catch(error => {
             if (error.response) {
                 return null;
             }

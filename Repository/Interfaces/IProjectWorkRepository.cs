@@ -16,7 +16,6 @@ namespace Repository.Interfaces
         IEnumerable<ProjectWork> GetEmployeesOnProject(int projectId);
         ProjectWork GetProjectWorkById(int id);
         IEnumerable<ProjectWork> FindProjectWork(Func<ProjectWork, Boolean> predicate);
-        void FindSameProjectWork(int projectId, int employeeId, int projectRoleId);
         int CalculateEmployeesWorkload(int employeeId);
         ProjectWork CreateProjectWork(ProjectWork item);
         void UpdateProjectWork(ProjectWork item);

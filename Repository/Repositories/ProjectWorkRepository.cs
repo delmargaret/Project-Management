@@ -20,16 +20,6 @@ namespace Repository.Repositories
             this.db = context;
         }
 
-        public void FindSameProjectWork(int projectId, int employeeId, int projectRoleId)
-        {
-            List<ProjectWork> list = new List<ProjectWork>();
-            list = db.ProjectWorks.Where(item => item.ProjectId == projectId && item.EmployeeId == employeeId && item.ProjectRoleId == projectRoleId).ToList();
-            if (list.Count != 0)
-            {
-                throw new ObjectAlreadyExistsException();
-            }
-        }
-
         public IEnumerable<ProjectWork> GetAllProjectWorks()
         {
             if (db.ProjectWorks.Count() == 0)

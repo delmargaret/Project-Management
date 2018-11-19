@@ -190,10 +190,6 @@ namespace ProjectManagement.Controllers
             {
                 return BadRequest("Объект не найден");
             }
-            catch (ObjectAlreadyExistsException)
-            {
-                return BadRequest("Сотрудник уже добавлен на проект");
-            }
         }
 
         [HttpDelete]

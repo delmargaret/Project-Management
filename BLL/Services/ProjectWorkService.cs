@@ -98,7 +98,6 @@ namespace BLL.Services
             Employee employee = Database.Employees.GetEmployeeById(item.EmployeeId);
             Project project = Database.Projects.GetProjectById(item.ProjectId);
             ProjectRole projectRole = Database.ProjectRoles.GetProjectRoleById(item.ProjectRoleId);
-            Database.ProjectWorks.FindSameProjectWork(project.Id, employee.Id, projectRole.Id);
             ProjectWork projectWork = new ProjectWork
             {
                 EmployeeId = item.EmployeeId,
