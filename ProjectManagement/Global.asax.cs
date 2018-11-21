@@ -24,7 +24,7 @@ namespace ProjectManagement
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            NinjectModule employeeModule = new EmployeeModule();
+            NinjectModule employeeModule = new ProjectManagementModule();
             NinjectModule serviceModule = new ServiceModule("ManagementContext");
             var kernel = new StandardKernel(employeeModule, serviceModule);
             DependencyResolver.SetResolver(new NinjectDependencyResolver(kernel));

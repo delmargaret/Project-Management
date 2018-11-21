@@ -14,7 +14,7 @@ namespace Repository.Repositories
         private ManagementContext db;
         private EmployeeRepository employeeRepository;
         private ParticipationHistoryRepository participationHistoryRepository;
-        private PasswordRepository passwordRepository;
+        private CredentialsRepository credentialsRepository;
         private ProjectRepository projectRepository;
         private ProjectRoleRepository projectRoleRepository;
         private ProjectStatusRepository projectStatusRepository;
@@ -49,13 +49,13 @@ namespace Repository.Repositories
             }
         }
 
-        public IPasswordRepository Passwords
+        public ICredentialsRepository Credentials
         {
             get
             {
-                if (passwordRepository == null)
-                    passwordRepository = new PasswordRepository(db);
-                return passwordRepository;
+                if (credentialsRepository == null)
+                    credentialsRepository = new CredentialsRepository(db);
+                return credentialsRepository;
             }
         }
 

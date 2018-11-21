@@ -20,6 +20,17 @@ namespace Repository.Repositories
             this.db = context;
         }
 
+        public void FindSameHistory(int projWorkId, DateTimeOffset start, DateTimeOffset end)
+        {
+            List<ParticipationHistory> list = new List<ParticipationHistory>();
+            list = db.ParticipationHistories.Where(item => item.ProjectWorkId == projWorkId &&
+            item.StartDate == start && item.EndDate == end).ToList();
+            if (list.Count != 0)
+            {
+                throw new ObjectAlreadyExistsException();
+            }
+        }
+
         public IEnumerable<ParticipationHistory> GetAllHistories()
         {
             if (db.ParticipationHistories.Count() == 0)
@@ -31,7 +42,7 @@ namespace Repository.Repositories
 
         public IEnumerable<ParticipationHistory> GetAllEmployeesHistoriesOnProject(int projectWorkId)
         {
-            if(db.ParticipationHistories.Where(item => item.ProjectWorkId == projectWorkId).Count() == 0)
+            if (db.ParticipationHistories.Where(item => item.ProjectWorkId == projectWorkId).Count() == 0)
             {
                 throw new NotFoundException();
             }
@@ -56,7 +67,7 @@ namespace Repository.Repositories
             {
                 throw new NotFoundException();
             }
-                history.StartDate = start;
+            history.StartDate = start;
         }
 
         public void ChangeHistoryEndDate(int id, DateTimeOffset end)
@@ -66,7 +77,7 @@ namespace Repository.Repositories
             {
                 throw new NotFoundException();
             }
-                history.EndDate = end;
+            history.EndDate = end;
         }
 
         public ParticipationHistory GetHistoryById(int id)
@@ -105,7 +116,7 @@ namespace Repository.Repositories
             {
                 throw new NotFoundException();
             }
-                db.ParticipationHistories.Remove(participation);
+            db.ParticipationHistories.Remove(participation);
         }
     }
 }

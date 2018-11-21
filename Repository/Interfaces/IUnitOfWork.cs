@@ -11,7 +11,7 @@ namespace Repository.Interfaces
     {
         IEmployeeRepository Employees { get; }
         IParticipationHistoryRepository ParticipationHistories { get; }
-        IPasswordRepository Passwords { get; }
+        ICredentialsRepository Credentials { get; }
         IProjectRepository Projects { get; }
         IProjectRoleRepository ProjectRoles { get; }
         IProjectStatusRepository ProjectStatuses { get; }

@@ -15,12 +15,11 @@ namespace BLL.Services
     public class ParticipationHistoryService : IParticipationHistoryService
     {
         IUnitOfWork Database { get; set; }
-        Map<ParticipationHistory, ParticipationHistoryDTO> Map { get; set; }
+        Map<ParticipationHistory, ParticipationHistoryDTO> Map = new Map<ParticipationHistory, ParticipationHistoryDTO>();
 
-        public ParticipationHistoryService(IUnitOfWork uow, Map<ParticipationHistory, ParticipationHistoryDTO> map)
+        public ParticipationHistoryService(IUnitOfWork uow)
         {
             Database = uow;
-            Map = map;
         }
 
         public void Dispose()
@@ -36,12 +35,13 @@ namespace BLL.Services
             {
                 throw new InvalidDateException();
             }
+            Database.ParticipationHistories.FindSameHistory(historyDTO.ProjectWorkId, historyDTO.StartDate, historyDTO.EndDate);
             ParticipationHistory history = new ParticipationHistory
             {
                 ProjectWorkId = historyDTO.ProjectWorkId,
-                ProjectWork=work,
+                ProjectWork = work,
                 StartDate = historyDTO.StartDate,
-                EndDate=historyDTO.EndDate
+                EndDate = historyDTO.EndDate
             };
 
             var hist = Database.ParticipationHistories.CreateHistory(history);

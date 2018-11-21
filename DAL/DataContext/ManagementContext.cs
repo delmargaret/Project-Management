@@ -13,7 +13,7 @@ namespace DAL.DataContext
     {
         public DbSet<Employee> Employees { get; set; }
         public DbSet<ParticipationHistory> ParticipationHistories { get; set; }
-        public DbSet<Password> Passwords { get; set; }
+        public DbSet<Credentials> Credentials { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<ProjectRole> ProjectRoles { get; set; }
         public DbSet<ProjectStatus> ProjectStatuses { get; set; }
@@ -49,7 +49,7 @@ namespace DAL.DataContext
 
             db.Roles.Add(new Role { Id = 1, RoleName = "Ресурсный менеджер" });
             db.Roles.Add(new Role { Id = 2, RoleName = "Проектный менеджер" });
-            db.Roles.Add(new Role { Id = 3, RoleName = "Сотрудник" });
+            db.Roles.Add(new Role { Id = 3, RoleName = "Разработчик" });
 
             db.ProjectStatuses.Add(new ProjectStatus { Id = 1, ProjectStatusName = "Открыт" });
             db.ProjectStatuses.Add(new ProjectStatus { Id = 2, ProjectStatusName = "Закрыт" });
@@ -64,6 +64,25 @@ namespace DAL.DataContext
             db.PercentOrSchedules.Add(new PercentOrSchedule { Id = 1, TypeName = "Проценты" });
             db.PercentOrSchedules.Add(new PercentOrSchedule { Id = 2, TypeName = "Расписание" });
             db.PercentOrSchedules.Add(new PercentOrSchedule { Id = 3, TypeName = "Не выбрано" });
+
+            db.Employees.Add(new Employee
+            {
+                Id = 1,
+                EmployeeName = "admin",
+                EmployeeSurname = "admin",
+                EmployeePatronymic = "admin",
+                Email = "admin@admin.com",
+                RoleId = 1,
+                PercentOrScheduleId = 3
+            });
+
+            db.Credentials.Add(new Credentials
+            {
+                Id = 1,
+                EmployeeId = 1,
+                Login = "admin@admin.com",
+                PasswordString = "AQAAAAEAACcQAAAAELlW7Lngis+fq8qiM4UbPc0F2ypt34K+HnSIj+RqhmLyUKlxS0FYMj0EhJ454lQ+dA=="
+            });
 
             db.SaveChanges();
         }

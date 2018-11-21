@@ -10,14 +10,16 @@ namespace Repository.Interfaces
     public interface IProjectWorkRepository
     {
         IEnumerable<ProjectWork> GetAllProjectWorks();
-        IEnumerable<(string name, string role)> GetNamesOnProject(int projectId);
-        IEnumerable<(string name, string role, string workload)> GetNamesAndLoadOnProject(int projectId); 
+        IEnumerable<(int id, string name, string role)> GetNamesOnProject(int projectId);
+        IEnumerable<(int id, int employeeId, string name, string role, string workload)> GetNamesAndLoadOnProject(int projectId);
+        IEnumerable<(int id, int projectId, string projectName, string role, string workload)> GetEmployeesProjectsAndLoad(int employeeId);
         IEnumerable<ProjectWork> GetEmployeesProjects(int employeeId);
+        IEnumerable<ProjectWork> GetEmployeesOnProject(int projectId);
         ProjectWork GetProjectWorkById(int id);
         IEnumerable<ProjectWork> FindProjectWork(Func<ProjectWork, Boolean> predicate);
-        void FindSameProjectWork(int projectId, int employeeId, int projectRoleId);
         int CalculateEmployeesWorkload(int employeeId);
         ProjectWork CreateProjectWork(ProjectWork item);
+        string GetWorkload(int employeeId);
         void UpdateProjectWork(ProjectWork item);
         void DeleteProjectWorkById(int id);
         void DeleteEmployeeFromProject(int projectId, int employeeId);

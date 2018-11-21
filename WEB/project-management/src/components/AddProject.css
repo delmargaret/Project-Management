@@ -1,0 +1,14 @@
+#addprojectbtn {
+    margin: 1.5%;
+}
+
+#scroll{
+    width: 100%;
+    height: 350px;
+    overflow-y: scroll;
+}
+
+#sortProjectsSelect{
+    width: 25%;
+    box-align: left 
+}

@@ -32,10 +32,10 @@ namespace Repository.Repositories
             days.Add(db.ScheduleDays.Find(6));
 
             var works = db.ProjectWorks.Where(item => item.EmployeeId == employeeId);
-            foreach(var work in works)
+            foreach (var work in works)
             {
                 var schedule = db.Schedules.Where(item => item.ProjectWorkId == work.Id);
-                foreach(var day in schedule)
+                foreach (var day in schedule)
                 {
                     list.Add(day.ScheduleDay);
                 }
@@ -58,6 +58,33 @@ namespace Repository.Repositories
             return days;
         }
 
+        public IEnumerable<ScheduleDay> GetEmployeesSchedule(int employeeId)
+        {
+            List<ScheduleDay> list = new List<ScheduleDay>();
+            List<ScheduleDay> days = new List<ScheduleDay>();
+            days.Add(db.ScheduleDays.Find(1));
+            days.Add(db.ScheduleDays.Find(2));
+            days.Add(db.ScheduleDays.Find(3));
+            days.Add(db.ScheduleDays.Find(4));
+            days.Add(db.ScheduleDays.Find(5));
+            days.Add(db.ScheduleDays.Find(6));
+
+            var works = db.ProjectWorks.Where(item => item.EmployeeId == employeeId);
+            foreach (var work in works)
+            {
+                var schedule = db.Schedules.Where(item => item.ProjectWorkId == work.Id);
+                foreach (var day in schedule)
+                {
+                    list.Add(day.ScheduleDay);
+                }
+            }
+            if (list.Count == 0)
+            {
+                throw new NotFoundException();
+            }
+            return list;
+        }
+
         public void ChangeScheduleDay(int scheduleId, int scheduleDayId)
         {
             Schedule schedule = db.Schedules.Find(scheduleId);
@@ -67,6 +94,17 @@ namespace Repository.Repositories
             }
             schedule.ScheduleDayId = scheduleDayId;
             schedule.ScheduleDay = db.ScheduleDays.Find(scheduleDayId);
+        }
+
+        public void FindSameSchedule(int projWorkId, int dayId)
+        {
+            List<Schedule> list = new List<Schedule>();
+            list = db.Schedules.Where(item => item.ProjectWorkId == projWorkId &&
+            item.ScheduleDayId == dayId).ToList();
+            if (list.Count != 0)
+            {
+                throw new ObjectAlreadyExistsException();
+            }
         }
 
         public Schedule CreateSchedule(Schedule item)
@@ -82,7 +120,7 @@ namespace Repository.Repositories
             {
                 throw new NotFoundException();
             }
-                db.Schedules.Remove(schedule);
+            db.Schedules.Remove(schedule);
         }
 
         public void DeleteScheduleByProjectWorkId(int projectWorkId)
@@ -92,7 +130,7 @@ namespace Repository.Repositories
             {
                 throw new NotFoundException();
             }
-            foreach(var day in days)
+            foreach (var day in days)
             {
                 db.Schedules.Remove(day);
             }
@@ -127,7 +165,7 @@ namespace Repository.Repositories
 
         public IEnumerable<Schedule> GetScheduleOnProjectWork(int projectWorkId)
         {
-            if(db.Schedules.Where(item => item.ProjectWorkId == projectWorkId).Count() == 0)
+            if (db.Schedules.Where(item => item.ProjectWorkId == projectWorkId).Count() == 0)
             {
                 throw new NotFoundException();
             }

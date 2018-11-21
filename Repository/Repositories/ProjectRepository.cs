@@ -20,6 +20,18 @@ namespace Repository.Repositories
             this.db = context;
         }
 
+        public void FindSameProject(string projName, string projDescr, DateTimeOffset start, DateTimeOffset end, int projStatus)
+        {
+            List<Project> list = new List<Project>();
+            list = db.Projects.Where(item => item.ProjectName == projName &&
+            item.ProjectDescription == projDescr && item.ProjectStartDate == start &&
+            item.ProjectEndDate == end && item.ProjectStatusId == projStatus).ToList();
+            if (list.Count != 0)
+            {
+                throw new ObjectAlreadyExistsException();
+            }
+        }
+
         public IEnumerable<Project> GetAllProjects()
         {
             if (db.Projects.Count() == 0)
@@ -29,9 +41,81 @@ namespace Repository.Repositories
             return db.Projects;
         }
 
+        public IEnumerable<Project> SortByNameAsc()
+        {
+            if (db.Projects.Count() == 0)
+            {
+                throw new NotFoundException();
+            }
+            return db.Projects.OrderBy(item => item.ProjectName);
+        }
+
+        public IEnumerable<Project> SortByNameDesc()
+        {
+            if (db.Projects.Count() == 0)
+            {
+                throw new NotFoundException();
+            }
+            return db.Projects.OrderByDescending(item => item.ProjectName);
+        }
+
+        public IEnumerable<Project> SortByStartDateAsc()
+        {
+            if (db.Projects.Count() == 0)
+            {
+                throw new NotFoundException();
+            }
+            return db.Projects.OrderBy(item => item.ProjectStartDate);
+        }
+
+        public IEnumerable<Project> SortByStartDateDesc()
+        {
+            if (db.Projects.Count() == 0)
+            {
+                throw new NotFoundException();
+            }
+            return db.Projects.OrderByDescending(item => item.ProjectStartDate);
+        }
+
+        public IEnumerable<Project> SortByEndDateAsc()
+        {
+            if (db.Projects.Count() == 0)
+            {
+                throw new NotFoundException();
+            }
+            return db.Projects.OrderBy(item => item.ProjectEndDate);
+        }
+
+        public IEnumerable<Project> SortByEndDateDesc()
+        {
+            if (db.Projects.Count() == 0)
+            {
+                throw new NotFoundException();
+            }
+            return db.Projects.OrderByDescending(item => item.ProjectEndDate);
+        }
+
+        public IEnumerable<Project> SortByStatusAsc()
+        {
+            if (db.Projects.Count() == 0)
+            {
+                throw new NotFoundException();
+            }
+            return db.Projects.OrderBy(item => item.ProjectStatusId);
+        }
+
+        public IEnumerable<Project> SortByStatusDesc()
+        {
+            if (db.Projects.Count() == 0)
+            {
+                throw new NotFoundException();
+            }
+            return db.Projects.OrderByDescending(item => item.ProjectStatusId);
+        }
+
         public IEnumerable<Project> GetAllProjectsByStatusId(int projectStatusId)
         {
-            if(db.Projects.Where(item => item.ProjectStatusId == projectStatusId).Count() == 0)
+            if (db.Projects.Where(item => item.ProjectStatusId == projectStatusId).Count() == 0)
             {
                 throw new NotFoundException();
             }
@@ -42,9 +126,9 @@ namespace Repository.Repositories
         {
             List<Project> list = new List<Project>();
             var projects = db.Projects;
-            foreach(var project in projects)
+            foreach (var project in projects)
             {
-                if(Math.Abs((DateTimeOffset.Now).Subtract(project.ProjectEndDate).TotalDays) <= numberOfDays)
+                if (Math.Abs((DateTimeOffset.Now).Subtract(project.ProjectEndDate).TotalDays) <= numberOfDays)
                 {
                     list.Add(db.Projects.Find(project.Id));
                 }
@@ -78,7 +162,7 @@ namespace Repository.Repositories
 
         public IEnumerable<Project> FindProject(Func<Project, Boolean> predicate)
         {
-            if (db.Projects.Where(predicate).ToList().Count() == 0) 
+            if (db.Projects.Where(predicate).ToList().Count() == 0)
             {
                 throw new NotFoundException();
             }
@@ -92,7 +176,7 @@ namespace Repository.Repositories
             {
                 throw new NotFoundException();
             }
-                db.Projects.Remove(project);
+            db.Projects.Remove(project);
         }
 
         public void ChangeProjectName(int projectId, string newProjectName)
@@ -102,7 +186,7 @@ namespace Repository.Repositories
             {
                 throw new NotFoundException();
             }
-                project.ProjectName = newProjectName;
+            project.ProjectName = newProjectName;
         }
 
         public void ChangeProjectDescription(int projectId, string newProjectDescription)
@@ -112,7 +196,7 @@ namespace Repository.Repositories
             {
                 throw new NotFoundException();
             }
-                project.ProjectDescription = newProjectDescription;
+            project.ProjectDescription = newProjectDescription;
         }
 
         public void ChangeProjectStartDate(int projectId, DateTimeOffset newStartDate)
@@ -122,7 +206,7 @@ namespace Repository.Repositories
             {
                 throw new NotFoundException();
             }
-                project.ProjectStartDate = newStartDate;
+            project.ProjectStartDate = newStartDate;
         }
 
         public void ChangeProjectEndDate(int projectId, DateTimeOffset newEndDate)
@@ -132,7 +216,7 @@ namespace Repository.Repositories
             {
                 throw new NotFoundException();
             }
-                project.ProjectEndDate = newEndDate;
+            project.ProjectEndDate = newEndDate;
         }
 
         public void ChangeProjectStatus(int projectId, int projectStatusId)
@@ -157,6 +241,5 @@ namespace Repository.Repositories
             project.ProjectStatus = db.ProjectStatuses.Find(2);
             project.ProjectEndDate = DateTimeOffset.Now;
         }
-
     }
 }

@@ -18,7 +18,7 @@ namespace Validation
             {
                 errors.Add(new ValidationResult("Введите название проекта", new List<string>() { "ProjectName" }));
             }
-            if (project.ProjectName.Length > 20 || project.ProjectName.Length < 2)
+            if (project.ProjectName.Length > 25 || project.ProjectName.Length < 2)
             {
                 errors.Add(new ValidationResult("Недопустимая длина названия проекта", new List<string>() { "ProjectName" }));
             }
@@ -26,7 +26,7 @@ namespace Validation
             {
                 errors.Add(new ValidationResult("Введите описание проекта", new List<string>() { "ProjectDescription" }));
             }
-            if (project.ProjectDescription.Length > 1024 || project.ProjectDescription.Length < 10)
+            if (project.ProjectDescription.Length > 1024 || project.ProjectDescription.Length < 5)
             {
                 errors.Add(new ValidationResult("Недопустимая длина описания проекта", new List<string>() { "ProjectDescription" }));
             }

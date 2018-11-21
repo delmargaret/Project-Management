@@ -20,6 +20,50 @@ namespace Repository.Repositories
             this.db = context;
         }
 
+        public void FindSameEmployee(string name, string surname, string patronymic, string email, string git, string phone, int roleId, int workloadId)
+        {
+            List<Employee> list = new List<Employee>();
+            list = db.Employees.Where(item => item.EmployeeName == name &&
+            item.EmployeeSurname == surname && item.EmployeePatronymic == patronymic &&
+            item.Email == email && item.GitLink == git && item.PhoneNumber == phone &&
+            item.RoleId == roleId && item.PercentOrScheduleId == workloadId).ToList();
+            if (list.Count != 0)
+            {
+                throw new ObjectAlreadyExistsException();
+            }
+        }
+
+        public IEnumerable<Employee> FindEmployeesNotOnProject(int projectId)
+        {
+            List<Employee> employees = db.Employees.ToList();
+            if (employees.Count == 0)
+            {
+                throw new NotFoundException();
+            }
+            List<ProjectWork> works = db.ProjectWorks.Where(item => item.ProjectId == projectId).ToList();
+            List<Employee> loadEmployees = new List<Employee>();
+
+            foreach (var emp in employees)
+            {
+                foreach (var work in works)
+                {
+                    if (work.EmployeeId == emp.Id)
+                    {
+                        loadEmployees.Add(emp);
+                    }
+                }
+            }
+            if (loadEmployees.Count == employees.Count)
+            {
+                throw new NotFoundException();
+            }
+            foreach (var emp in loadEmployees)
+            {
+                employees.Remove(db.Employees.Find(emp.Id));
+            }
+            return employees;
+        }
+
         public void AddGitLink(int employeeId, string gitlink)
         {
             Employee employee = db.Employees.Find(employeeId);
@@ -27,7 +71,7 @@ namespace Repository.Repositories
             {
                 throw new NotFoundException();
             }
-                employee.GitLink = gitlink;
+            employee.GitLink = gitlink;
         }
 
         public void AddPhoneNumber(int employeeId, string phoneNumber)
@@ -121,9 +165,14 @@ namespace Repository.Repositories
             employee.PercentOrScheduleId = WorkLoadTypeId;
             employee.PercentOrSchedule = db.PercentOrSchedules.Find(WorkLoadTypeId);
         }
-        
+
         public Employee CreateEmployee(Employee item)
         {
+            List<Employee> list = db.Employees.Where(i => i.Email == item.Email).ToList();
+            if (list.Count != 0)
+            {
+                throw new ObjectAlreadyExistsException();
+            }
             var emp = db.Employees.Add(item);
             return emp;
         }
@@ -198,15 +247,46 @@ namespace Repository.Repositories
             return db.Employees;
         }
 
-        public Employee GetEmployeeByEmail(string email)
+        public IEnumerable<Employee> SortEmployeesBySurnameAsc()
         {
-            List<Employee> list = new List<Employee>();
-            list = db.Employees.Where(item => item.Email == email).ToList();
-            if (list.Count == 0)
+            if (db.Employees.Count() == 0)
             {
                 throw new NotFoundException();
             }
-            return list.First();
+            return db.Employees.OrderBy(item => item.EmployeeSurname);
+        }
+
+        public IEnumerable<Employee> SortEmployeesBySurnameDesc()
+        {
+            if (db.Employees.Count() == 0)
+            {
+                throw new NotFoundException();
+            }
+            return db.Employees.OrderByDescending(item => item.EmployeeSurname);
+        }
+
+        public IEnumerable<Employee> SortEmployeesByRoleAsc()
+        {
+            if (db.Employees.Count() == 0)
+            {
+                throw new NotFoundException();
+            }
+            return db.Employees.OrderBy(item => item.RoleId);
+        }
+
+        public IEnumerable<Employee> SortEmployeesByRoleDesc()
+        {
+            if (db.Employees.Count() == 0)
+            {
+                throw new NotFoundException();
+            }
+            return db.Employees.OrderByDescending(item => item.RoleId);
+        }
+
+        public Employee GetEmployeeByEmail(string email)
+        {
+            var emp = db.Employees.FirstOrDefault(item => item.Email == email);
+            return emp;
         }
 
         public Employee GetEmployeeById(int id)
@@ -224,7 +304,7 @@ namespace Repository.Repositories
             {
                 throw new NotFoundException();
             }
-            return db.Employees.Where(item=>item.EmployeeSurname==surname);
+            return db.Employees.Where(item => item.EmployeeSurname == surname);
         }
 
         public IEnumerable<Employee> GetEmployeesByRole(int roleId)

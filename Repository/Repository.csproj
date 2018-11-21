@@ -51,9 +51,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\ICredentialsRepository.cs" />
     <Compile Include="Interfaces\IEmployeeRepository.cs" />
     <Compile Include="Interfaces\IParticipationHistoryRepository.cs" />
-    <Compile Include="Interfaces\IPasswordRepository.cs" />
     <Compile Include="Interfaces\IPercentOrScheduleRepository.cs" />
     <Compile Include="Interfaces\IProjectRepository.cs" />
     <Compile Include="Interfaces\IProjectRoleRepository.cs" />
@@ -65,9 +65,9 @@
     <Compile Include="Interfaces\IUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ContextUnitOfWork.cs" />
+    <Compile Include="Repositories\CredentialsRepository.cs" />
     <Compile Include="Repositories\EmployeeRepository.cs" />
     <Compile Include="Repositories\ParticipationHistoryRepository.cs" />
-    <Compile Include="Repositories\PasswordRepository.cs" />
     <Compile Include="Repositories\PercentOrScheduleRepository.cs" />
     <Compile Include="Repositories\ProjectRepository.cs" />
     <Compile Include="Repositories\ProjectRoleRepository.cs" />

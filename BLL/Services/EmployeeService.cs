@@ -15,12 +15,11 @@ namespace BLL.Services
     public class EmployeeService : IEmployeeService
     {
         IUnitOfWork Database { get; set; }
-        Map<Employee, EmployeeDTO> Map { get; set; }
+        Map<Employee, EmployeeDTO> Map = new Map<Employee, EmployeeDTO>();
 
-        public EmployeeService(IUnitOfWork uow, Map<Employee, EmployeeDTO> map)
+        public EmployeeService(IUnitOfWork uow)
         {
             Database = uow;
-            Map = map;
         }
 
         public void Dispose()
@@ -31,6 +30,9 @@ namespace BLL.Services
         public EmployeeDTO CreateEmployee(EmployeeDTO employeeDTO)
         {
             Role role = Database.Roles.GetRoleById(employeeDTO.RoleId);
+            Database.Employees.FindSameEmployee(employeeDTO.EmployeeName, employeeDTO.EmployeeSurname,
+                employeeDTO.EmployeePatronymic, employeeDTO.Email, employeeDTO.GitLink, employeeDTO.PhoneNumber,
+                employeeDTO.RoleId, employeeDTO.PercentOrScheduleId);
             Employee employee = new Employee
             {
                 EmployeeName = employeeDTO.EmployeeName,
@@ -41,13 +43,19 @@ namespace BLL.Services
                 PhoneNumber = employeeDTO.PhoneNumber,
                 RoleId = employeeDTO.RoleId,
                 Role = role,
-                PercentOrScheduleId=3,
-                PercentOrSchedule=Database.WorkLoads.GetTypeById(3)
+                PercentOrScheduleId = 3,
+                PercentOrSchedule = Database.WorkLoads.GetTypeById(3)
             };
 
             var emp = Database.Employees.CreateEmployee(employee);
             Database.Save();
             return Map.ObjectMap(emp);
+        }
+
+        public IEnumerable<EmployeeDTO> FindEmployeesNotOnProject(int projectId)
+        {
+            var employees = Database.Employees.FindEmployeesNotOnProject(projectId);
+            return Map.ListMap(employees);
         }
 
         public void ChangeWorkLoad(int employeeId, int workLoadId)
@@ -57,12 +65,12 @@ namespace BLL.Services
             {
                 Database.Employees.SetWorkLoadType(employeeId, workLoadId);
             }
-            else if(employee.PercentOrScheduleId == 1 && workLoadId != 1)
+            else if (employee.PercentOrScheduleId == 1 && workLoadId != 1)
             {
                 var projects = Database.ProjectWorks.GetEmployeesProjects(employeeId);
-                foreach(var project in projects)
+                foreach (var project in projects)
                 {
-                    if(project.WorkLoad != null)
+                    if (project.WorkLoad != null)
                     {
                         throw new PercentOrScheduleException();
                     }
@@ -72,7 +80,7 @@ namespace BLL.Services
             else if (employee.PercentOrScheduleId == 2 && workLoadId != 2)
             {
                 var projects = Database.ProjectWorks.GetEmployeesProjects(employeeId);
-                foreach(var project in projects)
+                foreach (var project in projects)
                 {
                     var schedules = Database.Schedules.GetScheduleOnProjectWork(project.Id).ToList();
                     if (schedules.Count != 0)
@@ -127,6 +135,30 @@ namespace BLL.Services
         public IEnumerable<EmployeeDTO> GetAllEmployees()
         {
             var employees = Database.Employees.GetAllEmployees();
+            return Map.ListMap(employees);
+        }
+
+        public IEnumerable<EmployeeDTO> SortEmployeesBySurnameAsc()
+        {
+            var employees = Database.Employees.SortEmployeesBySurnameAsc();
+            return Map.ListMap(employees);
+        }
+
+        public IEnumerable<EmployeeDTO> SortEmployeesBySurnameDesc()
+        {
+            var employees = Database.Employees.SortEmployeesBySurnameDesc();
+            return Map.ListMap(employees);
+        }
+
+        public IEnumerable<EmployeeDTO> SortEmployeesByRoleAsc()
+        {
+            var employees = Database.Employees.SortEmployeesByRoleAsc();
+            return Map.ListMap(employees);
+        }
+
+        public IEnumerable<EmployeeDTO> SortEmployeesByRoleDesc()
+        {
+            var employees = Database.Employees.SortEmployeesByRoleDesc();
             return Map.ListMap(employees);
         }
 
@@ -214,6 +246,5 @@ namespace BLL.Services
             Database.Employees.ChangeRole(employee.Id, role.Id);
             Database.Save();
         }
-
     }
 }

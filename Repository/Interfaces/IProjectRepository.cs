@@ -10,11 +10,20 @@ namespace Repository.Interfaces
     public interface IProjectRepository
     {
         IEnumerable<Project> GetAllProjects();
+        IEnumerable<Project> SortByNameAsc();
+        IEnumerable<Project> SortByNameDesc();
+        IEnumerable<Project> SortByStartDateAsc();
+        IEnumerable<Project> SortByStartDateDesc();
+        IEnumerable<Project> SortByEndDateAsc();
+        IEnumerable<Project> SortByEndDateDesc();
+        IEnumerable<Project> SortByStatusAsc();
+        IEnumerable<Project> SortByStatusDesc();
         IEnumerable<Project> GetAllProjectsByStatusId(int projectStatusId);
         IEnumerable<Project> GetProjectsEndingInNDays(int numberOfDays);
         Project GetProjectById(int id);
         IEnumerable<Project> FindProject(Func<Project, Boolean> predicate);
         Project CreateProject(Project item);
+        void FindSameProject(string projName, string projDescr, DateTimeOffset start, DateTimeOffset end, int projStatus);
         void UpdateProject(Project item);
         void DeleteProjectById(int id);
         void ChangeProjectName(int projectId, string newProjectName);
