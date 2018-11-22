@@ -21,8 +21,8 @@ namespace Repository.Repositories
 
         public Credentials GetLastPassword(string login)
         {
-            var creds = db.Credentials.Where(item => item.Login == login).ToList();
-            return creds.LastOrDefault();
+            var creds = db.Credentials.Where(item => item.Login == login).OrderByDescending(i => i.Id).FirstOrDefault();
+            return creds;
         }
 
         public IEnumerable<Credentials> GetAll()

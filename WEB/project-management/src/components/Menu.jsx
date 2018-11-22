@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import {Nav, NavItem} from 'react-bootstrap';
+import '../styles/Menu.css'
 
 class Menu extends Component{
 
       render(){
           return(
-            <Nav bsStyle="pills" stacked activeKey={1} >
+            <Nav bsStyle="pills" stacked activeKey={1} id="navmenu">
             <NavItem eventKey={2} href="/staff">
               Сотрудники
             </NavItem>

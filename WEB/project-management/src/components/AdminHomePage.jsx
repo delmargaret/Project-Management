@@ -1,20 +1,21 @@
 import React, { Component } from 'react';
 import {Button} from 'react-bootstrap';
-import './AdminHomePage.css';
+import '../styles/AdminHomePage.css';
 import UserPage from './UserPage';
 import Menu from './Menu';
 import * as method from '../../src/services/methods';
 import * as tokenService from '../../src/services/tokenService';
+import {Grid, Row, Col} from 'react-bootstrap';
+
 
 class AdminHomePage extends Component{
 
       render(){
           return(
-            <div className="container-fluid">
-            <div className="row-fluid">
-              <div className="span2">
-                <Menu />
-              </div>
+            <Grid>
+            <Row>
+              <Col xs={3} md={3}>{<Menu/>}</Col>
+              <Col xs={15} md={9}>
               <div className="span10" id="homepage">
               <h1>Добро пожаловать!</h1>
                   <div id="buttons">
@@ -26,8 +27,9 @@ class AdminHomePage extends Component{
                     </div>
                   </div>
               </div>
-            </div>
-          </div>
+              </Col>
+            </Row>
+          </Grid>
           );
       };
 }

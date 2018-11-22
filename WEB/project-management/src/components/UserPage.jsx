@@ -3,6 +3,7 @@ import * as method from '../../src/services/methods';
 import * as tokenService from '../../src/services/tokenService';
 import * as projectWorkService from '../services/projectWorkService';
 import {Table, Button, Modal, OverlayTrigger, Popover} from 'react-bootstrap';
+import '../styles/UserPage.css';
 
 class Workload extends Component{
     constructor(props){
@@ -182,7 +183,7 @@ class UserPage extends Component{
     }
     renderProjects(){
         if(this.state.projects.length===0) return <div>Проекты не найдены</div>
-        else return <div>
+        else return <div id="scrolluserpage">
             <h4>Проекты</h4>
             <Table>
             <thead>
@@ -227,7 +228,9 @@ class UserPage extends Component{
             phone = "---";
         }
         else phone = employee.PhoneNumber;
-       return <div>
+       return <div id="userpage">
+           <h3>{employee.EmployeeSurname + " " + employee.EmployeeName}</h3>
+           <br></br>
        <div>
        <h5>E-mail: {employee.Email}</h5>
        <h5>Git: {git}</h5>

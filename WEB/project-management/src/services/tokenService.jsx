@@ -14,7 +14,11 @@ export function getUser()
 }
 export function registrate(login, password){
     var data = JSON.stringify({"Login": login, "Password":password});
-    return method.post('token/registrate', data).then(res =>{
+    return method.post('token/registrate', data);
+}
+export function changePassword(login, password){
+    var data = JSON.stringify({"Login": login, "Password":password});
+    return method.post('token/ChangePassword', data).then(res =>{
         var token = JSON.parse(res.data);
         method.setToken(token);
     });

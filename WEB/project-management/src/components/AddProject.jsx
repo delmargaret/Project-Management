@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import {Table, Button, FormGroup, FormControl, Form, Modal, ControlLabel} from 'react-bootstrap';
 import * as projectService from '../../src/services/projectService';
-import "./AddProject.css";
+import "../styles/AddProject.css";
+import {Grid, Row, Col} from 'react-bootstrap';
+import Menu from './Menu';
+
 
 class ChangeProjectForm extends Component{
     _isMounted = false;
@@ -695,22 +698,29 @@ class AddProjectPage extends Component{
         this.handleShow();
     }
     render(){ 
-        return <div>
-                <h2>Добавить проект</h2>
-                <div>
-                    <Button  bsSize="large" id="addprojectbtn" onClick={() => this.onClick()}>Новый проект</Button>
-                </div>
-                <div>
-                    <h3>Проекты</h3>
-                {this.renderProjectList()}
-                </div>
-                    <Modal show={this.state.show} onHide={this.handleClose}>
-                        <Modal.Header closeButton></Modal.Header>
-                        <Modal.Body>
-                            <AddProjectForm onProjectSubmit={this.onAddProject}/>
-                        </Modal.Body>
-                    </Modal>
-        </div>;
+        return <Grid>
+                    <Row>
+                    <Col xs={3} md={3}>{<Menu/>}</Col>
+                    <Col xs={15} md={9}>
+                    <div>
+                        <h2>Добавить проект</h2>
+                        <div>
+                            <Button  bsSize="large" id="addprojectbtn" onClick={() => this.onClick()}>Новый проект</Button>
+                        </div>
+                        <div>
+                            <h3>Проекты</h3>
+                        {this.renderProjectList()}
+                        </div>
+                            <Modal show={this.state.show} onHide={this.handleClose}>
+                                <Modal.Header closeButton></Modal.Header>
+                                <Modal.Body>
+                                    <AddProjectForm onProjectSubmit={this.onAddProject}/>
+                                </Modal.Body>
+                            </Modal>
+                    </div>
+                    </Col>
+                    </Row>
+                </Grid>;
      }
 }
 

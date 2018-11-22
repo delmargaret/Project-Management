@@ -1,0 +1,12 @@
+#userpage{
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    width: 70%;
+    margin-top: 2%;
+}
+#scrolluserpage{
+    width: 100%;
+    height: 340px;
+    overflow-y: scroll;
+}

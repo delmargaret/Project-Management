@@ -6,8 +6,11 @@ import * as projectRoleService from '../../src/services/projectRoleService';
 import * as employeeService from '../../src/services/employeeService';
 import * as scheduleService from '../../src/services/scheduleService';
 import ScheduleDayList from './AddSchedule';
+import {Grid, Row, Col} from 'react-bootstrap';
+import Menu from './Menu';
 
-import "./ProjectManager.css";
+
+import "../styles/ProjectManager.css";
 
 class AddWorkLoadForm extends Component{
     constructor(props){
@@ -763,7 +766,8 @@ class AddEmployeeForm extends Component{
     this.onEmployeeIdChange = this.onEmployeeIdChange.bind(this);
     this.onProjectRoleIdChange = this.onProjectRoleIdChange.bind(this);
     this.loadEmployees = this.loadEmployees.bind(this);
-    this.loadRoles = this.loadRoles.bind(this);     
+    this.loadRoles = this.loadRoles.bind(this);    
+    this.renderEmployeeSelect = this.renderEmployeeSelect.bind(this);
     }
     validateEmployee() {
         if (this.state.employeeId !== 0) return 'success';
@@ -812,42 +816,49 @@ class AddEmployeeForm extends Component{
         this.props.onEmployeeSubmit({ EmployeeId: employeeId, ProjectId: projectId,
             ProjectRoleId: projectRoleId});
             this.setState({employeeId: 0, projectId: 0, projectRoleId: 0});
-    }
-    render() {
-        return (
-            <form onSubmit={this.onSubmit}>
-                        <FormGroup id="formControlsSelect1" validationState={this.validateEmployee()}>
-                            <FormControl componentClass="select" onChange={this.onEmployeeIdChange}>
-                            <option>Выберите сотрудника</option>
-                                {
-                                    this.state.employees.map((employee) => {  
-                                    var data = JSON.parse(employee);
-                                    var id = data.Id;  
-                                    return <option key={id} value={id} >
-                                    {data.EmployeeSurname + " " + data.EmployeeName}
-                                    </option>
-                                    }) 
-                                }  
-                            </FormControl>
-                        </FormGroup>
+    } 
+    renderEmployeeSelect(){
+        if (this.state.employees.length===0) return <div>Сотрудники не найдены</div>
+        if (this.state.employees.length===1) return <div>Сотрудники не найдены</div>
+        else return <form onSubmit={this.onSubmit}>
+                <FormGroup id="formControlsSelect1" validationState={this.validateEmployee()}>
+                <FormControl componentClass="select" onChange={this.onEmployeeIdChange}>
+                <option>Выберите сотрудника</option>
+                    {
+                        this.state.employees.map((employee) => {  
+                        var data = JSON.parse(employee);
+                        var id = data.Id; 
+                        if (id===1) return null; 
+                        return <option key={id} value={id} >
+                        {data.EmployeeSurname + " " + data.EmployeeName}
+                        </option>
+                        }) 
+                    }  
+                </FormControl>
+            </FormGroup>
 
-                        <FormGroup id="formControlsSelect2" validationState={this.validateRole()}>
-                            <FormControl componentClass="select" onChange={this.onProjectRoleIdChange}>
-                            <option>Выберите роль</option>
-                                {
-                                    this.state.roles.map((role) => { 
-                                    var data = JSON.parse(role);
-                                    var id = data.Id;  
-                                    return <option key={id} value={id} >
-                                    {data.ProjectRoleName}
-                                    </option>
-                                    }) 
-                                }
-                            </FormControl>
-                        </FormGroup>
-                <Button type="submit">Добавить</Button>
-            </form>
-            );
+                <FormGroup id="formControlsSelect2" validationState={this.validateRole()}>
+                <FormControl componentClass="select" onChange={this.onProjectRoleIdChange}>
+                <option>Выберите роль</option>
+                    {
+                        this.state.roles.map((role) => { 
+                        var data = JSON.parse(role);
+                        var id = data.Id;  
+                        return <option key={id} value={id} >
+                        {data.ProjectRoleName}
+                        </option>
+                        }) 
+                    }
+                </FormControl>
+            </FormGroup>
+        <Button type="submit">Добавить</Button>
+        </form>     
+    }
+
+    render() {
+        return <div>
+            {this.renderEmployeeSelect()}
+        </div>
         }
     }
 
@@ -964,28 +975,35 @@ class ProjectManagerPage extends Component{
         var projId = 0;
         if(this.state.Project!==null){projName=this.state.Project.ProjectName;
         projId = this.state.Project.Id;}
-        return <div>
-                    <h3>Проекты</h3>
-                {this.renderProjectList()}
-                <Modal bsSize="large" show={this.state.show} onHide={this.handleClose}>
-                        <Modal.Header closeButton>{projName}</Modal.Header>
-                        <Modal.Body>
-                            <Button onClick={() => this.onOpenModal2()}>
-                                Добавить участника
-                            </Button>
-                            <div>
-                            {this.renderEmployeeList()}
-                            </div>
-                        </Modal.Body>
-                    </Modal>
+        return <Grid>
+                <Row>
+                <Col xs={3} md={3}>{<Menu/>}</Col>
+                <Col xs={15} md={9}>
+                    <div>
+                        <h3>Проекты</h3>
+                    {this.renderProjectList()}
+                    <Modal bsSize="large" show={this.state.show} onHide={this.handleClose}>
+                            <Modal.Header closeButton>{projName}</Modal.Header>
+                            <Modal.Body>
+                                <Button onClick={() => this.onOpenModal2()}>
+                                    Добавить участника
+                                </Button>
+                                <div>
+                                {this.renderEmployeeList()}
+                                </div>
+                            </Modal.Body>
+                        </Modal>
 
-                    <Modal  show={this.state.show2} onHide={this.handleClose2}>
-                        <Modal.Header closeButton></Modal.Header>
-                        <Modal.Body>
-                            <AddEmployeeForm projId={projId} onEmployeeSubmit={this.onAddEmployee}/>
-                        </Modal.Body>
-                    </Modal>
-        </div>;
+                        <Modal  show={this.state.show2} onHide={this.handleClose2}>
+                            <Modal.Header closeButton></Modal.Header>
+                            <Modal.Body>
+                                <AddEmployeeForm projId={projId} onEmployeeSubmit={this.onAddEmployee}/>
+                            </Modal.Body>
+                        </Modal>
+                    </div>
+                </Col>
+                </Row>
+            </Grid>;
     }
 }
 

@@ -13,7 +13,7 @@ namespace ProjectManagement.Util
     {
         private const string Secret = "db3OIsj+BXE9NZDy0t8W3TcNekrF+2d/1sFnWG4HnV8TZY30iTOdtVWJG8abW";
 
-        public static string GenerateToken(string username, int expireMinutes = 20)
+        public static string GenerateToken(string username, int expireMinutes = 50)
         {
             var symmetricKey = Encoding.ASCII.GetBytes(Secret);
             var tokenHandler = new JwtSecurityTokenHandler();

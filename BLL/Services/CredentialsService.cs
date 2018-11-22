@@ -48,5 +48,23 @@ namespace BLL.Services
             Database.Save();
             return Map.ObjectMap(cred);
         }
+
+        public CredentialsDTO ChangePassword(string login, string newpassword)
+        {
+            string hashPassword = passwordService.GeneratePasswordHash(newpassword);
+
+            var employee = Database.Employees.GetEmployeeByEmail(login);
+            var employeeId = employee.Id;
+            Credentials credentials = new Credentials
+            {
+                Login = employee.Email,
+                PasswordString = hashPassword,
+                EmployeeId = employeeId,
+                Employee = employee
+            };
+            var cred = Database.Credentials.Create(credentials);
+            Database.Save();
+            return Map.ObjectMap(cred);
+        }
     }
 }

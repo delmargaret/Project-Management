@@ -8,6 +8,7 @@ import Header from "./components/Header";
 import HomePage from "./components/AdminHomePage";
 import LogInPage from './components/LogInPage';
 import RegistrationPage from './components/RegistratePage';
+import SettingsPage from './components/SettingsPage';
 import * as method from './services/methods';
 import * as tokenService from './services/tokenService';
 
@@ -71,6 +72,8 @@ class App extends Component {
             <Route path="/projects" component={AddProjectPage} />
             <Route path="/manager" component={ProjectManagerPage} />
             <Route path="/registration" component={RegistrationPage} />
+            <Route path="/settings" component={SettingsPage} />
+            <Route path="/login" render={() => (<LogInPage onLogIn={this.logIn} />)} />
         </div>
         </Router> 
       );

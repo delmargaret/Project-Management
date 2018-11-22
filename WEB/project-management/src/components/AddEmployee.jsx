@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import * as employeeService from '../../src/services/employeeService';
 import * as roleService from '../../src/services/roleService';
 import * as projectWorkService from '../../src/services/projectWorkService';
-import * as method from '../../src/services/methods';
+import Menu from './Menu';
+import {Grid, Row, Col} from 'react-bootstrap';
+
 
 import {Table, Button, Modal, FormGroup, FormControl, Form} from 'react-bootstrap';
-import "./AddEmployee.css";
+import "../styles/AddEmployee.css";
 
 class EmployeeInformation extends Component{
     constructor(props){
@@ -107,9 +109,7 @@ class EmployeeList extends Component{
             <Table>
             <thead>
                 <tr>
-                <th>Фамилия</th>
-                <th>Имя</th>
-                <th>Отчество</th>
+                <th>ФИО</th>
                 <th>E-mail</th>
                 <th>Роль</th>
                 <th></th>
@@ -264,7 +264,8 @@ class RoleList extends Component{
     constructor(props){
         super(props);
         this.state = { roles: [], activeRole: 0, employees: [], modalIsOpen: false, show: false, sortId: 0,
-        roleAsc: [], roleDesc: [], surnameAsc: [], surnameDesc: [], activeEmployee: 0, show1: false, name: " "};
+        roleAsc: [], roleDesc: [], surnameAsc: [], surnameDesc: [], activeEmployee: 0, 
+        show1: false, name: " ", show2: false};
         this.onAddEmployee = this.onAddEmployee.bind(this);
         this.loadRoles = this.loadRoles.bind(this);
         this.loadEmployees = this.loadEmployees.bind(this);
@@ -273,6 +274,8 @@ class RoleList extends Component{
         this.handleClose = this.handleClose.bind(this);
         this.handleShow1 = this.handleShow1.bind(this);
         this.handleClose1 = this.handleClose1.bind(this);
+        this.handleShow2 = this.handleShow2.bind(this);
+        this.handleClose2 = this.handleClose2.bind(this);
         this.deleteEmployee = this.deleteEmployee.bind(this);
         this.sortEmployeesByRoleAsc = this.sortEmployeesByRoleAsc.bind(this);
         this.sortEmployeesByRoleDesc = this.sortEmployeesByRoleDesc.bind(this);
@@ -293,6 +296,12 @@ class RoleList extends Component{
       }
     handleShow1() {
         this.setState({ show1: true });
+      }
+    handleClose2() {
+        this.setState({ show2: false });
+      }
+    handleShow2() {
+        this.setState({ show2: true });
       }
     deleteEmployee(id) {
         if (id) {
@@ -349,8 +358,9 @@ class RoleList extends Component{
         });
     }
     renderEmployeeList(employees){
-        if(this.state.employees.length!==0){
-            return <div>
+        if(this.state.employees.length===0) return <div>Сотрудники не найдены</div>
+        if(this.state.employees.length===1) return <div>Сотрудники не найдены</div>
+            else return <div>
                 <Form id="SortSelect">
                     <FormGroup>
                         <FormControl componentClass="select" value={this.state.sortId}
@@ -366,8 +376,6 @@ class RoleList extends Component{
                     <EmployeeList emp={employees} onDeleteEmployee={this.deleteEmployee}
                     onShowInformation={this.showInformation}/>
             </div> 
-        }
-        else return <div>Сотрудники не найдены</div>
     }
     componentDidMount() {
         this.loadRoles();
@@ -379,10 +387,11 @@ class RoleList extends Component{
             var data = JSON.stringify({"EmployeeName":employee.name, "EmployeeSurname":employee.surname,
         "EmployeePatronymic": employee.patronymic, "Email": employee.email, "RoleId": employee.roleId});
         employeeService.createEmployee(data).then(res => {
-            if (res !== null) {
+            if (res.data !== "") {
                 this.loadEmployees();
                 this.handleClose();
                 }
+                else this.handleShow2();
             });
         }
     }
@@ -391,7 +400,6 @@ class RoleList extends Component{
     }
     onSort(){
         var sortId = this.state.sortId;
-        console.log(sortId==="2");
         if(sortId==="1"){
             this.sortEmployeesBySurnameAsc();
         }
@@ -413,8 +421,6 @@ class RoleList extends Component{
         this.handleShow();
     }
     render(){ 
-        var token = method.getToken();
-        console.log(token);
         var addrolename = "";
         const activerole = this.state.activeRole;
         if(activerole===1){addrolename="Добавить ресурсного менеджера";}
@@ -422,41 +428,54 @@ class RoleList extends Component{
         if(activerole===3){addrolename="Добавить разработчика";}
         const roledata = this.state.roles;
         if (!roledata) return <div>Загрузка...</div>; 
-            return <div>
-                <h2>Сотрудники</h2>
+            return <Grid>
+            <Row>
+              <Col xs={3} md={3}>{<Menu/>}</Col>
+              <Col xs={15} md={9}>
                 <div>
-                    <Table>
-                        <tbody>
-                        {
-                    this.state.roles.map((role) => {  
-                        var data = JSON.parse(role); 
-                        var id = data.Id;  
-                        return <tr key={id}>
-                            <td>{data.Id}.</td>
-                            <td>{data.RoleName}</td>
-                            <td><Button onClick={() => this.onClick(id)}>
-                                Добавить</Button>
-                            </td>
-                        </tr>              
-                    })
-                    }
-                        </tbody>
-                    </Table>
-                    {this.renderEmployeeList(this.state.employees)}
-                </div>
-                    <Modal show={this.state.show} onHide={this.handleClose}>
-                        <Modal.Header closeButton>{addrolename}</Modal.Header>
-                        <Modal.Body>
-                            <AddEmployeeForm roleid = {activerole} onEmployeeSubmit={this.onAddEmployee}/>
-                        </Modal.Body>
-                    </Modal>
-                    <Modal show={this.state.show1} onHide={this.handleClose1}>
-                        <Modal.Header closeButton>{this.state.name}</Modal.Header>
-                        <Modal.Body>
-                            <EmployeeInformation employeeId={this.state.activeEmployee}/>
-                        </Modal.Body>
-                    </Modal>
-        </div>;        
+                    <h2>Сотрудники</h2>
+                    <div>
+                        <Table>
+                            <tbody>
+                            {
+                        this.state.roles.map((role) => {  
+                            var data = JSON.parse(role); 
+                            var id = data.Id;  
+                            return <tr key={id}>
+                                <td>{data.Id}.</td>
+                                <td>{data.RoleName}</td>
+                                <td><Button onClick={() => this.onClick(id)}>
+                                    Добавить</Button>
+                                </td>
+                            </tr>              
+                        })
+                        }
+                            </tbody>
+                        </Table>
+                        {this.renderEmployeeList(this.state.employees)}
+                    </div>
+                        <Modal show={this.state.show} onHide={this.handleClose}>
+                            <Modal.Header closeButton>{addrolename}</Modal.Header>
+                            <Modal.Body>
+                                <AddEmployeeForm roleid = {activerole} onEmployeeSubmit={this.onAddEmployee}/>
+                            </Modal.Body>
+                        </Modal>
+                        <Modal show={this.state.show1} onHide={this.handleClose1}>
+                            <Modal.Header closeButton>{this.state.name}</Modal.Header>
+                            <Modal.Body>
+                                <EmployeeInformation employeeId={this.state.activeEmployee}/>
+                            </Modal.Body>
+                        </Modal>
+                        <Modal show={this.state.show2} onHide={this.handleClose2}>
+                            <Modal.Header closeButton>Ошибка</Modal.Header>
+                                <Modal.Body>
+                                    <div>Пользователь с таким e-mail уже создан</div>
+                                </Modal.Body>
+                        </Modal>  
+                    </div>
+              </Col>
+            </Row>
+          </Grid>;        
      }
 }
 

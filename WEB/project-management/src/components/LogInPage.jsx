@@ -1,17 +1,26 @@
 import React, { Component } from 'react';
 import * as tokenService from '../../src/services/tokenService';
-import {Button, Form, FormControl, FormGroup} from 'react-bootstrap';
+import {Button, Form, FormControl, FormGroup, Modal} from 'react-bootstrap';
 import * as method from '../../src/services/methods';
+import '../styles/logInPage.css'
 
 class LogInPage extends Component {
     constructor(props){
       super(props);
-      this.state = {email: "", password: ""}
+      this.state = {email: "", password: "", show: false}
   
       this.onSubmit = this.onSubmit.bind(this);
       this.onEmailChange = this.onEmailChange.bind(this);
       this.onPasswordChange = this.onPasswordChange.bind(this);
+      this.handleShow = this.handleShow.bind(this);
+      this.handleClose = this.handleClose.bind(this);
   }
+    handleClose() {
+        this.setState({ show: false });
+    }
+    handleShow() {
+        this.setState({ show: true });
+    }
     onEmailChange(e) {
         var val = e.target.value;
         this.setState({email: val});
@@ -25,16 +34,16 @@ class LogInPage extends Component {
         var email = this.state.email.trim();
         var password = this.state.password.trim();
         tokenService.login(email, password).then(res =>{
-            if(res!==null){
+            if(res!==""){
                 var token = JSON.parse(res.data);
                 method.setToken(token);
                 this.props.onLogIn();
-            }
-        });
+            } 
+        }).catch(()=>{this.handleShow();})
     }
     render(){
-      return <div>
-          <Form  onSubmit={this.onSubmit}>
+      return <div id="logindiv">
+          <Form  onSubmit={this.onSubmit} id="loginform">
                     <FormGroup>
                         <FormControl
                             type="email"
@@ -53,7 +62,13 @@ class LogInPage extends Component {
                         <FormControl.Feedback />
                     </FormGroup>
                 <Button type="submit">Войти</Button>
-                    </Form>           
+                    </Form>  
+                    <Modal show={this.state.show} onHide={this.handleClose}>
+                        <Modal.Header closeButton>Ошибка</Modal.Header>
+                            <Modal.Body>
+                                <div>Неверно введен логин или пароль!</div>
+                            </Modal.Body>
+                    </Modal>         
       </div>
   }
 }

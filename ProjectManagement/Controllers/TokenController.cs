@@ -60,24 +60,60 @@ namespace ProjectManagement.Controllers
         [HttpPost]
         public IHttpActionResult Authenticate([FromBody]UserModel model)
         {
-            if (CheckUser(model.Login, model.Password))
+            try
             {
-                var token = JWT.GenerateToken(model.Login, 20);
-                return Ok(JsonConvert.SerializeObject(token));
+                if (CheckUser(model.Login, model.Password))
+                {
+                    var token = JWT.GenerateToken(model.Login, 50);
+                    return Ok(JsonConvert.SerializeObject(token));
+                }
+                else throw new HttpResponseException(HttpStatusCode.Unauthorized);
             }
-            else throw new HttpResponseException(HttpStatusCode.Unauthorized);
+            catch (HttpResponseException)
+            {
+                return Ok();
+            }
         }
 
         [AllowAnonymous]
         [HttpPost]
         public IHttpActionResult Registrate([FromBody]UserModel model)
         {
-            var employeeId = employeeService.GetEmployeeByEmail(model.Login).Id;
-            credentialsService.Registrate(employeeId, model.Password);
-            var token = JWT.GenerateToken(model.Login, 20);
-            return Ok(JsonConvert.SerializeObject(token));
+            try
+            {
+                var employee = employeeService.GetEmployeeByEmail(model.Login);
+                credentialsService.Registrate(employee.Id, model.Password);
+                return Ok();
+            }
+            catch (HttpResponseException)
+            {
+                return Ok();
+            }
+            catch (NotFoundException)
+            {
+                return Ok();
+            }
         }
 
+        [JwtAuthentication]
+        [HttpPost]
+        public IHttpActionResult ChangePassword([FromBody]UserModel model)
+        {
+            try
+            {
+                credentialsService.ChangePassword(model.Login, model.Password);
+                var token = JWT.GenerateToken(model.Login, 50);
+                return Ok(JsonConvert.SerializeObject(token));
+            }
+            catch (HttpResponseException)
+            {
+                return Ok();
+            }
+            catch (Exception)
+            {
+                return Ok();
+            }
+        }
         private bool CheckUser(string username, string password)
         {
             return credentialsService.Autenticate(username, password);

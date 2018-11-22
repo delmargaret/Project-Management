@@ -253,7 +253,7 @@ namespace ProjectManagement.Controllers
             }
             catch (ObjectAlreadyExistsException)
             {
-                return BadRequest("Пользователь с таким e-mail уже создан");
+                return Ok();
             }
         }
 
@@ -263,11 +263,11 @@ namespace ProjectManagement.Controllers
             try
             {
                 employeeService.DeleteEmployeeById(id);
-                return Ok();
+                return Ok(id);
             }
             catch (NotFoundException)
             {
-                return BadRequest("Сотрудник не найден");
+                return Ok();
             }
         }
 
@@ -277,11 +277,11 @@ namespace ProjectManagement.Controllers
             try
             {
                 employeeService.DeleteEmployeeByEmail(email);
-                return Ok();
+                return Ok(email);
             }
             catch (NotFoundException)
             {
-                return BadRequest("Сотрудник не найден");
+                return Ok();
             }
         }
 
@@ -291,11 +291,11 @@ namespace ProjectManagement.Controllers
             try
             {
                 employeeService.AddGitLink(id, git);
-                return Ok();
+                return Ok(id);
             }
             catch (NotFoundException)
             {
-                return BadRequest("Сотрудник не найден");
+                return Ok();
             }
         }
 
@@ -305,11 +305,11 @@ namespace ProjectManagement.Controllers
             try
             {
                 employeeService.DeleteGitLinkByEmployeeId(id);
-                return Ok();
+                return Ok(id);
             }
             catch (NotFoundException)
             {
-                return BadRequest("Сотрудник не найден");
+                return Ok();
             }
         }
 
@@ -319,11 +319,11 @@ namespace ProjectManagement.Controllers
             try
             {
                 employeeService.AddPhoneNumber(id, number);
-                return Ok();
+                return Ok(id);
             }
             catch (NotFoundException)
             {
-                return BadRequest("Сотрудник не найден");
+                return Ok();
             }
         }
 
@@ -333,11 +333,11 @@ namespace ProjectManagement.Controllers
             try
             {
                 employeeService.DeletePhoneNumberByEmployeeId(id);
-                return Ok();
+                return Ok(id);
             }
             catch (NotFoundException)
             {
-                return BadRequest("Сотрудник не найден");
+                return Ok();
             }
         }
 
@@ -347,11 +347,11 @@ namespace ProjectManagement.Controllers
             try
             {
                 employeeService.ChangeName(id, name);
-                return Ok();
+                return Ok(id);
             }
             catch (NotFoundException)
             {
-                return BadRequest("Сотрудник не найден");
+                return Ok();
             }
         }
 
@@ -361,11 +361,11 @@ namespace ProjectManagement.Controllers
             try
             {
                 employeeService.ChangeSurname(id, surname);
-                return Ok();
+                return Ok(id);
             }
             catch (NotFoundException)
             {
-                return BadRequest("Сотрудник не найден");
+                return Ok();
             }
         }
 
@@ -375,11 +375,11 @@ namespace ProjectManagement.Controllers
             try
             {
                 employeeService.ChangePatronymic(id, patronymic);
-                return Ok();
+                return Ok(id);
             }
             catch (NotFoundException)
             {
-                return BadRequest("Сотрудник не найден");
+                return Ok();
             }
         }
 
@@ -389,11 +389,11 @@ namespace ProjectManagement.Controllers
             try
             {
                 employeeService.ChangeEmail(id, email);
-                return Ok();
+                return Ok(id);
             }
             catch (NotFoundException)
             {
-                return BadRequest("Сотрудник не найден");
+                return Ok();
             }
         }
 
@@ -403,11 +403,11 @@ namespace ProjectManagement.Controllers
             try
             {
                 employeeService.ChangeGitLink(id, git);
-                return Ok();
+                return Ok(id);
             }
             catch (NotFoundException)
             {
-                return BadRequest("Сотрудник не найден");
+                return Ok();
             }
         }
 
@@ -417,11 +417,11 @@ namespace ProjectManagement.Controllers
             try
             {
                 employeeService.ChangePhoneNumber(id, number);
-                return Ok();
+                return Ok(id);
             }
             catch (NotFoundException)
             {
-                return BadRequest("Сотрудник не найден");
+                return Ok();
             }
         }
 
@@ -431,11 +431,11 @@ namespace ProjectManagement.Controllers
             try
             {
                 employeeService.ChangeRole(id, roleId);
-                return Ok();
+                return Ok(id);
             }
             catch (NotFoundException)
             {
-                return BadRequest("Объект не найден");
+                return Ok();
             }
         }
 
@@ -445,11 +445,11 @@ namespace ProjectManagement.Controllers
             try
             {
                 employeeService.ChangeWorkLoad(id, loadType);
-                return Ok();
+                return Ok(id);
             }
             catch (NotFoundException)
             {
-                return BadRequest("Объект не найден");
+                return Ok();
             }
         }
     }

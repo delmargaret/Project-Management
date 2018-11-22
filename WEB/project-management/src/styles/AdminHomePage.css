@@ -1,7 +1,9 @@
 #homepage {
-    align-self: center;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
     text-align: center;
-    margin-top: 8%;
+    margin-top: 15%;
 }
 
 #buttons {

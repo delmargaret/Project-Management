@@ -3,6 +3,7 @@ import {Navbar, Nav, NavItem, NavDropdown, MenuItem} from 'react-bootstrap';
 
 import * as tokenService from '../services/tokenService';
 import * as method from '../services/methods';
+import '../styles/Header.css';
 
 class LogOutHeader extends Component {
     render() {
@@ -14,7 +15,7 @@ class LogOutHeader extends Component {
                     </Navbar.Brand>
                 </Navbar.Header>
                 <Navbar.Collapse>
-                    <Nav pullRight>
+                    <Nav pullRight className="fixed">
                     <NavItem eventKey={1} href="/">
                         Log in
                     </NavItem>
@@ -52,9 +53,9 @@ class LogInHeader extends Component{
             </Navbar.Brand>
         </Navbar.Header>
         <Navbar.Collapse>
-            <Nav pullRight>
+            <Nav pullRight className="fixed">
                 <NavDropdown title={this.state.userName} id="basic-nav-dropdown">
-                    <MenuItem>Настройки</MenuItem>
+                    <MenuItem eventKey={1} href="/settings">Настройки</MenuItem>
                     <MenuItem divider />
                     <MenuItem eventKey={2} href="/" onSelect={() => this.props.onLogOut()}>Выход</MenuItem>
                 </NavDropdown>
