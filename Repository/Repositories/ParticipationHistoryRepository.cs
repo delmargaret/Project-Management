@@ -49,15 +49,14 @@ namespace Repository.Repositories
             return db.ParticipationHistories.Where(item => item.ProjectWorkId == projectWorkId);
         }
 
-        public ParticipationHistory GetLastEmployeesHistory(int projectWorkId)
+        public ParticipationHistory GetEmployeesHistory(int projectWorkId)
         {
-            List<ParticipationHistory> list = new List<ParticipationHistory>();
-            list = db.ParticipationHistories.Where(item => item.ProjectWorkId == projectWorkId).ToList();
-            if (list.Last() == null)
+            var history = db.ParticipationHistories.FirstOrDefault(item => item.ProjectWorkId == projectWorkId);
+            if (history == null)
             {
                 throw new NotFoundException();
             }
-            return list.Last();
+            return history;
         }
 
         public void ChangeHistoryStartDate(int id, DateTimeOffset start)

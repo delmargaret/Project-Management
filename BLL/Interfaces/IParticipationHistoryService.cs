@@ -12,7 +12,7 @@ namespace BLL.Interfaces
         ParticipationHistoryDTO CreateHistory(ParticipationHistoryDTO history);
         void DeleteHistoryById(int id);
         ParticipationHistoryDTO GetHistoryById(int id);
-        ParticipationHistoryDTO GetLastEmployeesHistory(int projectWorkId);
+        ParticipationHistoryDTO GetEmployeesHistory(int projectWorkId);
         IEnumerable<ParticipationHistoryDTO> GetAllHistories();
         IEnumerable<ParticipationHistoryDTO> GetAllEmployeesHistoriesOnProject(int projectWorkId);
         void ChangeHistoryStartDate(int id, DateTimeOffset start);

@@ -1,16 +1,106 @@
 import React, { Component } from 'react';
-import {Table, Button, Modal, FormGroup, FormControl, Form} from 'react-bootstrap';
+import {Table, Button, Modal, FormGroup, FormControl, Form, ControlLabel} from 'react-bootstrap';
 import * as projectService from '../../src/services/projectService';
 import * as projectWorkService from '../../src/services/projectWorkService';
 import * as projectRoleService from '../../src/services/projectRoleService';
 import * as employeeService from '../../src/services/employeeService';
 import * as scheduleService from '../../src/services/scheduleService';
+import * as historyService from '../../src/services/participationHistoryService';
 import ScheduleDayList from './AddSchedule';
 import {Grid, Row, Col} from 'react-bootstrap';
 import Menu from './Menu';
 
 
 import "../styles/ProjectManager.css";
+
+class AddHistoryForm extends Component{
+    constructor(props){
+        super(props);
+        this.state = {start: "", end: "", startDate: "", endDate: ""};
+
+        this.onSubmit = this.onSubmit.bind(this);
+        this.onStartDateChange = this.onStartDateChange.bind(this);
+        this.onEndDateChange = this.onEndDateChange.bind(this);
+    }
+    validateStartDate(){
+        if (Date.parse(this.state.startDate)<Date.parse(this.state.start)) return 'error';
+        if (Date.parse(this.state.startDate)>Date.parse(this.state.end)) return 'error';
+        if (Date.parse(this.state.startDate)>=Date.parse(this.state.start)) return 'success';
+        if (Date.parse(this.state.startDate)<=Date.parse(this.state.end)) return 'success';
+    }
+    validateEndDate(){
+        if (Date.parse(this.state.endDate)<Date.now()) return 'error';
+        if(this.state.endDate===this.state.end) return 'success';
+        if (Date.parse(this.state.endDate)<Date.parse(this.state.startDate)) return 'error';
+        if (Date.parse(this.state.endDate)>Date.parse(this.state.end)) return 'error';
+        if (Date.parse(this.state.endDate)<=Date.parse(this.state.end)) return 'success';
+        if (Date.parse(this.state.endDate)>Date.parse(this.state.startDate)) return 'success';
+        if (Date.parse(this.state.endDate)>=Date.now()) return 'success';
+    }
+    onStartDateChange(e) {
+        var val = e.target.value;
+        this.setState({startDate: val});
+    }
+    onEndDateChange(e) {
+        var val = e.target.value;
+        this.setState({endDate: val});
+    }
+    onSubmit(e) {
+        e.preventDefault();
+        var startDate = this.state.startDate;
+        var endDate = this.state.endDate;
+        var work = this.props.workId;
+
+        if (!startDate || !endDate) {
+            return;
+        }
+        this.props.onHistorySubmit({workId: work, startDate: startDate, endDate: endDate});
+            this.setState({startDate: "", endDate: ""});
+    }
+    componentDidMount(){
+        projectWorkService.getProjectWorkById(this.props.workId).then(res =>{
+            if(res!==null){
+                var work = JSON.parse(res.data);
+                projectService.getProjectById(work.ProjectId).then(result=> {
+                    if(result.data!==""){
+                        var project = JSON.parse(result.data);
+                        this.setState({start: project.ProjectStartDate.replace(/^(\d+)-(\d+)-(\d+)\D.+$/, '$1-$2-$3'),
+                        end: project.ProjectEndDate.replace(/^(\d+)-(\d+)-(\d+)\D.+$/, '$1-$2-$3'),
+                        startDate: project.ProjectStartDate.replace(/^(\d+)-(\d+)-(\d+)\D.+$/, '$1-$2-$3'),
+                        endDate: project.ProjectEndDate.replace(/^(\d+)-(\d+)-(\d+)\D.+$/, '$1-$2-$3')});
+                    }
+                });
+            }
+        });      
+    }
+    render(){
+        if(!this.state.start) return <div>Загрузка...</div>
+        return <Form  onSubmit={this.onSubmit}>
+        <FormGroup controlId="formBasicStart"
+         validationState={this.validateStartDate()}>
+            <ControlLabel>Дата начала</ControlLabel>
+            <FormControl
+                type="date"
+                placeholder="Дата начала"
+                value={this.state.startDate}
+                onChange={this.onStartDateChange} />
+            <FormControl.Feedback />
+        </FormGroup>
+
+        <FormGroup controlId="formBasicEnd"
+         validationState={this.validateEndDate()}>
+            <ControlLabel>Дата окончания</ControlLabel>
+            <FormControl
+                type="date"
+                placeholder="Дата окончания"
+                value={this.state.endDate}
+                onChange={this.onEndDateChange} />
+            <FormControl.Feedback />
+        </FormGroup>
+    <Button type="submit">Добавить</Button>
+        </Form> 
+    }
+}
 
 class AddWorkLoadForm extends Component{
     constructor(props){
@@ -188,7 +278,8 @@ class ChangeProjectWorkForm extends Component{
         super(props);
         this.state = {projWorkId:0, projectName: "", employeeName: "", role: "", workLoad: "",
         roles: [], percentOrScheduleId: 0, projectRoleId: 0, show1: false, show2: false,
-        percent: 0, daysOnProject: [], freeDays: [], dayId: 0};
+        percent: 0, daysOnProject: [], freeDays: [], dayId: 0, history: null, show3: false, show4: false,
+        startDate: "", endDate: "", projectstart: "", projectend: "", start: "", end: ""};
 
         this.loadRoles = this.loadRoles.bind(this);
         this.handleClose1 = this.handleClose1.bind(this);
@@ -197,6 +288,12 @@ class ChangeProjectWorkForm extends Component{
         this.handleClose2 = this.handleClose2.bind(this);
         this.handleShow2 = this.handleShow2.bind(this);
         this.onChangeWorkLoad = this.onChangeWorkLoad.bind(this);
+        this.handleClose3 = this.handleClose3.bind(this);
+        this.handleShow3 = this.handleShow3.bind(this);
+        this.onChangeStartDate = this.onChangeStartDate.bind(this);
+        this.handleClose4 = this.handleClose4.bind(this);
+        this.handleShow4 = this.handleShow4.bind(this);
+        this.onChangeEndDate = this.onChangeEndDate.bind(this);
         this.onRoleSubmit = this.onRoleSubmit.bind(this);
         this.onProjectRoleIdChange = this.onProjectRoleIdChange.bind(this);
         this.renderChangeForm = this.renderChangeForm.bind(this);
@@ -210,6 +307,10 @@ class ChangeProjectWorkForm extends Component{
         this.renderFreeDays = this.renderFreeDays.bind(this);
         this.onDayChange = this.onDayChange.bind(this);
         this.onScheduleSubmit = this.onScheduleSubmit.bind(this);
+        this.onStartDateChange = this.onStartDateChange.bind(this);
+        this.onEndDateChange = this.onEndDateChange.bind(this);
+        this.onStartSubmit = this.onStartSubmit.bind(this);
+        this.onEndSubmit = this.onEndSubmit.bind(this);
     }
     handleClose1() {
         this.setState({ show1: false });
@@ -229,6 +330,40 @@ class ChangeProjectWorkForm extends Component{
     onChangeWorkLoad(){
         this.handleShow2();
     }
+    handleClose3() {
+        this.setState({ show3: false });
+      }
+    handleShow3() {
+        this.setState({ show3: true });
+      }
+    onChangeStartDate(){
+        this.handleShow3();
+    }
+    handleClose4() {
+        this.setState({ show4: false });
+      }
+    handleShow4() {
+        this.setState({ show4: true });
+      }
+    onChangeEndDate(){
+        console.log(2);
+        this.handleShow4();
+    }
+    validateStartDate(){
+        if (Date.parse(this.state.startDate)<Date.parse(this.state.projectstart)) return 'error';
+        if (Date.parse(this.state.startDate)>Date.parse(this.state.projectend)) return 'error';
+        if (Date.parse(this.state.startDate)>=Date.parse(this.state.projectstart)) return 'success';
+        if (Date.parse(this.state.startDate)<=Date.parse(this.state.projectend)) return 'success';
+    }
+    validateEndDate(){
+        if (Date.parse(this.state.endDate)<Date.now()) return 'error';
+        if(this.state.endDate===this.state.projectend) return 'success';
+        if (Date.parse(this.state.endDate)<Date.parse(this.state.startDate)) return 'error';
+        if (Date.parse(this.state.endDate)>Date.parse(this.state.projectend)) return 'error';
+        if (Date.parse(this.state.endDate)<=Date.parse(this.state.projectend)) return 'success';
+        if (Date.parse(this.state.endDate)>Date.parse(this.state.startDate)) return 'success';
+        if (Date.parse(this.state.endDate)>=Date.now()) return 'success';
+    }
     validateRole() {
         if (this.state.projectRoleId !== 0) return 'success';
         if (this.state.projectRoleId === 0) return 'error';
@@ -238,6 +373,14 @@ class ChangeProjectWorkForm extends Component{
         if (this.state.dayId !== 0) return 'success';
         if (this.state.dayId === 0) return 'error';
         return null;
+    }
+    onStartDateChange(e) {
+        var val = e.target.value;
+        this.setState({startDate: val});
+    }
+    onEndDateChange(e) {
+        var val = e.target.value;
+        this.setState({endDate: val});
     }
     onProjectRoleIdChange(e) {
         this.setState({projectRoleId: e.target.value});
@@ -273,6 +416,30 @@ class ChangeProjectWorkForm extends Component{
     }
     onDayChange(e){
         this.setState({dayId: e.target.value});
+    }
+    onStartSubmit(e) {
+        e.preventDefault();
+        var startDate = this.state.startDate;
+        var id = JSON.parse(this.state.history).Id;
+        if (!startDate || !id) {
+            return;
+        }
+        this.props.onStartDaySubmit({historyId: id, startDate: startDate});
+        this.handleClose3();
+            this.setState({startDate: ""});
+            this.setState({start: startDate.replace(/^(\d+)-(\d+)-(\d+)\D.+$/, '$3.$2.$1')});
+    }
+    onEndSubmit(e) {
+        e.preventDefault();
+        var endDate = this.state.endDate;
+        var id = JSON.parse(this.state.history).Id;
+        if (!endDate || !id) {
+            return;
+        }
+        this.props.onEndDaySubmit({historyId: id, endDate: endDate});
+        this.handleClose4();
+            this.setState({endDate: ""});
+            this.setState({end: endDate.replace(/^(\d+)-(\d+)-(\d+)\D.+$/, '$3.$2.$1')});
     }
     onScheduleSubmit(e){
         e.preventDefault();
@@ -447,6 +614,13 @@ class ChangeProjectWorkForm extends Component{
         this.setState({projWorkId: this.props.projectWorkId});
         this.setState({workLoad: this.props.load});
         this.loadRoles();
+        historyService.getEmployeesHistory(this.props.projectWorkId).then(res =>{
+            if(res.data!==""){
+                this.setState({history: res.data,
+                    start: JSON.parse(res.data).StartDate.replace(/^(\d+)-(\d+)-(\d+)\D.+$/, '$1-$2-$3'),
+                    end: JSON.parse(res.data).EndDate.replace(/^(\d+)-(\d+)-(\d+)\D.+$/, '$1-$2-$3')});
+            }
+        })
         projectWorkService.getProjectWorkById(this.props.projectWorkId).then(res =>{
             if(res!==null){
                 var empId = JSON.parse(res.data).EmployeeId;
@@ -467,8 +641,11 @@ class ChangeProjectWorkForm extends Component{
                 var projId = JSON.parse(res.data).ProjectId;
                 projectService.getProjectById(projId).then(item => {
                     if(item!==null){
-                        var projName = JSON.parse(item.data).ProjectName;
-                        this.setState({projectName: projName});
+                        var project = JSON.parse(item.data);
+                        var projName = project.ProjectName;
+                        this.setState({projectName: projName,
+                        projectstart: project.ProjectStartDate.replace(/^(\d+)-(\d+)-(\d+)\D.+$/, '$1-$2-$3'),
+                        projectend: project.ProjectEndDate.replace(/^(\d+)-(\d+)-(\d+)\D.+$/, '$1-$2-$3')});
                     }
                 });
                 var roleId = JSON.parse(res.data).ProjectRoleId;
@@ -507,7 +684,7 @@ class ChangeProjectWorkForm extends Component{
                 </tr>
             </tbody>
         if(this.state.workLoad==="---"){
-            return <tbody>
+            if(this.state.history==="" || this.state.history===null) return <tbody>
                 <tr>
                             <th>Роль:</th>
                             <td>{this.state.role}</td>
@@ -516,23 +693,86 @@ class ChangeProjectWorkForm extends Component{
                             </td>
                         </tr>
             </tbody> 
+            else {
+                var start = this.state.start.replace(/^(\d+)-(\d+)-(\d+)$/, '$3.$2.$1');
+                var end = this.state.end.replace(/^(\d+)-(\d+)-(\d+)$/, '$3.$2.$1');
+                return <tbody>
+                <tr>
+                            <th>Роль:</th>
+                            <td>{this.state.role}</td>
+                            <td><Button onClick={() => this.onChangeProjectRole()}>
+                            Изменить</Button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Дата начала участия:</th>
+                            <td>{start}</td>
+                            <td><Button onClick={() => this.onChangeStartDate()}>
+                            Изменить</Button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Дата окончания участия:</th>
+                            <td>{end}</td>
+                            <td><Button onClick={() => this.onChangeEndDate()}>
+                            Изменить</Button>
+                            </td>
+                        </tr>
+            </tbody> 
+            }
         }
-        else return <tbody>
-        <tr>
-            <th>Роль:</th>
-            <td>{this.state.role}</td>
-            <td><Button onClick={() => this.onChangeProjectRole()}>
-            Изменить</Button>
-            </td>
-        </tr>
-        <tr>
-            <th>Загруженность:</th>
-            <td>{this.state.workLoad}</td>
-            <td><Button onClick={() => this.onChangeWorkLoad()}>
-            Изменить</Button>
-            </td>
-        </tr>          
-    </tbody>
+        else {
+            if(this.state.history==="" || this.state.history===null) return <tbody>
+                <tr>
+                    <th>Роль:</th>
+                    <td>{this.state.role}</td>
+                    <td><Button onClick={() => this.onChangeProjectRole()}>
+                    Изменить</Button>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Загруженность:</th>
+                    <td>{this.state.workLoad}</td>
+                    <td><Button onClick={() => this.onChangeWorkLoad()}>
+                    Изменить</Button>
+                    </td>
+                </tr>          
+            </tbody>
+            else{
+                var startt = this.state.start.replace(/^(\d+)-(\d+)-(\d+)$/, '$3.$2.$1');
+                var endd = this.state.end.replace(/^(\d+)-(\d+)-(\d+)$/, '$3.$2.$1');
+                return <tbody>
+                <tr>
+                    <th>Роль:</th>
+                    <td>{this.state.role}</td>
+                    <td><Button onClick={() => this.onChangeProjectRole()}>
+                    Изменить</Button>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Дата начала участия:</th>
+                    <td>{startt}</td>
+                    <td><Button onClick={() => this.onChangeStartDate()}>
+                    Изменить</Button>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Дата окончания участия:</th>
+                    <td>{endd}</td>
+                    <td><Button onClick={() => this.onChangeEndDate()}>
+                    Изменить</Button>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Загруженность:</th>
+                    <td>{this.state.workLoad}</td>
+                    <td><Button onClick={() => this.onChangeWorkLoad()}>
+                    Изменить</Button>
+                    </td>
+                </tr>          
+            </tbody>
+            }
+        }
     }
     render(){
         if(!this.state.roles) return <div>Загрузка...</div>
@@ -576,6 +816,42 @@ class ChangeProjectWorkForm extends Component{
                             }
                         </Modal.Body>
                 </Modal>
+                <Modal show={this.state.show3} onHide={this.handleClose3}>
+                        <Modal.Header closeButton>Изменить дату начала участия</Modal.Header>
+                        <Modal.Body>
+                        <Form onSubmit={this.onStartSubmit}>
+                            <FormGroup controlId="formBasicStart"
+                            validationState={this.validateStartDate()}>
+                                <ControlLabel>Новая дата начала</ControlLabel>
+                                <FormControl
+                                    type="date"
+                                    placeholder="Дата начала"
+                                    value={this.state.startDate}
+                                    onChange={this.onStartDateChange} />
+                                <FormControl.Feedback />
+                            </FormGroup>
+                            <Button type="submit">Изменить</Button>
+                        </Form> 
+                        </Modal.Body>
+                </Modal>
+                <Modal show={this.state.show4} onHide={this.handleClose4}>
+                        <Modal.Header closeButton>Изменить дату окончания участия</Modal.Header>
+                        <Modal.Body>
+                        <Form onSubmit={this.onEndSubmit}>
+                            <FormGroup controlId="formBasicEnd"
+                            validationState={this.validateEndDate()}>
+                                <ControlLabel>Новая дата окончания</ControlLabel>
+                                <FormControl
+                                    type="date"
+                                    placeholder="Дата окончания"
+                                    value={this.state.endDate}
+                                    onChange={this.onEndDateChange} />
+                                <FormControl.Feedback />
+                            </FormGroup>
+                            <Button type="submit">Изменить</Button>
+                        </Form> 
+                        </Modal.Body>
+                </Modal>
         </div>
     }
 }
@@ -583,7 +859,8 @@ class ChangeProjectWorkForm extends Component{
 class NamesAndLoadList extends Component{
     constructor(props){
         super(props);
-        this.state = {actualWork:0, actualWorkLoad: "", workLoadType: 0, show: false, show1: false};
+        this.state = {actualWork:0, actualWorkLoad: "", workLoadType: 0, show: false, 
+        show1: false, show2: false};
         this.onAddWorkLoad = this.onAddWorkLoad.bind(this);
         this.renderSchedule = this.renderSchedule.bind(this);  
         this.handleShow = this.handleShow.bind(this);
@@ -594,6 +871,13 @@ class NamesAndLoadList extends Component{
         this.handleClose1 = this.handleClose1.bind(this);
         this.onChangeRole = this.onChangeRole.bind(this);
         this.onChangePercent = this.onChangePercent.bind(this);
+        this.renderHisroty = this.renderHisroty.bind(this);
+        this.onHistoryClick = this.onHistoryClick.bind(this);
+        this.handleShow2 = this.handleShow2.bind(this);
+        this.handleClose2 = this.handleClose2.bind(this);   
+        this.onAddHistory = this.onAddHistory.bind(this);
+        this.onChangeStartDay = this.onChangeStartDay.bind(this);
+        this.onChangeEndDay = this.onChangeEndDay.bind(this);
     }
   
     handleClose() {
@@ -607,6 +891,19 @@ class NamesAndLoadList extends Component{
         if(workId){
             this.setState({actualWork: workId});
             this.handleShow();
+        }
+    }
+    handleClose2() {
+        this.setState({ show2: false });
+        this.props.changed();
+      }
+    handleShow2() {
+        this.setState({ show2: true });
+      }
+    onHistoryClick(workId){
+        if(workId){
+            this.setState({actualWork: workId});
+            this.handleShow2();
         }
     }
     handleClose1() {
@@ -635,6 +932,17 @@ class NamesAndLoadList extends Component{
             });
         }
     }
+    onAddHistory(history){
+        if (history) {
+            var data = JSON.stringify({"ProjectWorkId":history.workId, "StartDate":history.startDate,
+        "EndDate": history.endDate});
+        historyService.createHistory(data).then(res =>{
+            if(res.data!==""){
+                this.handleClose2();                
+                }
+            });
+        }
+    }
     onAddSchedule(){
         this.props.changed();
     }
@@ -642,6 +950,26 @@ class NamesAndLoadList extends Component{
         if(roleId){
             projectWorkService.changeEmployeesProjectRole(this.state.actualWork, roleId).then(res => {
                 if(res!==null){
+                    this.props.changed();
+                }
+            })
+        }
+    }
+    onChangeStartDay(start){
+        if(start){
+            var startdate = JSON.stringify(start.startDate);
+            historyService.changeHistoryStartDate(start.historyId, startdate).then(res =>{
+                if(res.data!==""){
+                    this.props.changed();
+                }
+            })
+        }
+    }
+    onChangeEndDay(end){
+        if(end){
+            var enddate = JSON.stringify(end.endDate);
+            historyService.changeHistoryEndDate(end.historyId, enddate).then(res =>{
+                if(res.data!==""){
                     this.props.changed();
                 }
             })
@@ -663,6 +991,13 @@ class NamesAndLoadList extends Component{
         }
         else {return <td>{data.Item5}</td>}
     }
+    renderHisroty(data){
+        if(data.Item6===" ")
+        {
+            return <td><Button onClick={() => this.onHistoryClick(data.Item1)}>Добавить историю</Button></td>
+        }
+        else {return <td>{data.Item6}</td>}
+    }
     render(){ 
         return <div>
                 <div  id="namesandloadscroll">
@@ -672,6 +1007,7 @@ class NamesAndLoadList extends Component{
                 <th>Имя</th>
                 <th>Роль</th>
                 <th>Загруженность</th>
+                <th>Даты участия</th>
                 <th></th>
                 </tr>
             </thead>
@@ -684,6 +1020,7 @@ class NamesAndLoadList extends Component{
                             <td>{data.Item3}</td>
                             <td>{data.Item4}</td>
                             {this.renderSchedule(data)}
+                            {this.renderHisroty(data)}
                             <td><Button onClick={() => this.onClick(id, data.Item5)}>
                             Редактировать</Button>
                             </td>
@@ -703,12 +1040,19 @@ class NamesAndLoadList extends Component{
                     onScheduleDaySubmit={this.onAddSchedule}/>
                     </Modal.Body>
                 </Modal>
+                <Modal show={this.state.show2} onHide={this.handleClose2}>
+                    <Modal.Header closeButton>История участия</Modal.Header>
+                    <Modal.Body>
+                    <AddHistoryForm workId={this.state.actualWork} onHistorySubmit={this.onAddHistory} />
+                    </Modal.Body>
+                </Modal>
                 <Modal show={this.state.show1} onHide={this.handleClose1}>
                     <Modal.Header closeButton>Редактирование</Modal.Header>
                     <Modal.Body>
                         <ChangeProjectWorkForm projectWorkId={this.state.actualWork} 
                         onSubmitRole={this.onChangeRole} load={this.state.actualWorkLoad}
-                        onSubmitNewPercent={this.onChangePercent} onChangedDay={this.props.changeDay}/>
+                        onSubmitNewPercent={this.onChangePercent} onChangedDay={this.props.changeDay}
+                        onStartDaySubmit={this.onChangeStartDay} onEndDaySubmit={this.onChangeEndDay}/>
                     </Modal.Body>
                 </Modal>
         </div>

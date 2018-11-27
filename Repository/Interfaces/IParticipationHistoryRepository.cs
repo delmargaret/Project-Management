@@ -12,7 +12,7 @@ namespace Repository.Interfaces
         IEnumerable<ParticipationHistory> GetAllHistories();
         IEnumerable<ParticipationHistory> GetAllEmployeesHistoriesOnProject(int projectWorkId);
         ParticipationHistory GetHistoryById(int id);
-        ParticipationHistory GetLastEmployeesHistory(int projectWorkId);
+        ParticipationHistory GetEmployeesHistory(int projectWorkId);
         IEnumerable<ParticipationHistory> FindHistory(Func<ParticipationHistory, Boolean> predicate);
         ParticipationHistory CreateHistory(ParticipationHistory item);
         void FindSameHistory(int projWorkId, DateTimeOffset start, DateTimeOffset end);

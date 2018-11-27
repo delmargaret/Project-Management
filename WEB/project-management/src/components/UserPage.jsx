@@ -191,6 +191,7 @@ class UserPage extends Component{
                 <th>Проект</th>
                 <th>Роль</th>
                 <th>Загруженность</th>
+                <th>Период работы</th>
                 </tr>
             </thead>
                         <tbody>
@@ -206,6 +207,7 @@ class UserPage extends Component{
                             </td>
                             <td>{data.Item4}</td>
                             <td>{data.Item5}</td>
+                            <td>{data.Item6}</td>
                         </tr>              
                     })
                     }

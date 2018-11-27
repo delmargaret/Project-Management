@@ -63,10 +63,10 @@ namespace BLL.Services
             return Map.ObjectMap(history);
         }
 
-        public ParticipationHistoryDTO GetLastEmployeesHistory(int projectWorkId)
+        public ParticipationHistoryDTO GetEmployeesHistory(int projectWorkId)
         {
             var work = Database.ProjectWorks.GetProjectWorkById(projectWorkId);
-            var history = Database.ParticipationHistories.GetLastEmployeesHistory(work.Id);
+            var history = Database.ParticipationHistories.GetEmployeesHistory(work.Id);
             return Map.ObjectMap(history);
         }
 

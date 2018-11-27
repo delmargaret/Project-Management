@@ -88,17 +88,17 @@ namespace ProjectManagement.Controllers
         }
 
         [HttpGet]
-        public IHttpActionResult GetLastEmployeesHistory(int projectWorkId)
+        public IHttpActionResult GetEmployeesHistory(int projectWorkId)
         {
             try
             {
-                ParticipationHistoryDTO history = participationHistoryService.GetLastEmployeesHistory(projectWorkId);
+                ParticipationHistoryDTO history = participationHistoryService.GetEmployeesHistory(projectWorkId);
                 var result = JsonConvert.SerializeObject(history);
                 return Ok(result);
             }
             catch (NotFoundException)
             {
-                return BadRequest("Объект не найден");
+                return Ok();
             }
         }
 
@@ -150,7 +150,7 @@ namespace ProjectManagement.Controllers
             try
             {
                 participationHistoryService.ChangeHistoryStartDate(id, start);
-                return Ok();
+                return Ok(id);
             }
             catch (NotFoundException)
             {
@@ -168,7 +168,7 @@ namespace ProjectManagement.Controllers
             try
             {
                 participationHistoryService.ChangeHistoryEndDate(id, end);
-                return Ok();
+                return Ok(id);
             }
             catch (NotFoundException)
             {

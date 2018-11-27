@@ -9,7 +9,7 @@ export function getHistoryById(id){
 export function getEmployeesHistoriesOnProject(projWorkId){
     return method.get('participationHistories/?projWorkId=' + projWorkId);
 }
-export function getLastEmployeesHistory(projectWorkId){
+export function getEmployeesHistory(projectWorkId){
     return method.get('participationHistories/?projectWorkId=' + projectWorkId);
 }
 export function createHistory(data){

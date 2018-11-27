@@ -79,7 +79,10 @@ namespace Repository.Repositories
             {
                 foreach(var project in employeesProjects)
                 {
-                    percent += project.WorkLoad.Value;
+                    if (project.WorkLoad != null)
+                    {
+                        percent += project.WorkLoad.Value;
+                    }
                 }
                 if (percent == 0) { workload = "0%"; }
                 else workload = percent + "%";
@@ -121,14 +124,15 @@ namespace Repository.Repositories
             return list;
         }
 
-        public IEnumerable<(int id, int employeeId, string name, string role, string workload)> GetNamesAndLoadOnProject(int projectId)
+        public IEnumerable<(int id, int employeeId, string name, string role, string workload, string history)> GetNamesAndLoadOnProject(int projectId)
         {
-            List<(int, int, string, string, string)> list = new List<(int, int, string, string, string)>();
+            List<(int, int, string, string, string, string)> list = new List<(int, int, string, string, string, string)>();
             int id = 0;
             int employeeId = 0;
             string name = " ";
             string role = " ";
             string workload = "";
+            string history = "";
             var employeesOnProject = db.ProjectWorks.Where(item => item.ProjectId == projectId).ToList();
             foreach (var employee in employeesOnProject)
             {
@@ -136,6 +140,14 @@ namespace Repository.Repositories
                 employeeId = employee.EmployeeId;
                 name = db.Employees.Find(employee.EmployeeId).EmployeeSurname + " " + db.Employees.Find(employee.EmployeeId).EmployeeName + " " + db.Employees.Find(employee.EmployeeId).EmployeePatronymic;
                 role = db.ProjectRoles.Find(employee.ProjectRoleId).ProjectRoleName;
+                var histories = db.ParticipationHistories.FirstOrDefault(item => item.ProjectWorkId == id);
+                if (histories != null)
+                {
+                    var start = histories.StartDate;
+                    var end = histories.EndDate;
+                    history = "c " + start.ToString("dd.MM.yyyy") + " по " + end.ToString("dd.MM.yyyy");
+                }
+                else history = " ";
                 Employee em = db.Employees.Find(employee.EmployeeId);
                 if (em.PercentOrScheduleId == 3)
                 {
@@ -157,7 +169,7 @@ namespace Repository.Repositories
                     }
                     else workload = employee.WorkLoad + "%";
                 }
-                (int, int, string, string, string) tuple = (id, employeeId, name, role, workload);
+                (int, int, string, string, string, string) tuple = (id, employeeId, name, role, workload, history);
                 list.Add(tuple);
                 workload = "";
             }
@@ -168,14 +180,15 @@ namespace Repository.Repositories
             return list;
         }
 
-        public IEnumerable<(int id, int projectId, string projectName, string role, string workload)> GetEmployeesProjectsAndLoad(int employeeId)
+        public IEnumerable<(int id, int projectId, string projectName, string role, string workload, string history)> GetEmployeesProjectsAndLoad(int employeeId)
         {
-            List<(int, int, string, string, string)> list = new List<(int, int, string, string, string)>();
+            List<(int, int, string, string, string, string)> list = new List<(int, int, string, string, string, string)>();
             int id = 0;
             int projectId = 0;
             string projectName = " ";
             string role = " ";
             string workload = "";
+            string history = "";
             var employeesProjects = db.ProjectWorks.Where(item => item.EmployeeId == employeeId).ToList();
             foreach (var project in employeesProjects)
             {
@@ -183,6 +196,14 @@ namespace Repository.Repositories
                 projectId = project.ProjectId;
                 projectName = db.Projects.Find(project.ProjectId).ProjectName;
                 role = db.ProjectRoles.Find(project.ProjectRoleId).ProjectRoleName;
+                var histories = db.ParticipationHistories.First(item => item.ProjectWorkId == id);
+                if (histories != null)
+                {
+                    var start = histories.StartDate;
+                    var end = histories.EndDate;
+                    history = "c " + start.ToString("dd.MM.yyyy") + " по " + end.ToString("dd.MM.yyyy");
+                }
+                else history = " ";
                 Employee em = db.Employees.Find(project.EmployeeId);
                 if (em.PercentOrScheduleId == 3)
                 {
@@ -204,7 +225,7 @@ namespace Repository.Repositories
                     }
                     else workload = project.WorkLoad + "%";
                 }
-                (int, int, string, string, string) tuple = (id, projectId, projectName, role, workload);
+                (int, int, string, string, string, string) tuple = (id, projectId, projectName, role, workload, history);
                 list.Add(tuple);
                 workload = "";
             }

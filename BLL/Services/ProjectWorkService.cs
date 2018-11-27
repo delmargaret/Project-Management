@@ -147,7 +147,7 @@ namespace BLL.Services
             return Map.ListMap(projectWorks);
         }
 
-        public IEnumerable<(int id, int projectId, string projectNname, string role, string workload)> GetEmployeesProjects(int employeeId)
+        public IEnumerable<(int id, int projectId, string projectNname, string role, string workload, string history)> GetEmployeesProjects(int employeeId)
         {
             return Database.ProjectWorks.GetEmployeesProjectsAndLoad(employeeId);
         }
@@ -169,7 +169,7 @@ namespace BLL.Services
             return Database.ProjectWorks.CalculateEmployeesWorkload(employee.Id);
         }
 
-        public IEnumerable<(int id, int employeeId, string name, string role, string workload)> GetNamesAndLoadOnProject(int projectId)
+        public IEnumerable<(int id, int employeeId, string name, string role, string workload, string history)> GetNamesAndLoadOnProject(int projectId)
         {
             var project = Database.Projects.GetProjectById(projectId);
             var projectWorks = Database.ProjectWorks.FindProjectWork(item => item.ProjectId == projectId);

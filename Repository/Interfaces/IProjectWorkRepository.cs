@@ -11,8 +11,8 @@ namespace Repository.Interfaces
     {
         IEnumerable<ProjectWork> GetAllProjectWorks();
         IEnumerable<(int id, string name, string role)> GetNamesOnProject(int projectId);
-        IEnumerable<(int id, int employeeId, string name, string role, string workload)> GetNamesAndLoadOnProject(int projectId);
-        IEnumerable<(int id, int projectId, string projectName, string role, string workload)> GetEmployeesProjectsAndLoad(int employeeId);
+        IEnumerable<(int id, int employeeId, string name, string role, string workload, string history)> GetNamesAndLoadOnProject(int projectId);
+        IEnumerable<(int id, int projectId, string projectName, string role, string workload, string history)> GetEmployeesProjectsAndLoad(int employeeId);
         IEnumerable<ProjectWork> GetEmployeesProjects(int employeeId);
         IEnumerable<ProjectWork> GetEmployeesOnProject(int projectId);
         ProjectWork GetProjectWorkById(int id);
