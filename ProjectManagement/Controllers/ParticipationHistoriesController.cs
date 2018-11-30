@@ -22,14 +22,13 @@ namespace ProjectManagement.Controllers
     [JwtAuthentication]
     public class ParticipationHistoriesController : ApiController
     {
-        IParticipationHistoryService participationHistoryService = new ParticipationHistoryService(new ContextUnitOfWork("ManagementContext"));
         ParticipationHistoryValidator phvalidator = new ParticipationHistoryValidator();
 
-        //IParticipationHistoryService participationHistoryService;
-        //public ParticipationHistoriesController(IParticipationHistoryService serv)
-        //{
-        //    participationHistoryService = serv;
-        //}
+        IParticipationHistoryService participationHistoryService;
+        public ParticipationHistoriesController(IParticipationHistoryService serv)
+        {
+            participationHistoryService = serv;
+        }
         [HttpGet]
         public IHttpActionResult GetAllHistories()
         {

@@ -1,4 +1,5 @@
-﻿using BLL.Services;
+﻿using BLL.Interfaces;
+using BLL.Services;
 using Exeption;
 using Newtonsoft.Json;
 using ProjectManagement.Filters;
@@ -18,9 +19,17 @@ namespace ProjectManagement.Controllers
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class TokenController : ApiController
     {
-        CredentialsService credentialsService = new CredentialsService(new ContextUnitOfWork("ManagementContext"));
-        EmployeeService employeeService = new EmployeeService(new ContextUnitOfWork("ManagementContext"));
         PasswordService passwordService = new PasswordService();
+
+        IEmployeeService employeeService = new EmployeeService(new ContextUnitOfWork("ManagementContext"));
+
+        ICredentialsService credentialsService = new CredentialsService(new ContextUnitOfWork("ManagementContext"));
+
+        //public TokenController(ICredentialsService serv, IEmployeeService empserv)
+        //{
+        //    credentialsService = serv;
+        //    employeeService = empserv;
+        //}
 
         [JwtAuthentication]
         [HttpGet]

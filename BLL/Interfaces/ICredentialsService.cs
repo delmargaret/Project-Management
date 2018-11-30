@@ -11,5 +11,6 @@ namespace BLL.Interfaces
     {
         bool Autenticate(string login, string password);
         CredentialsDTO Registrate(int employeeId, string password);
+        CredentialsDTO ChangePassword(string login, string newpassword);
     }
 }

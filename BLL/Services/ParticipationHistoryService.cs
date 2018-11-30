@@ -52,8 +52,7 @@ namespace BLL.Services
 
         public void DeleteHistoryById(int id)
         {
-            var history = Database.ParticipationHistories.GetHistoryById(id);
-            Database.ParticipationHistories.DeleteHistory(history.Id);
+            Database.ParticipationHistories.DeleteHistory(id);
             Database.Save();
         }
 
@@ -65,8 +64,7 @@ namespace BLL.Services
 
         public ParticipationHistoryDTO GetEmployeesHistory(int projectWorkId)
         {
-            var work = Database.ProjectWorks.GetProjectWorkById(projectWorkId);
-            var history = Database.ParticipationHistories.GetEmployeesHistory(work.Id);
+            var history = Database.ParticipationHistories.GetEmployeesHistory(projectWorkId);
             return Map.ObjectMap(history);
         }
 
@@ -78,8 +76,7 @@ namespace BLL.Services
 
         public IEnumerable<ParticipationHistoryDTO> GetAllEmployeesHistoriesOnProject(int projectWorkId)
         {
-            var projectWork = Database.ProjectWorks.GetProjectWorkById(projectWorkId);
-            var histories = Database.ParticipationHistories.GetAllEmployeesHistoriesOnProject(projectWork.Id);
+            var histories = Database.ParticipationHistories.GetAllEmployeesHistoriesOnProject(projectWorkId);
             return Map.ListMap(histories);
         }
 

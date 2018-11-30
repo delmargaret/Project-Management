@@ -115,6 +115,11 @@ namespace Repository.Repositories
 
         public IEnumerable<Project> GetAllProjectsByStatusId(int projectStatusId)
         {
+            ProjectStatus status = db.ProjectStatuses.Find(projectStatusId);
+            if (status == null)
+            {
+                throw new NotFoundException();
+            }
             if (db.Projects.Where(item => item.ProjectStatusId == projectStatusId).Count() == 0)
             {
                 throw new NotFoundException();
@@ -226,8 +231,13 @@ namespace Repository.Repositories
             {
                 throw new NotFoundException();
             }
+            ProjectStatus status = db.ProjectStatuses.Find(projectStatusId);
+            if (status == null)
+            {
+                throw new NotFoundException();
+            }
             project.ProjectStatusId = projectStatusId;
-            project.ProjectStatus = db.ProjectStatuses.Find(projectStatusId);
+            project.ProjectStatus = status;
         }
 
         public void CloseProject(int projectId)

@@ -22,14 +22,13 @@ namespace ProjectManagement.Controllers
     [JwtAuthentication]
     public class ProjectWorksController : ApiController
     {
-        IProjectWorkService projectWorkService = new ProjectWorkService(new ContextUnitOfWork("ManagementContext"));
         ProjectWorkValidator pwvalidator = new ProjectWorkValidator();
 
-        //IProjectWorkService projectWorkService;
-        //public ProjectWorksController(IProjectWorkService serv)
-        //{
-        //    projectWorkService = serv;
-        //}
+        IProjectWorkService projectWorkService;
+        public ProjectWorksController(IProjectWorkService serv)
+        {
+            projectWorkService = serv;
+        }
         [HttpGet]
         public IHttpActionResult GetProjectWorks()
         {

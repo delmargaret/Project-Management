@@ -151,8 +151,13 @@ namespace Repository.Repositories
             {
                 throw new NotFoundException();
             }
+            Role role = db.Roles.Find(roleId);
+            if(role == null)
+            {
+                throw new NotFoundException();
+            }
             employee.RoleId = roleId;
-            employee.Role = db.Roles.Find(roleId);
+            employee.Role = role;
         }
 
         public void SetWorkLoadType(int employeeId, int WorkLoadTypeId)

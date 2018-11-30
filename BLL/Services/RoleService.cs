@@ -36,8 +36,7 @@ namespace BLL.Services
 
         public void DeleteRoleById(int id)
         {
-            var role = Database.Roles.GetRoleById(id);
-            Database.Roles.DeleteRole(role.Id);
+            Database.Roles.DeleteRole(id);
             Database.Save();
         }
 

@@ -164,86 +164,73 @@ namespace BLL.Services
 
         public IEnumerable<EmployeeDTO> GetEmployeesByRoleId(int roleId)
         {
-            var role = Database.Roles.GetRoleById(roleId);
-            var employees = Database.Employees.GetEmployeesByRole(role.Id);
+            var employees = Database.Employees.GetEmployeesByRole(roleId);
             return Map.ListMap(employees);
         }
 
         public void AddGitLink(int employeeId, string gitlink)
         {
-            var employee = Database.Employees.GetEmployeeById(employeeId);
-            Database.Employees.AddGitLink(employee.Id, gitlink);
+            Database.Employees.AddGitLink(employeeId, gitlink);
             Database.Save();
         }
 
         public void DeleteGitLinkByEmployeeId(int id)
         {
-            var employee = Database.Employees.GetEmployeeById(id);
-            Database.Employees.DeleteGitLinkByEmployeeId(employee.Id);
+            Database.Employees.DeleteGitLinkByEmployeeId(id);
             Database.Save();
         }
 
         public void AddPhoneNumber(int employeeId, string phoneNumber)
         {
-            var employee = Database.Employees.GetEmployeeById(employeeId);
-            Database.Employees.AddPhoneNumber(employee.Id, phoneNumber);
+            Database.Employees.AddPhoneNumber(employeeId, phoneNumber);
             Database.Save();
         }
 
         public void DeletePhoneNumberByEmployeeId(int id)
         {
-            var employee = Database.Employees.GetEmployeeById(id);
-            Database.Employees.DeletePhoneNumberByEmployeeId(employee.Id);
+            Database.Employees.DeletePhoneNumberByEmployeeId(id);
             Database.Save();
         }
 
         public void ChangeName(int employeeId, string newName)
         {
-            var employee = Database.Employees.GetEmployeeById(employeeId);
-            Database.Employees.ChangeName(employee.Id, newName);
+            Database.Employees.ChangeName(employeeId, newName);
             Database.Save();
         }
 
         public void ChangeSurname(int employeeId, string newSurname)
         {
-            var employee = Database.Employees.GetEmployeeById(employeeId);
-            Database.Employees.ChangeSurname(employee.Id, newSurname);
+            Database.Employees.ChangeSurname(employeeId, newSurname);
             Database.Save();
         }
 
         public void ChangePatronymic(int employeeId, string newPatronymic)
         {
-            var employee = Database.Employees.GetEmployeeById(employeeId);
-            Database.Employees.ChangePatronymic(employee.Id, newPatronymic);
+            Database.Employees.ChangePatronymic(employeeId, newPatronymic);
             Database.Save();
         }
 
         public void ChangeEmail(int employeeId, string newEmail)
         {
-            var employee = Database.Employees.GetEmployeeById(employeeId);
-            Database.Employees.ChangeEmail(employee.Id, newEmail);
+            Database.Employees.ChangeEmail(employeeId, newEmail);
             Database.Save();
         }
 
         public void ChangeGitLink(int employeeId, string newGitLink)
         {
-            var employee = Database.Employees.GetEmployeeById(employeeId);
-            Database.Employees.ChangeGitLink(employee.Id, newGitLink);
+            Database.Employees.ChangeGitLink(employeeId, newGitLink);
             Database.Save();
         }
 
         public void ChangePhoneNumber(int employeeId, string newPhoneNumber)
         {
-            var employee = Database.Employees.GetEmployeeById(employeeId);
-            Database.Employees.ChangePhoneNumber(employee.Id, newPhoneNumber);
+            Database.Employees.ChangePhoneNumber(employeeId, newPhoneNumber);
             Database.Save();
         }
 
         public void ChangeRole(int employeeId, int roleId)
         {
-            var employee = Database.Employees.GetEmployeeById(employeeId);
-            var role = Database.Roles.GetRoleById(roleId);
-            Database.Employees.ChangeRole(employee.Id, role.Id);
+            Database.Employees.ChangeRole(employeeId, roleId);
             Database.Save();
         }
     }

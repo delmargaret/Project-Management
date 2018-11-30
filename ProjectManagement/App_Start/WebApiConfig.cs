@@ -1,4 +1,8 @@
-﻿using System;
+﻿using BLL.Infrastructure;
+using Ninject;
+using Ninject.Modules;
+using ProjectManagement.Util;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;

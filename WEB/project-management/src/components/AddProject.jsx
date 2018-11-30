@@ -512,7 +512,9 @@ class AddProjectPage extends Component{
     loadProjects() {
         projectService.getProjects().then(res => { 
             if(res!==null) this.setState({projects: res.data}) }).catch(error => {
-                if (error.response) {
+                console.log(error);
+
+                if (error) {
                     return null;
                   }
             });

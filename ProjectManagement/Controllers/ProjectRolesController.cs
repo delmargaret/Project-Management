@@ -21,13 +21,12 @@ namespace ProjectManagement.Controllers
     [JwtAuthentication]
     public class ProjectRolesController : ApiController
     {
-        IProjectRoleService projectRoleService = new ProjectRoleService(new ContextUnitOfWork("ManagementContext"));
 
-        //IProjectRoleService projectRoleService;
-        //public ProjectRolesController(IProjectRoleService serv)
-        //{
-        //    projectRoleService = serv;
-        //}
+        IProjectRoleService projectRoleService;
+        public ProjectRolesController(IProjectRoleService serv)
+        {
+            projectRoleService = serv;
+        }
         [HttpGet]
         public IHttpActionResult GetProjectRoles()
         {

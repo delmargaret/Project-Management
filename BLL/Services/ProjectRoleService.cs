@@ -34,8 +34,7 @@ namespace BLL.Services
 
         public void DeleteProjectRoleById(int id)
         {
-            var role = Database.ProjectRoles.GetProjectRoleById(id);
-            Database.ProjectRoles.DeleteProjectRole(role.Id);
+            Database.ProjectRoles.DeleteProjectRole(id);
             Database.Save();
         }
 
@@ -53,8 +52,7 @@ namespace BLL.Services
 
         public void ChangeProjectRoleName(int id, string roleName)
         {
-            var role = Database.ProjectRoles.GetProjectRoleById(id);
-            Database.ProjectRoles.ChangeProjectRoleName(role.Id, roleName);
+            Database.ProjectRoles.ChangeProjectRoleName(id, roleName);
             Database.Save();
         }
 

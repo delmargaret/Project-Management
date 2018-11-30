@@ -29,32 +29,25 @@ namespace BLL.Services
 
         public void ChangeEmployee(int projectWorkId, int newEmployeeId)
         {
-            var employee = Database.Employees.GetEmployeeById(newEmployeeId);
-            var projectWork = Database.ProjectWorks.GetProjectWorkById(projectWorkId);
-            Database.ProjectWorks.ChangeEmployee(projectWork.Id, employee.Id);
+            Database.ProjectWorks.ChangeEmployee(projectWorkId, newEmployeeId);
             Database.Save();
         }
 
         public void ChangeEmployeesProjectRole(int projectWorkId, int newProjectRoleId)
         {
-            var projectRole = Database.ProjectRoles.GetProjectRoleById(newProjectRoleId);
-            var projectWork = Database.ProjectWorks.GetProjectWorkById(projectWorkId);
-            Database.ProjectWorks.ChangeEmployeesProjectRole(projectWork.Id, projectRole.Id);
+            Database.ProjectWorks.ChangeEmployeesProjectRole(projectWorkId, newProjectRoleId);
             Database.Save();
         }
 
         public void ChangeProject(int projectWorkId, int newProjectId)
         {
-            var project = Database.Projects.GetProjectById(newProjectId);
-            var projectWork = Database.ProjectWorks.GetProjectWorkById(projectWorkId);
-            Database.ProjectWorks.ChangeProject(projectWork.Id, project.Id);
+            Database.ProjectWorks.ChangeProject(projectWorkId, newProjectId);
             Database.Save();
         }
 
         public void ChangeWorkLoad(int projectWorkId, int newWorkLoad)
         {
-            var projectWork = Database.ProjectWorks.GetProjectWorkById(projectWorkId);
-            Database.ProjectWorks.ChangeWorkLoad(projectWork.Id, newWorkLoad);
+            Database.ProjectWorks.ChangeWorkLoad(projectWorkId, newWorkLoad);
             Database.Save();
         }
 
@@ -93,8 +86,7 @@ namespace BLL.Services
 
         public void DeleteWorkLoad(int projectWorkId)
         {
-            var projectWork = Database.ProjectWorks.GetProjectWorkById(projectWorkId);
-            Database.ProjectWorks.DeleteWorkLoad(projectWork.Id);
+            Database.ProjectWorks.DeleteWorkLoad(projectWorkId);
             Database.Save();
         }
 
@@ -116,22 +108,12 @@ namespace BLL.Services
 
             var pw = Database.ProjectWorks.CreateProjectWork(projectWork);
             Database.Save();
-
-            var empl = Database.Employees.GetEmployeeById(item.EmployeeId);
-            if (empl.PercentOrScheduleId == 3)
-                Console.WriteLine("Добавьте процент загруженности или расписание");
-            if (empl.PercentOrScheduleId == 1)
-                Console.WriteLine("Добавьте процент загруженности");
-            if (empl.PercentOrScheduleId == 2)
-                Console.WriteLine("Добавьте расписание");
             return Map.ObjectMap(pw);
         }
 
         public void DeleteEmployeeFromProject(int projectId, int employeeId)
         {
-            var project = Database.Projects.GetProjectById(projectId);
-            var employee = Database.Employees.GetEmployeeById(employeeId);
-            Database.ProjectWorks.DeleteEmployeeFromProject(project.Id, employee.Id);
+            Database.ProjectWorks.DeleteEmployeeFromProject(projectId, employeeId);
             Database.Save();
         }
 
@@ -154,8 +136,7 @@ namespace BLL.Services
 
         public IEnumerable<ProjectWorkDTO> GetEmployeesOnProject(int projectId)
         {
-            var project = Database.Projects.GetProjectById(projectId);
-            var projectWorks = Database.ProjectWorks.GetEmployeesOnProject(project.Id);
+            var projectWorks = Database.ProjectWorks.GetEmployeesOnProject(projectId);
             return Map.ListMap(projectWorks);
         }
 
@@ -171,16 +152,12 @@ namespace BLL.Services
 
         public IEnumerable<(int id, int employeeId, string name, string role, string workload, string history)> GetNamesAndLoadOnProject(int projectId)
         {
-            var project = Database.Projects.GetProjectById(projectId);
-            var projectWorks = Database.ProjectWorks.FindProjectWork(item => item.ProjectId == projectId);
-            return Database.ProjectWorks.GetNamesAndLoadOnProject(project.Id);
+            return Database.ProjectWorks.GetNamesAndLoadOnProject(projectId);
         }
 
         public IEnumerable<(int id, string name, string role)> GetNamesOnProject(int projectId)
         {
-            var project = Database.Projects.GetProjectById(projectId);
-            var projectWorks = Database.ProjectWorks.GetNamesOnProject(project.Id);
-            return projectWorks;
+            return Database.ProjectWorks.GetNamesOnProject(projectId);
         }
 
         public ProjectWorkDTO GetProjectWorkById(int id)

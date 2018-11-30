@@ -24,14 +24,13 @@ namespace ProjectManagement.Controllers
     {
         EmailService emailService = new EmailService();
         EmployeeValidator evalidator = new EmployeeValidator();
-        IEmployeeService employeeService = new EmployeeService(new ContextUnitOfWork("ManagementContext"));
 
-        //IEmployeeService employeeService { get; set; }
-        //public EmployeesController(IEmployeeService serv)
-        //{
-        //    employeeService = serv;
-        //}
-        
+        IEmployeeService employeeService { get; set; }
+        public EmployeesController(IEmployeeService serv)
+        {
+            employeeService = serv;
+        }
+
         [HttpGet]
         public IHttpActionResult GetAllEmployees()
         {

@@ -109,6 +109,10 @@ namespace Repository.Repositories
             string name = " ";
             string role = " ";
             var employeesOnProject = db.ProjectWorks.Where(item => item.ProjectId == projectId).ToList();
+            if (employeesOnProject.Count() == 0)
+            {
+                throw new NotFoundException();
+            }
             foreach (var employee in employeesOnProject)
             {
                 id = employee.Id;
@@ -134,6 +138,10 @@ namespace Repository.Repositories
             string workload = "";
             string history = "";
             var employeesOnProject = db.ProjectWorks.Where(item => item.ProjectId == projectId).ToList();
+            if (employeesOnProject.Count() == 0)
+            {
+                throw new NotFoundException();
+            }
             foreach (var employee in employeesOnProject)
             {
                 id = employee.Id;
@@ -190,6 +198,10 @@ namespace Repository.Repositories
             string workload = "";
             string history = "";
             var employeesProjects = db.ProjectWorks.Where(item => item.EmployeeId == employeeId).ToList();
+            if (employeesProjects.Count() == 0)
+            {
+                throw new NotFoundException();
+            }
             foreach (var project in employeesProjects)
             {
                 id = project.Id;
@@ -277,9 +289,7 @@ namespace Repository.Repositories
 
         public void DeleteEmployeeFromProject(int projectId, int employeeId)
         {
-            List<ProjectWork> list = new List<ProjectWork>();
-            list = db.ProjectWorks.Where(item => item.ProjectId == projectId && item.EmployeeId == employeeId).ToList();
-            ProjectWork projectwork = list.First();
+            var projectwork = db.ProjectWorks.FirstOrDefault(item => item.ProjectId == projectId && item.EmployeeId == employeeId);
             if (projectwork == null)
             {
                 throw new NotFoundException();
@@ -290,6 +300,10 @@ namespace Repository.Repositories
         public void ChangeProject(int projectWorkId, int newProjectId)
         {
             Project project = db.Projects.Find(newProjectId);
+            if (project == null)
+            {
+                throw new NotFoundException();
+            }
             ProjectWork projectWork = db.ProjectWorks.Find(projectWorkId);
             if (projectWork == null)
             {
@@ -307,6 +321,10 @@ namespace Repository.Repositories
             {
                 throw new NotFoundException();
             }
+            if (employee == null)
+            {
+                throw new NotFoundException();
+            }
             projectWork.EmployeeId = newEmployeeId;
             projectWork.Employee = employee;
         }
@@ -314,6 +332,10 @@ namespace Repository.Repositories
         public void ChangeEmployeesProjectRole(int projectWorkId, int newProjectRoleId)
         {
             ProjectRole projectRole = db.ProjectRoles.Find(newProjectRoleId);
+            if (projectRole == null)
+            {
+                throw new NotFoundException();
+            }
             ProjectWork projectWork = db.ProjectWorks.Find(projectWorkId);
             if (projectWork == null)
             {

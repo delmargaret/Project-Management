@@ -23,13 +23,12 @@ namespace ProjectManagement.Controllers
     public class SchedulesController : ApiController
     {
         ScheduleValidator svalidator = new ScheduleValidator();
-        IScheduleService scheduleServise = new ScheduleServise(new ContextUnitOfWork("ManagementContext"));
 
-        //IScheduleService scheduleServise;
-        //public SchedulesController(IScheduleService serv)
-        //{
-        //    scheduleServise = serv;
-        //}
+        IScheduleService scheduleServise;
+        public SchedulesController(IScheduleService serv)
+        {
+            scheduleServise = serv;
+        }
         [HttpGet]
         public IHttpActionResult GetAllSchedules()
         {

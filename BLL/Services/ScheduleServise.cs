@@ -36,8 +36,7 @@ namespace BLL.Services
 
         public IEnumerable<ScheduleDTO> GetScheduleOnProjectWork(int projectWorkId)
         {
-            var projectWork = Database.ProjectWorks.GetProjectWorkById(projectWorkId);
-            var schedules = Database.Schedules.GetScheduleOnProjectWork(projectWork.Id);
+            var schedules = Database.Schedules.GetScheduleOnProjectWork(projectWorkId);
             return Map.ListMap(schedules);
         }
 
@@ -49,15 +48,13 @@ namespace BLL.Services
 
         public IEnumerable<ScheduleDayDTO> GetEmployeesFreeDays(int employeeId)
         {
-            Employee employee = Database.Employees.GetEmployeeById(employeeId);
-            var freedays = Database.Schedules.GetEmployeesFreeDays(employee.Id);
+            var freedays = Database.Schedules.GetEmployeesFreeDays(employeeId);
             return DayMap.ListMap(freedays);
         }
 
         public IEnumerable<ScheduleDayDTO> GetEmployeesSchedule(int employeeId)
         {
-            Employee employee = Database.Employees.GetEmployeeById(employeeId);
-            var schedule = Database.Schedules.GetEmployeesSchedule(employee.Id);
+            var schedule = Database.Schedules.GetEmployeesSchedule(employeeId);
             return DayMap.ListMap(schedule);
         }
 
@@ -109,23 +106,19 @@ namespace BLL.Services
 
         public void DeleteScheduleById(int id)
         {
-            var scedule = Database.Schedules.GetScheduleById(id);
-            Database.Schedules.DeleteScheduleById(scedule.Id);
+            Database.Schedules.DeleteScheduleById(id);
             Database.Save();
         }
 
         public void DeleteScheduleByProjectWorkId(int projectWorkId)
         {
-            var projectWork = Database.ProjectWorks.GetProjectWorkById(projectWorkId);
-            Database.Schedules.DeleteScheduleByProjectWorkId(projectWork.Id);
+            Database.Schedules.DeleteScheduleByProjectWorkId(projectWorkId);
             Database.Save();
         }
 
         public void ChangeScheduleDay(int scheduleId, int scheduleDayId)
         {
-            var schedule = Database.Schedules.GetScheduleById(scheduleId);
-            var day = Database.ScheduleDays.GetScheduleDayById(scheduleDayId);
-            Database.Schedules.ChangeScheduleDay(schedule.Id, day.Id);
+            Database.Schedules.ChangeScheduleDay(scheduleId, scheduleDayId);
             Database.Save();
         }
     }

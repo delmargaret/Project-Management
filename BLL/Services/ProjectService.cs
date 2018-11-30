@@ -29,8 +29,7 @@ namespace BLL.Services
 
         public void ChangeProjectDescription(int projectId, string newProjectDescription)
         {
-            var project = Database.Projects.GetProjectById(projectId);
-            Database.Projects.ChangeProjectDescription(project.Id, newProjectDescription);
+            Database.Projects.ChangeProjectDescription(projectId, newProjectDescription);
             Database.Save();
         }
 
@@ -47,8 +46,7 @@ namespace BLL.Services
 
         public void ChangeProjectName(int projectId, string newProjectName)
         {
-            var project = Database.Projects.GetProjectById(projectId);
-            Database.Projects.ChangeProjectName(project.Id, newProjectName);
+            Database.Projects.ChangeProjectName(projectId, newProjectName);
             Database.Save();
         }
 
@@ -65,9 +63,7 @@ namespace BLL.Services
 
         public void ChangeProjectStatus(int projectId, int projectStatusId)
         {
-            var project = Database.Projects.GetProjectById(projectId);
-            var projectStatus = Database.ProjectStatuses.GetProjectStatusById(projectStatusId);
-            Database.Projects.ChangeProjectStatus(project.Id, projectStatus.Id);
+            Database.Projects.ChangeProjectStatus(projectId, projectStatusId);
             Database.Save();
         }
 
@@ -98,15 +94,13 @@ namespace BLL.Services
 
         public void DeleteProjectById(int id)
         {
-            var project = Database.Projects.GetProjectById(id);
-            Database.Projects.DeleteProjectById(project.Id);
+            Database.Projects.DeleteProjectById(id);
             Database.Save();
         }
 
         public IEnumerable<ProjectDTO> GetAllProjectsByStatusId(int statusId)
         {
-            var projectStatus = Database.ProjectStatuses.GetProjectStatusById(statusId);
-            var projects = Database.Projects.GetAllProjectsByStatusId(projectStatus.Id);
+            var projects = Database.Projects.GetAllProjectsByStatusId(statusId);
             return Map.ListMap(projects);
         }
 
@@ -177,8 +171,7 @@ namespace BLL.Services
 
         public void CloseProject(int projectId)
         {
-            var project = Database.Projects.GetProjectById(projectId);
-            Database.Projects.CloseProject(project.Id);
+            Database.Projects.CloseProject(projectId);
             Database.Save();
         }
     }
