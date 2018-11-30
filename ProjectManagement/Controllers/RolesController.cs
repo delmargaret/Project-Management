@@ -23,14 +23,12 @@ namespace ProjectManagement.Controllers
     [JwtAuthentication]
     public class RolesController : ApiController
     {
-        //static IUnitOfWork uow = new ContextUnitOfWork("ManagementContext");
-        //IRoleService roleService = new RoleService(new ContextUnitOfWork("ManagementContext"));
-
         IRoleService roleService;
         public RolesController(IRoleService serv)
         {
             roleService = serv;
         }
+
         [HttpGet]
         public IHttpActionResult GetRoles()
         {
@@ -48,7 +46,7 @@ namespace ProjectManagement.Controllers
             }
             catch (NotFoundException)
             {
-                return BadRequest("Роли не найдены");
+                return Ok();
             }
         }
     }

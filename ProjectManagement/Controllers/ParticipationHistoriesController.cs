@@ -29,6 +29,7 @@ namespace ProjectManagement.Controllers
         {
             participationHistoryService = serv;
         }
+
         [HttpGet]
         public IHttpActionResult GetAllHistories()
         {
@@ -46,7 +47,7 @@ namespace ProjectManagement.Controllers
             }
             catch (NotFoundException)
             {
-                return BadRequest("Объекты не найдены");
+                return Ok();
             }
         }
 
@@ -67,7 +68,7 @@ namespace ProjectManagement.Controllers
             }
             catch (NotFoundException)
             {
-                return BadRequest("Истории не найдены");
+                return Ok();
             }
         }
 
@@ -82,7 +83,7 @@ namespace ProjectManagement.Controllers
             }
             catch (NotFoundException)
             {
-                return BadRequest("История не найдена");
+                return Ok();
             }
         }
 
@@ -117,15 +118,15 @@ namespace ProjectManagement.Controllers
             }
             catch (NotFoundException)
             {
-                return BadRequest("Объект не найден");
+                return Ok();
             }
             catch (ObjectAlreadyExistsException)
             {
-                return BadRequest("История уже существует");
+                return Ok();
             }
             catch (InvalidDateException)
             {
-                return BadRequest("Неверные даты");
+                return Ok();
             }
         }
 
@@ -135,11 +136,11 @@ namespace ProjectManagement.Controllers
             try
             {
                 participationHistoryService.DeleteHistoryById(id);
-                return Ok();
+                return Ok(id);
             }
             catch (NotFoundException)
             {
-                return BadRequest("История не найдена");
+                return Ok();
             }
         }
 
@@ -153,11 +154,11 @@ namespace ProjectManagement.Controllers
             }
             catch (NotFoundException)
             {
-                return BadRequest("Объект не найден");
+                return Ok();
             }
             catch (InvalidDateException)
             {
-                return BadRequest("Неверные даты");
+                return Ok();
             }
         }
 
@@ -171,11 +172,11 @@ namespace ProjectManagement.Controllers
             }
             catch (NotFoundException)
             {
-                return BadRequest("Объект не найден");
+                return Ok();
             }
             catch (InvalidDateException)
             {
-                return BadRequest("Неверные даты");
+                return Ok();
             }
         }
     }

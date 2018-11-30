@@ -23,12 +23,12 @@ namespace ProjectManagement.Controllers
     public class SchedulesController : ApiController
     {
         ScheduleValidator svalidator = new ScheduleValidator();
-
         IScheduleService scheduleServise;
         public SchedulesController(IScheduleService serv)
         {
             scheduleServise = serv;
         }
+
         [HttpGet]
         public IHttpActionResult GetAllSchedules()
         {
@@ -46,7 +46,7 @@ namespace ProjectManagement.Controllers
             }
             catch (NotFoundException)
             {
-                return BadRequest("Объекты не найдены");
+                return Ok();
             }
         }
 
@@ -82,7 +82,7 @@ namespace ProjectManagement.Controllers
             }
             catch (NotFoundException)
             {
-                return BadRequest("История не найдена");
+                return Ok();
             }
         }
 
@@ -144,11 +144,11 @@ namespace ProjectManagement.Controllers
             }
             catch (NotFoundException)
             {
-                return BadRequest("Объект не найден");
+                return Ok();
             }
             catch (ObjectAlreadyExistsException)
             {
-                return BadRequest("Расписание уже существует");
+                return Ok();
             }
             catch (PercentOrScheduleException)
             {
@@ -162,11 +162,11 @@ namespace ProjectManagement.Controllers
             try
             {
                 scheduleServise.DeleteScheduleById(id);
-                return Ok();
+                return Ok(id);
             }
             catch (NotFoundException)
             {
-                return BadRequest("Расписание не найдено");
+                return Ok();
             }
         }
 
@@ -176,11 +176,11 @@ namespace ProjectManagement.Controllers
             try
             {
                 scheduleServise.DeleteScheduleByProjectWorkId(projectWorkId);
-                return Ok();
+                return Ok(projectWorkId);
             }
             catch (NotFoundException)
             {
-                return BadRequest("Объекты не найдены");
+                return Ok();
             }
         }
 
@@ -190,11 +190,11 @@ namespace ProjectManagement.Controllers
             try
             {
                 scheduleServise.ChangeScheduleDay(id, scheduleDayId);
-                return Ok();
+                return Ok(id);
             }
             catch (NotFoundException)
             {
-                return BadRequest("Объект не найден");
+                return Ok();
             }
         }
     }

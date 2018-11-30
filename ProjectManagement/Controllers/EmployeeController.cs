@@ -188,7 +188,7 @@ namespace ProjectManagement.Controllers
             }
             catch (NotFoundException)
             {
-                return BadRequest("Сотрудник не найден");
+                return Ok();
             }
         }
 
@@ -209,7 +209,7 @@ namespace ProjectManagement.Controllers
             }
             catch (NotFoundException)
             {
-                return BadRequest("Сотрудники не найдены");
+                return Ok();
             }
         }
 
@@ -230,7 +230,7 @@ namespace ProjectManagement.Controllers
             }
             catch (NotFoundException)
             {
-                return BadRequest("Сотрудники не найдены");
+                return Ok();
             }
         }
 

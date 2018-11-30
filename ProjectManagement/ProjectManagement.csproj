@@ -242,7 +242,6 @@
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\SchedulesController.cs" />
     <Compile Include="Controllers\TokenController.cs" />
-    <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Filters\JwtAuthenticationAttribute.cs" />
     <Compile Include="Filters\JwtAuthorizationAttribute.cs" />
     <Compile Include="Global.asax.cs">

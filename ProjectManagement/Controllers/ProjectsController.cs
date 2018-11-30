@@ -23,12 +23,12 @@ namespace ProjectManagement.Controllers
     public class ProjectsController : ApiController
     {
         ProjectValidator pvalidator = new ProjectValidator();
-
         IProjectService projectService;
         public ProjectsController(IProjectService serv)
         {
             projectService = serv;
         }
+
         [HttpGet]
         public IHttpActionResult GetProjects()
         {
@@ -264,7 +264,7 @@ namespace ProjectManagement.Controllers
             }
             catch (NotFoundException)
             {
-                return BadRequest("Проекты не найдены");
+                return Ok();
             }
         }
 
@@ -299,11 +299,11 @@ namespace ProjectManagement.Controllers
             }
             catch (ObjectAlreadyExistsException)
             {
-                return BadRequest("Проект уже добавлен");
+                return Ok();
             }
             catch (InvalidDateException)
             {
-                return BadRequest("Неверные даты");
+                return Ok();
             }
         }
 
@@ -313,11 +313,11 @@ namespace ProjectManagement.Controllers
             try
             {
                 projectService.DeleteProjectById(id);
-                return Ok();
+                return Ok(id);
             }
             catch (NotFoundException)
             {
-                return BadRequest("Проект не найден");
+                return Ok();
             }
         }
 
@@ -327,11 +327,11 @@ namespace ProjectManagement.Controllers
             try
             {
                 projectService.ChangeProjectName(id, projName);
-                return Ok();
+                return Ok(id);
             }
             catch (NotFoundException)
             {
-                return BadRequest("Проект не найден");
+                return Ok();
             }
         }
 
@@ -341,11 +341,11 @@ namespace ProjectManagement.Controllers
             try
             {
                 projectService.ChangeProjectDescription(id, projDescription);
-                return Ok();
+                return Ok(id);
             }
             catch (NotFoundException)
             {
-                return BadRequest("Проект не найден");
+                return Ok();
             }
         }
 
@@ -355,15 +355,15 @@ namespace ProjectManagement.Controllers
             try
             {
                 projectService.ChangeProjectStartDate(id, start);
-                return Ok();
+                return Ok(id);
             }
             catch (NotFoundException)
             {
-                return BadRequest("Проект не найден");
+                return Ok();
             }
             catch (InvalidDateException)
             {
-                return BadRequest("Неверные даты");
+                return Ok();
             }
         }
 
@@ -373,15 +373,15 @@ namespace ProjectManagement.Controllers
             try
             {
                 projectService.ChangeProjectEndDate(id, end);
-                return Ok();
+                return Ok(id);
             }
             catch (NotFoundException)
             {
-                return BadRequest("Проект не найден");
+                return Ok();
             }
             catch (InvalidDateException)
             {
-                return BadRequest("Неверные даты");
+                return Ok();
             }
         }
 
@@ -391,11 +391,11 @@ namespace ProjectManagement.Controllers
             try
             {
                 projectService.ChangeProjectStatus(id, projStatusId);
-                return Ok();
+                return Ok(id);
             }
             catch (NotFoundException)
             {
-                return BadRequest("Проект не найден");
+                return Ok();
             }
         }
 
@@ -405,11 +405,11 @@ namespace ProjectManagement.Controllers
             try
             {
                 projectService.CloseProject(id);
-                return Ok();
+                return Ok(id);
             }
             catch (NotFoundException)
             {
-                return BadRequest("Проект не найден");
+                return Ok();
             }
         }
     }

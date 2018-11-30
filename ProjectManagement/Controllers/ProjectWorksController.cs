@@ -23,12 +23,12 @@ namespace ProjectManagement.Controllers
     public class ProjectWorksController : ApiController
     {
         ProjectWorkValidator pwvalidator = new ProjectWorkValidator();
-
         IProjectWorkService projectWorkService;
         public ProjectWorksController(IProjectWorkService serv)
         {
             projectWorkService = serv;
         }
+
         [HttpGet]
         public IHttpActionResult GetProjectWorks()
         {
@@ -77,6 +77,7 @@ namespace ProjectManagement.Controllers
             var result = projectWorkService.GetWorkLoadType(projectWorkId);
             return Ok(result);
         }
+
         [HttpGet]
         public IHttpActionResult GetNamesAndLoad(int projectId)
         {
@@ -196,7 +197,7 @@ namespace ProjectManagement.Controllers
             }
             catch (NotFoundException)
             {
-                return BadRequest("Объект не найден");
+                return Ok();
             }
         }
 
@@ -206,11 +207,11 @@ namespace ProjectManagement.Controllers
             try
             {
                 projectWorkService.DeleteProjectWorkById(id);
-                return Ok();
+                return Ok(id);
             }
             catch (NotFoundException)
             {
-                return BadRequest("Участие в проекте не найдено");
+                return Ok();
             }
         }
 
@@ -220,11 +221,11 @@ namespace ProjectManagement.Controllers
             try
             {
                 projectWorkService.DeleteEmployeeFromProject(prId, emId);
-                return Ok();
+                return Ok(prId);
             }
             catch (NotFoundException)
             {
-                return BadRequest("Объект не найден");
+                return Ok();
             }
         }
 
@@ -234,11 +235,11 @@ namespace ProjectManagement.Controllers
             try
             {
                 projectWorkService.ChangeProject(id, projectId);
-                return Ok();
+                return Ok(id);
             }
             catch (NotFoundException)
             {
-                return BadRequest("Объект не найден");
+                return Ok();
             }
         }
 
@@ -248,11 +249,11 @@ namespace ProjectManagement.Controllers
             try
             {
                 projectWorkService.ChangeEmployee(id, employeeId);
-                return Ok();
+                return Ok(id);
             }
             catch (NotFoundException)
             {
-                return BadRequest("Объект не найден");
+                return Ok();
             }
         }
 
@@ -262,11 +263,11 @@ namespace ProjectManagement.Controllers
             try
             {
                 projectWorkService.ChangeEmployeesProjectRole(id, projectRoleId);
-                return Ok();
+                return Ok(id);
             }
             catch (NotFoundException)
             {
-                return BadRequest("Объект не найден");
+                return Ok();
             }
         }
 
@@ -276,11 +277,11 @@ namespace ProjectManagement.Controllers
             try
             {
                 projectWorkService.ChangeWorkLoad(id, newWorkload);
-                return Ok();
+                return Ok(id);
             }
             catch (NotFoundException)
             {
-                return BadRequest("Объект не найден");
+                return Ok();
             }
         }
 
@@ -290,11 +291,11 @@ namespace ProjectManagement.Controllers
             try
             {
                 projectWorkService.AddWorkLoad(id, workload);
-                return Ok();
+                return Ok(id);
             }
             catch (NotFoundException)
             {
-                return BadRequest("Объект не найден");
+                return Ok();
             }
             catch (PercentOrScheduleException)
             {
@@ -308,11 +309,11 @@ namespace ProjectManagement.Controllers
             try
             {
                 projectWorkService.DeleteWorkLoad(id);
-                return Ok();
+                return Ok(id);
             }
             catch (NotFoundException)
             {
-                return BadRequest("Объект не найден");
+                return Ok();
             }
             catch (PercentOrScheduleException)
             {

@@ -21,12 +21,12 @@ namespace ProjectManagement.Controllers
     [JwtAuthentication]
     public class ProjectRolesController : ApiController
     {
-
         IProjectRoleService projectRoleService;
         public ProjectRolesController(IProjectRoleService serv)
         {
             projectRoleService = serv;
         }
+
         [HttpGet]
         public IHttpActionResult GetProjectRoles()
         {
@@ -44,7 +44,7 @@ namespace ProjectManagement.Controllers
             }
             catch (NotFoundException)
             {
-                return BadRequest("Роли не найдены");
+                return Ok();
             }
         }
 
@@ -59,7 +59,7 @@ namespace ProjectManagement.Controllers
             }
             catch (NotFoundException)
             {
-                return BadRequest("Роль не найдена");
+                return Ok();
             }
         }
     }

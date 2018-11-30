@@ -20,16 +20,13 @@ namespace ProjectManagement.Controllers
     public class TokenController : ApiController
     {
         PasswordService passwordService = new PasswordService();
-
-        IEmployeeService employeeService = new EmployeeService(new ContextUnitOfWork("ManagementContext"));
-
-        ICredentialsService credentialsService = new CredentialsService(new ContextUnitOfWork("ManagementContext"));
-
-        //public TokenController(ICredentialsService serv, IEmployeeService empserv)
-        //{
-        //    credentialsService = serv;
-        //    employeeService = empserv;
-        //}
+        IEmployeeService employeeService;
+        ICredentialsService credentialsService;
+        public TokenController(ICredentialsService serv, IEmployeeService empserv)
+        {
+            credentialsService = serv;
+            employeeService = empserv;
+        }
 
         [JwtAuthentication]
         [HttpGet]
@@ -92,7 +89,7 @@ namespace ProjectManagement.Controllers
             {
                 var employee = employeeService.GetEmployeeByEmail(model.Login);
                 credentialsService.Registrate(employee.Id, model.Password);
-                return Ok();
+                return Ok(employee);
             }
             catch (HttpResponseException)
             {
