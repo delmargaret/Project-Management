@@ -1,15 +1,11 @@
 import React, { Component } from 'react';
 import {Button} from 'react-bootstrap';
 import '../styles/AdminHomePage.css';
-import UserPage from './UserPage';
 import Menu from './Menu';
-import * as method from '../../src/services/methods';
-import * as tokenService from '../../src/services/tokenService';
 import {Grid, Row, Col} from 'react-bootstrap';
 
 
-class AdminHomePage extends Component{
-
+class AdminPage extends Component{
       render(){
           return(
             <Grid>
@@ -34,36 +30,4 @@ class AdminHomePage extends Component{
       };
 }
 
-class EmployeeHomePage extends Component{
-
-    render(){
-        return(
-            <UserPage />
-        );
-    };
-}
-
-class HomePage extends Component{
-    constructor(props){
-        super(props);
-        this.state = {roleId: 0};
-    }
-    componentWillMount(){
-        var token = method.getToken();
-      if(token){
-          tokenService.getRoleId().then(res=>{
-              if(res.data!==""){
-                  this.setState({roleId: res.data});
-              }
-          });
-        }
-    }
-    render(){
-        if(this.state.roleId===0) return <div>Загрузка...</div>
-        if(this.state.roleId===1){
-            return <AdminHomePage />
-        }
-        else return <EmployeeHomePage />
-    }
-}
-export default HomePage;
+export default AdminPage;

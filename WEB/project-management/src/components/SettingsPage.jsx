@@ -8,25 +8,25 @@ import '../styles/Settings.css'
 class SettingsPage extends Component{
     constructor(props){
         super(props);
-        this.state = {employeeId: 0, employee: null, show1: false, show2: false,
-        show3: false, show4: false, show5: false, surname: "", newsurname: "", name: "", newname: "",
+        this.state = {employeeId: 0, employee: null, changeSurnameShow: false, changeNameShow: false,
+        changePatronymicShow: false, changeGitShow: false, changePhoneShow: false, surname: "", newsurname: "", name: "", newname: "",
         patronymic: "", newpatronymic: "", git: "", newgit: "", phone: "", newphone: "", password: "", 
-        confirmedPassword: "", show: false, show6: false};
+        confirmedPassword: "", show: false, changePasswordShow: false};
  
         this.handleShow = this.handleShow.bind(this);
         this.handleClose = this.handleClose.bind(this);
-        this.handleShow1 = this.handleShow1.bind(this);
-        this.handleClose1 = this.handleClose1.bind(this);
-        this.handleShow2 = this.handleShow2.bind(this);
-        this.handleClose2 = this.handleClose2.bind(this);
-        this.handleShow3 = this.handleShow3.bind(this);
-        this.handleClose3 = this.handleClose3.bind(this);
-        this.handleShow4 = this.handleShow4.bind(this);
-        this.handleClose4 = this.handleClose4.bind(this);
-        this.handleShow5 = this.handleShow5.bind(this);
-        this.handleClose5 = this.handleClose5.bind(this);
-        this.handleShow6 = this.handleShow6.bind(this);
-        this.handleClose6 = this.handleClose6.bind(this);
+        this.changeSurnameModalShow = this.changeSurnameModalShow.bind(this);
+        this.changeSurnameModalClose = this.changeSurnameModalClose.bind(this);
+        this.changeNameModalShow = this.changeNameModalShow.bind(this);
+        this.changeNameModalClose = this.changeNameModalClose.bind(this);
+        this.changePatronymicModalShow = this.changePatronymicModalShow.bind(this);
+        this.changePatronymicModalClose = this.changePatronymicModalClose.bind(this);
+        this.changeGitModalShow = this.changeGitModalShow.bind(this);
+        this.changeGitModalClose = this.changeGitModalClose.bind(this);
+        this.changePhoneModalShow = this.changePhoneModalShow.bind(this);
+        this.changePhoneModalClose = this.changePhoneModalClose.bind(this);
+        this.changePasswordModalShow = this.changePasswordModalShow.bind(this);
+        this.changePasswordModalClose = this.changePasswordModalClose.bind(this);
         this.onChangeGit = this.onChangeGit.bind(this);
         this.onChangePhoneNumber = this.onChangePhoneNumber.bind(this);
         this.onChangeName = this.onChangeName.bind(this);
@@ -55,59 +55,59 @@ class SettingsPage extends Component{
     handleShow() {
         this.setState({ show: true });
     }
-    handleClose1() {
-        this.setState({ show1: false });
+    changeSurnameModalClose() {
+        this.setState({ changeSurnameShow: false });
       }
-    handleShow1() {
-        this.setState({ show1: true });
+    changeSurnameModalShow() {
+        this.setState({ changeSurnameShow: true });
       }
-    handleClose2() {
-        this.setState({ show2: false });
+    changeNameModalClose() {
+        this.setState({ changeNameShow: false });
       }
-    handleShow2() {
-        this.setState({ show2: true });
+    changeNameModalShow() {
+        this.setState({ changeNameShow: true });
       }
-    handleClose3() {
-        this.setState({ show3: false });
+    changePatronymicModalClose() {
+        this.setState({ changePatronymicShow: false });
       }
-    handleShow3() {
-        this.setState({ show3: true });
+    changePatronymicModalShow() {
+        this.setState({ changePatronymicShow: true });
       }
-    handleClose4() {
-        this.setState({ show4: false });
+    changeGitModalClose() {
+        this.setState({ changeGitShow: false });
       }
-    handleShow4() {
-        this.setState({ show4: true });
+    changeGitModalShow() {
+        this.setState({ changeGitShow: true });
       }
-    handleClose5() {
-        this.setState({ show5: false });
+    changePhoneModalClose() {
+        this.setState({ changePhoneShow: false });
       }
-    handleShow5() {
-        this.setState({ show5: true });
+    changePhoneModalShow() {
+        this.setState({ changePhoneShow: true });
       }
-    handleClose6() {
-        this.setState({ show6: false });
+    changePasswordModalClose() {
+        this.setState({ changePasswordShow: false });
       }
-    handleShow6() {
-        this.setState({ show6: true });
+    changePasswordModalShow() {
+        this.setState({ changePasswordShow: true });
       }
     onChangeSurname(){
-        this.handleShow1();
+        this.changeSurnameModalShow();
     }
     onChangeName(){
-        this.handleShow2();
+        this.changeNameModalShow();
     }
     onChangePatronymic(){
-        this.handleShow3();
+        this.changePatronymicModalShow();
     }
     onChangeGit(){
-        this.handleShow4();
+        this.changeGitModalShow();
     }
     onChangePhoneNumber(){
-        this.handleShow5();
+        this.changePhoneModalShow();
     }
     onChangePassword(){
-        this.handleShow6();
+        this.changePasswordModalShow();
     }
     validateSurname() {
         if (this.state.newsurname.length > 1) return 'success';
@@ -128,7 +128,7 @@ class SettingsPage extends Component{
         employeeService.changeSurname(this.state.employeeId, sr);
         this.setState({surname: surname});
         this.setState({newsurname: ""});
-        this.handleClose1();
+        this.changeSurnameModalClose();
     }
     validateName() {
         if (this.state.newname.length > 1) return 'success';
@@ -150,7 +150,7 @@ class SettingsPage extends Component{
         employeeService.changeName(this.state.employeeId, nm);
         this.setState({name: name});
         this.setState({newname: ""});
-        this.handleClose2();
+        this.changeNameModalClose();
     }
     validatePatronymic() {
         if (this.state.newpatronymic.length > 1) return 'success';
@@ -172,7 +172,7 @@ class SettingsPage extends Component{
         employeeService.changePatronymic(this.state.employeeId, pt);
         this.setState({patronymic: patronymic});
         this.setState({newpatronymic: ""});
-        this.handleClose3();
+        this.changePatronymicModalClose();
     }
     validateGit() {
         if (this.state.newgit.length > 1) return 'success';
@@ -195,7 +195,7 @@ class SettingsPage extends Component{
         employeeService.changeGitLink(this.state.employeeId, gt);
         this.setState({git: git});
         this.setState({newgit: ""});
-        this.handleClose4();
+        this.changeGitModalClose();
     }
     validatePhone() {
         if (/^(\+375|80)(29|25|44|33)(\d{3})(\d{2})(\d{2})+$/.test(this.state.newphone)) return 'success';
@@ -217,7 +217,7 @@ class SettingsPage extends Component{
         employeeService.changePhoneNumber(this.state.employeeId, pn);
         this.setState({phone: phone});
         this.setState({newphone: ""});
-        this.handleClose5();
+        this.changePhoneModalClose();
     }
     validatePassword(){
         if (this.state.password.length===0) return null;
@@ -238,7 +238,7 @@ class SettingsPage extends Component{
         var password = this.state.password;
         tokenService.changePassword(this.state.employee.Email, password).then(res =>{
             if(res!==""){
-                this.handleClose6();
+                this.changePasswordModalClose();
             }
         }).catch(()=>{
             this.handleShow();
@@ -340,7 +340,7 @@ class SettingsPage extends Component{
                 </tr>
             </tbody> 
        </Table>
-       <Modal show={this.state.show1} onHide={this.handleClose1}>
+       <Modal show={this.state.changeSurnameShow} onHide={this.changeSurnameModalClose}>
             <Modal.Header closeButton>Изменить фамилию</Modal.Header>
                 <Modal.Body>
                     <Form onSubmit={this.onNewSurnameSubmit}>
@@ -356,7 +356,7 @@ class SettingsPage extends Component{
                     </Form>
                 </Modal.Body>
         </Modal>
-        <Modal show={this.state.show2} onHide={this.handleClose2}>
+        <Modal show={this.state.changeNameShow} onHide={this.changeNameModalClose}>
             <Modal.Header closeButton>Изменить имя</Modal.Header>
                 <Modal.Body>
                 <Form onSubmit={this.onNewNameSubmit}>
@@ -372,7 +372,7 @@ class SettingsPage extends Component{
                     </Form>
                 </Modal.Body>
         </Modal>
-        <Modal show={this.state.show3} onHide={this.handleClose3}>
+        <Modal show={this.state.changePatronymicShow} onHide={this.changePatronymicModalClose}>
             <Modal.Header closeButton>Изменить отчество</Modal.Header>
                 <Modal.Body>
                 <Form onSubmit={this.onNewPatronymicSubmit}>
@@ -388,7 +388,7 @@ class SettingsPage extends Component{
                     </Form>
                 </Modal.Body>
         </Modal>
-        <Modal show={this.state.show4} onHide={this.handleClose4}>
+        <Modal show={this.state.changeGitShow} onHide={this.changeGitModalClose}>
             <Modal.Header closeButton>Изменить git</Modal.Header>
                 <Modal.Body>
                 <Form onSubmit={this.onNewGitSubmit}>
@@ -404,7 +404,7 @@ class SettingsPage extends Component{
                     </Form>
                 </Modal.Body>
         </Modal>
-        <Modal show={this.state.show5} onHide={this.handleClose5}>
+        <Modal show={this.state.changePhoneShow} onHide={this.changePhoneModalClose}>
             <Modal.Header closeButton>Изменить номер телефона</Modal.Header>
                 <Modal.Body>
                 <Form onSubmit={this.onNewPhoneNumberSubmit}>
@@ -420,7 +420,7 @@ class SettingsPage extends Component{
                     </Form>
                 </Modal.Body>
         </Modal>
-        <Modal show={this.state.show6} onHide={this.handleClose6}>
+        <Modal show={this.state.changePasswordShow} onHide={this.changePasswordModalClose}>
             <Modal.Header closeButton>Изменить пароль</Modal.Header>
                 <Modal.Body>
                 <Form  onSubmit={this.onSubmit}>

@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
-import AddProjectPage from "./components/AddProject";
-import RoleList from "./components/AddEmployee";
+import AddProjectPage from "./components/AddProjectPage";
+import AddEmployeePage from "./components/AddEmployeePage";
 import ProjectManagerPage from "./components/ProjectManager";
 import Header from "./components/Header";
-import HomePage from "./components/AdminHomePage";
+import HomePage from "./components/HomePage";
 import LogInPage from './components/LogInPage';
-import RegistrationPage from './components/RegistratePage';
+import RegistrationPage from './components/RegistrationPage';
 import SettingsPage from './components/SettingsPage';
 import * as method from './services/methods';
 import * as tokenService from './services/tokenService';
@@ -68,7 +68,7 @@ class App extends Component {
             <Route exact path="/" render={() => (this.state.isAuthorized ? (
               <Redirect to="/home"/>) : (<LogInPage onLogIn={this.logIn} />))}/>
             <Route path="/home" component={HomePage} />
-            <Route path="/staff" component={RoleList} />
+            <Route path="/staff" component={AddEmployeePage} />
             <Route path="/projects" component={AddProjectPage} />
             <Route path="/manager" component={ProjectManagerPage} />
             <Route path="/registration" component={RegistrationPage} />

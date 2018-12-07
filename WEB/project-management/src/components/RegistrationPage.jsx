@@ -1,33 +1,33 @@
 import React, { Component } from 'react';
-import * as tokenService from '../../src/services/tokenService';
+import * as tokenService from '../services/tokenService';
 import {Button, Form, FormControl, FormGroup, Modal} from 'react-bootstrap';
 import '../styles/RegistrationPage.css';
 
 class RegistrationPage extends Component {
     constructor(props){
       super(props);
-      this.state = {email: "", password: "", confirmedPassword: "", show: false, show1: false}
+      this.state = {email: "", password: "", confirmedPassword: "", errorShow: false, successShow: false}
   
       this.onSubmit = this.onSubmit.bind(this);
       this.onEmailChange = this.onEmailChange.bind(this);
       this.onPasswordChange = this.onPasswordChange.bind(this);
       this.onConfirmedPassword = this.onConfirmedPassword.bind(this);
-      this.handleShow = this.handleShow.bind(this);
-      this.handleClose = this.handleClose.bind(this);
-      this.handleShow1 = this.handleShow1.bind(this);
-      this.handleClose1 = this.handleClose1.bind(this);
+      this.errorModalShow = this.errorModalShow.bind(this);
+      this.errorModalClose = this.errorModalClose.bind(this);
+      this.successModalShow = this.successModalShow.bind(this);
+      this.successModalClose = this.successModalClose.bind(this);
   }
-    handleClose() {
-        this.setState({ show: false });
+    errorModalClose() {
+        this.setState({ errorShow: false });
     }
-    handleShow() {
-        this.setState({ show: true });
+    errorModalShow() {
+        this.setState({ errorShow: true });
     }
-    handleClose1() {
-        this.setState({ show1: false });
+    successModalClose() {
+        this.setState({ successShow: false });
     }
-    handleShow1() {
-        this.setState({ show1: true });
+    successModalShow() {
+        this.setState({ successShow: true });
     }
     onEmailChange(e) {
         var val = e.target.value;
@@ -52,10 +52,10 @@ class RegistrationPage extends Component {
         var password = this.state.password.trim();
         tokenService.registrate(email, password).then(res =>{
             if(res!==""){
-                this.handleShow1();
+                this.successModalShow();
             }
         }).catch(()=>{
-            this.handleShow();
+            this.errorModalShow();
         })
     }
     render(){
@@ -89,20 +89,20 @@ class RegistrationPage extends Component {
                     </FormGroup>
                 <Button type="submit">Зарегистрироваться</Button>
                     </Form>  
-                    <Modal show={this.state.show} onHide={this.handleClose}>
-                        <Modal.Header closeButton>Ошибка</Modal.Header>
-                            <Modal.Body>
-                                <div>Неверный e-mail</div>
-                            </Modal.Body>
-                    </Modal>     
-                    <Modal show={this.state.show1} onHide={this.handleClose1}>
-                        <Modal.Header closeButton></Modal.Header>
-                            <Modal.Body>
-                                <div>Вы успешно зарегистрированы!</div>
-                                <div>Для того, чтобы продолжить, войдите в систему</div>
-                                <a href="/login">Войти</a>
-                            </Modal.Body>
-                    </Modal>     
+            <Modal show={this.state.errorShow} onHide={this.errorModalClose}>
+                <Modal.Header closeButton>Ошибка</Modal.Header>
+                    <Modal.Body>
+                        <div>Неверный e-mail</div>
+                    </Modal.Body>
+            </Modal>     
+            <Modal show={this.state.successShow} onHide={this.successModalClose}>
+                <Modal.Header closeButton></Modal.Header>
+                    <Modal.Body>
+                        <div>Вы успешно зарегистрированы!</div>
+                        <div>Для того, чтобы продолжить, войдите в систему</div>
+                        <a href="/login">Войти</a>
+                    </Modal.Body>
+            </Modal>     
       </div>
   }
 }

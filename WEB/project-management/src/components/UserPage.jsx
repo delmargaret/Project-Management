@@ -125,34 +125,34 @@ class UserPage extends Component{
     constructor(props){
         super(props);
         this.state = {employeeId: 0, employee: null, projects: [], workLoad: "---",
-    activeProject: 0, projectName: " ", show1: false, show2: false, roleId: 0};
+    activeProject: 0, projectName: " ", namesAndLoadShow: false, namesShow: false, roleId: 0};
  
         this.renderProjects = this.renderProjects.bind(this);
-        this.handleClose1 = this.handleClose1.bind(this);
-        this.handleClose2 = this.handleClose2.bind(this);
-        this.handleShow1 = this.handleShow1.bind(this);
-        this.handleShow2 = this.handleShow2.bind(this);
+        this.namesAndLoadListModalClose = this.namesAndLoadListModalClose.bind(this);
+        this.namesListModalClose = this.namesListModalClose.bind(this);
+        this.namesAndLoadListModalShow = this.namesAndLoadListModalShow.bind(this);
+        this.namesListModalShow = this.namesListModalShow.bind(this);
         this.onShowNamesOnProject = this.onShowNamesOnProject.bind(this);
     }
-    handleClose1() {
-        this.setState({ show1: false });
+    namesAndLoadListModalClose() {
+        this.setState({ namesAndLoadShow: false });
       }
-    handleShow1() {
-        this.setState({ show1: true });
+    namesAndLoadListModalShow() {
+        this.setState({ namesAndLoadShow: true });
       }
-    handleClose2() {
-        this.setState({ show2: false });
+    namesListModalClose() {
+        this.setState({ namesShow: false });
       }
-    handleShow2() {
-        this.setState({ show2: true });
+    namesListModalShow() {
+        this.setState({ namesShow: true });
       }
     onShowNamesOnProject(id, name){
         this.setState({activeProject: id,
         projectName: name});
         if(this.state.roleId===2){
-            this.handleShow1();
+            this.namesAndLoadListModalShow();
         }
-        else this.handleShow2();
+        else this.namesListModalShow();
     }
     componentWillMount(){
         var token = method.getToken();
@@ -163,7 +163,7 @@ class UserPage extends Component{
               }
           });
         tokenService.getUser().then(res =>{
-          if(res!==null){
+          if(res.data!==""){
               var id = JSON.parse(res.data).Id;
             this.setState({employee: res.data,
                 employeeId: id});
@@ -241,13 +241,13 @@ class UserPage extends Component{
        </div>
        <hr />
        {this.renderProjects()}
-       <Modal show={this.state.show1} onHide={this.handleClose1}>
+       <Modal show={this.state.namesAndLoadShow} onHide={this.namesAndLoadListModalClose}>
             <Modal.Header closeButton>{this.state.projectName}</Modal.Header>
                 <Modal.Body>
                 <NamesAndLoadList actualProject={this.state.activeProject}/>
                 </Modal.Body>
         </Modal>
-        <Modal show={this.state.show2} onHide={this.handleClose2}>
+        <Modal show={this.state.namesShow} onHide={this.namesListModalClose}>
             <Modal.Header closeButton>{this.state.projectName}</Modal.Header>
                 <Modal.Body>
                     <NamesList actualProject={this.state.activeProject}/>
