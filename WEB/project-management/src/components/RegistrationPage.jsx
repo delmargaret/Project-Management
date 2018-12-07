@@ -6,7 +6,8 @@ import '../styles/RegistrationPage.css';
 class RegistrationPage extends Component {
     constructor(props){
       super(props);
-      this.state = {email: "", password: "", confirmedPassword: "", errorShow: false, successShow: false}
+      this.state = {email: "", password: "", confirmedPassword: "", errorShow: false, 
+      successShow: false, existsErrorShow: false}
   
       this.onSubmit = this.onSubmit.bind(this);
       this.onEmailChange = this.onEmailChange.bind(this);
@@ -14,9 +15,17 @@ class RegistrationPage extends Component {
       this.onConfirmedPassword = this.onConfirmedPassword.bind(this);
       this.errorModalShow = this.errorModalShow.bind(this);
       this.errorModalClose = this.errorModalClose.bind(this);
+      this.existsErrorModalShow = this.existsErrorModalShow.bind(this);
+      this.existsErrorModalClose = this.existsErrorModalClose.bind(this);
       this.successModalShow = this.successModalShow.bind(this);
       this.successModalClose = this.successModalClose.bind(this);
   }
+    existsErrorModalClose() {
+        this.setState({ existsErrorShow: false });
+    }
+    existsErrorModalShow() {
+        this.setState({ existsErrorShow: true });
+    }
     errorModalClose() {
         this.setState({ errorShow: false });
     }
@@ -51,8 +60,9 @@ class RegistrationPage extends Component {
         var email = this.state.email.trim();
         var password = this.state.password.trim();
         tokenService.registrate(email, password).then(res =>{
-            if(res!==""){
-                this.successModalShow();
+            if(res.data!==""){
+                if(res.data==="exists") {this.existsErrorModalShow()}
+                else this.successModalShow();
             }
         }).catch(()=>{
             this.errorModalShow();
@@ -94,7 +104,13 @@ class RegistrationPage extends Component {
                     <Modal.Body>
                         <div>Неверный e-mail</div>
                     </Modal.Body>
-            </Modal>     
+            </Modal> 
+            <Modal show={this.state.existsErrorShow} onHide={this.existsErrorModalClose}>
+                <Modal.Header closeButton>Ошибка</Modal.Header>
+                    <Modal.Body>
+                        <div>Данный e-mail уже зарегистрирован</div>
+                    </Modal.Body>
+            </Modal>    
             <Modal show={this.state.successShow} onHide={this.successModalClose}>
                 <Modal.Header closeButton></Modal.Header>
                     <Modal.Body>

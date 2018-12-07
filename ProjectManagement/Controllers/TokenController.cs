@@ -99,6 +99,10 @@ namespace ProjectManagement.Controllers
             {
                 return Ok();
             }
+            catch (ObjectAlreadyExistsException)
+            {
+                return Ok("exists");
+            }
         }
 
         [JwtAuthentication]
@@ -114,6 +118,10 @@ namespace ProjectManagement.Controllers
             catch (HttpResponseException)
             {
                 return Ok();
+            }
+            catch (ObjectAlreadyExistsException)
+            {
+                return Ok("exists");
             }
             catch (Exception)
             {

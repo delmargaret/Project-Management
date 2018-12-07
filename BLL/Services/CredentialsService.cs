@@ -27,7 +27,7 @@ namespace BLL.Services
         {
             if (Database.Credentials.Find(item => item.Login == login).Count() != 0)
             {
-                var hash = Database.Credentials.GetLastPassword(login).PasswordString;
+                var hash = Database.Credentials.GetCredentialsByLogin(login).PasswordString;
                 return passwordService.VerifyPassword(hash, password);
             }
             else throw new NotFoundException();
@@ -37,6 +37,11 @@ namespace BLL.Services
         {
             string hashPassword = passwordService.GeneratePasswordHash(password);
             var employee = Database.Employees.GetEmployeeById(employeeId);
+            var creds = Database.Credentials.Find(item => item.EmployeeId == employeeId);
+            if (creds.Count() != 0)
+            {
+                throw new ObjectAlreadyExistsException();
+            }
             Credentials credentials = new Credentials
             {
                 Login = employee.Email,
@@ -51,18 +56,14 @@ namespace BLL.Services
 
         public CredentialsDTO ChangePassword(string login, string newpassword)
         {
-            string hashPassword = passwordService.GeneratePasswordHash(newpassword);
+            var cred = Database.Credentials.GetCredentialsByLogin(login);
+            var oldPassword = cred.PasswordString;
 
-            var employee = Database.Employees.GetEmployeeByEmail(login);
-            var employeeId = employee.Id;
-            Credentials credentials = new Credentials
+            if (passwordService.VerifyPassword(oldPassword, newpassword)==true)
             {
-                Login = employee.Email,
-                PasswordString = hashPassword,
-                EmployeeId = employeeId,
-                Employee = employee
-            };
-            var cred = Database.Credentials.Create(credentials);
+                throw new ObjectAlreadyExistsException();
+            }
+            cred.PasswordString = passwordService.GeneratePasswordHash(newpassword);
             Database.Save();
             return Map.ObjectMap(cred);
         }

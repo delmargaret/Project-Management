@@ -240,7 +240,7 @@ class SettingsPage extends Component{
             if(res!==""){
                 this.changePasswordModalClose();
             }
-        }).catch(()=>{
+        }).catch((ex)=>{
             this.handleShow();
         });
         this.setState({password: "", confirmedPassword: ""});
@@ -446,10 +446,10 @@ class SettingsPage extends Component{
                 </Modal.Body>
         </Modal>
         <Modal show={this.state.show} onHide={this.handleClose}>
-                        <Modal.Header closeButton>Ошибка</Modal.Header>
-                            <Modal.Body>
-                                <div>Новый пароль не должен совпадать со старым</div>
-                            </Modal.Body>
+                <Modal.Header closeButton>Ошибка</Modal.Header>
+                    <Modal.Body>
+                        <div>Новый пароль не должен совпадать со старым</div>
+                </Modal.Body>
         </Modal>  
    </div>
     }

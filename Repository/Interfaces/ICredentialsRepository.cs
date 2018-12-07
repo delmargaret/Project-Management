@@ -15,7 +15,7 @@ namespace Repository.Interfaces
         IEnumerable<Credentials> Find(Func<Credentials, Boolean> predicate);
         Credentials Create(Credentials item);
         void Update(Credentials item);
-        Credentials GetLastPassword(string login);
+        Credentials GetCredentialsByLogin(string login);
         void Delete(int id);
     }
 }

@@ -19,7 +19,7 @@ namespace Repository.Repositories
             this.db = context;
         }
 
-        public Credentials GetLastPassword(string login)
+        public Credentials GetCredentialsByLogin(string login)
         {
             var creds = db.Credentials.Where(item => item.Login == login).OrderByDescending(i => i.Id).FirstOrDefault();
             return creds;
