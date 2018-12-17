@@ -89,15 +89,24 @@ namespace Repository.Repositories
             }
             if (em.PercentOrScheduleId == 2)
             {
+                List<ScheduleDay> dayslist = new List<ScheduleDay>();
                 foreach (var project in employeesProjects)
                 {
                     var days = db.Schedules.Where(item => item.ProjectWorkId == project.Id).OrderBy(item => item.ScheduleDayId);
                     foreach (var day in days)
                     {
-                        workload += db.ScheduleDays.Find(day.ScheduleDayId).ScheduleDayName + " ";
+                        dayslist.Add(db.ScheduleDays.Find(day.ScheduleDayId));
                     }
                 }
-                if (workload == "") workload = "---";
+                if (dayslist.Count == 0) workload = "---";
+                else
+                {
+                    var list = dayslist.OrderBy(i => i.Id);
+                    foreach (var day in list)
+                    {
+                        workload += day.ScheduleDayName + " ";
+                    }
+                }
             }
             return workload;
         }
@@ -208,7 +217,7 @@ namespace Repository.Repositories
                 projectId = project.ProjectId;
                 projectName = db.Projects.Find(project.ProjectId).ProjectName;
                 role = db.ProjectRoles.Find(project.ProjectRoleId).ProjectRoleName;
-                var histories = db.ParticipationHistories.First(item => item.ProjectWorkId == id);
+                var histories = db.ParticipationHistories.FirstOrDefault(item => item.ProjectWorkId == id);
                 if (histories != null)
                 {
                     var start = histories.StartDate;

@@ -1,6 +1,142 @@
 #scrollpm{
     width: 100%;
-    height: 490px;
+    height: 470px;
     overflow-y: scroll;
+    font-size: 16px;
+    font-family: 'Gill Sans', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 800;
+    font-style: bold;
+    color: rgb(219, 219, 219);
+}
+#namesandloadscroll{
+    width: 100%;
+    height: 250px;
+    overflow-y: scroll;
+    text-transform: none;
+    font-size: 14px;
+    font-family: 'Gill Sans', Calibri, 'Trebuchet MS', sans-serif;
+}
+#namesandloadscroll Button{
+    background-color: rgb(219, 219, 219);
+    text-transform: uppercase;
+    font-size: 12px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
+}
+#managerList{
+    background-color: rgba(231, 231, 231, 0.1);
+    padding: 1.5%;
+    border-radius: 2%;
+}
+#project-btn{
+    background-color: rgb(219, 219, 219);
+    font-size: 14px;
+    font-weight: 800;
+    font-style: bold;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
+}
+#project-btn:hover{
+    background-color: rgb(189, 189, 189);
+    font-size: 14px;
+    font-weight: 800;
+    font-style: bold;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
+}
+#close-project-btn{
+    background-color: rgb(219, 219, 219);
+    text-transform: uppercase;
+    font-size: 14px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
+}
+#close-project-btn:hover{
+    background-color: rgb(189, 189, 189);
+    text-transform: uppercase;
+    font-size: 14px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
+}
+.simple-btn{
+    text-transform: uppercase;
+    font-family: 'Gill Sans', Calibri, 'Trebuchet MS', sans-serif
+}
+#pm-div{
+    margin-top: 1%;
+}
+#add-emp-form{
+    width: 50%;
+    margin-left: 25%;
+
+    font-family: 'Gill Sans', Calibri, 'Trebuchet MS', sans-serif;
+}
+#add-emp-button{
+    margin-top: 5%;
+    width: 70%; 
+    margin-left: 15%; 
+    text-transform: uppercase;
+    font-family: 'Gill Sans', Calibri, 'Trebuchet MS', sans-serif
 }
 
+#percent Button{
+    text-transform: uppercase;
+    font-size: 12px;
+    font-family: 'Gill Sans', Calibri, 'Trebuchet MS', sans-serif
+}
+.freedays{
+    margin-top: 2%;
+}
+.freedays Button{
+    text-transform: uppercase;
+    font-size: 12px;
+    font-family: 'Gill Sans', Calibri, 'Trebuchet MS', sans-serif
+}
+
+.freedays div{
+    margin-top: 2%;
+    text-transform: none;
+    font-family: 'Gill Sans', Calibri, 'Trebuchet MS', sans-serif
+}
+#scrollschedule{
+    width: 100%;
+    height: 100px;
+    overflow-y: scroll;
+}
+#addhistory-form .label{
+    text-transform: none;
+    font-size: 14px;
+    color: black;
+    font-family:  Calibri, 'Trebuchet MS', sans-serif
+}
+#addhistory-form{
+    font-family:  Calibri, 'Trebuchet MS', sans-serif;
+}
+#addhistory-form Button{
+    font-family:  Calibri, 'Trebuchet MS', sans-serif;
+    text-transform: uppercase;
+}
+#change-pw{
+    text-transform: none;
+    font-family:  Calibri, 'Trebuchet MS', sans-serif;
+
+}
+#change-pw Button{
+    font-family:  Calibri, 'Trebuchet MS', sans-serif;
+    text-transform: uppercase;
+    font-size: 13px;
+}
+.change-btn{
+    font-family:  Calibri, 'Trebuchet MS', sans-serif;
+    text-transform: uppercase;
+    font-size: 13px;
+}
+#schedule-table{
+    margin-top: 1%;
+    text-transform: none;
+    font-family: 'Gill Sans', Calibri, 'Trebuchet MS', sans-serif
+}
+.date-form{
+    text-transform: none;
+    font-family: 'Gill Sans', Calibri, 'Trebuchet MS', sans-serif
+}
+.notfound{
+    text-transform: uppercase;
+    font-size: 14px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
+  }

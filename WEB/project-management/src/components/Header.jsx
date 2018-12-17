@@ -8,15 +8,15 @@ import '../styles/Header.css';
 class LogOutHeader extends Component {
     render() {
         return (
-            <Navbar inverse >
+            <Navbar inverse>
                 <Navbar.Header>
-                    <Navbar.Brand >
-                        <a href="/">Project Management</a>
+                    <Navbar.Brand className="brand">
+                        <a href="/">Project Manager</a>
                     </Navbar.Brand>
                 </Navbar.Header>
                 <Navbar.Collapse>
                     <Nav pullRight className="fixed">
-                    <NavItem eventKey={1} href="/">
+                    <NavItem eventKey={1} href="/" className="item">
                         Log in
                     </NavItem>
                     </Nav>
@@ -39,21 +39,21 @@ class LogInHeader extends Component{
         });
     }
     render(){
-        if(!this.state.userName) return <Navbar inverse >
+        if(!this.state.userName) return <Navbar inverse>
         <Navbar.Header>
-            <Navbar.Brand >
-                <a href="/">Project Management</a>
+            <Navbar.Brand className="brand">
+                <a href="/">Project Manager</a>
             </Navbar.Brand>
         </Navbar.Header>
     </Navbar>
-        return <Navbar inverse >
+        return <Navbar inverse>
         <Navbar.Header>
-            <Navbar.Brand >
-                <a href="/">Project Management</a>
+            <Navbar.Brand className="brand">
+                <a href="/">Project Manager</a>
             </Navbar.Brand>
         </Navbar.Header>
         <Navbar.Collapse>
-            <Nav pullRight className="fixed">
+            <Nav pullRight className="fixed item">
                 <NavDropdown title={this.state.userName} id="basic-nav-dropdown">
                     <MenuItem eventKey={1} href="/settings">Настройки</MenuItem>
                     <MenuItem divider />

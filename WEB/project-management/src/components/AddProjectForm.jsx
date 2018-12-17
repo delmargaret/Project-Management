@@ -67,7 +67,7 @@ class AddProjectForm extends Component{
     }
     render() {
             return (
-                    <Form  onSubmit={this.onSubmit}>
+                    <Form  onSubmit={this.onSubmit} id="add-new-project">
                     <FormGroup controlId="formBasicName"
                      validationState={this.validateName()}>
                         <FormControl
@@ -90,7 +90,7 @@ class AddProjectForm extends Component{
 
                     <FormGroup controlId="formBasicStart"
                      validationState={this.validateEndDate()}>
-                        <ControlLabel>Дата начала</ControlLabel>
+                        <ControlLabel className="ControlLabel">Дата начала</ControlLabel>
                         <FormControl
                             type="date"
                             placeholder="Дата начала"
@@ -101,7 +101,7 @@ class AddProjectForm extends Component{
 
                     <FormGroup controlId="formBasicEnd"
                      validationState={this.validateEndDate()}>
-                        <ControlLabel>Дата окончания</ControlLabel>
+                        <ControlLabel className="ControlLabel">Дата окончания</ControlLabel>
                         <FormControl
                             type="date"
                             placeholder="Дата окончания"
@@ -109,7 +109,7 @@ class AddProjectForm extends Component{
                             onChange={this.onEndDateChange} />
                         <FormControl.Feedback />
                     </FormGroup>
-                <Button type="submit">Добавить</Button>
+                <Button type="submit" id="project-form-btn">Добавить</Button>
                     </Form>                
             );        
     }

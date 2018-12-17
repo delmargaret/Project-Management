@@ -52,10 +52,10 @@ class ProjectList extends Component{
                             <td>{start}</td>
                             <td>{end}</td>
                             <td>{statusname}</td>
-                            <td><Button onClick={() => this.onClick(data)}>
+                            <td><Button onClick={() => this.onClick(data)} className="addprojectbtn">
                             Редактировать</Button>
                             </td>
-                            <td><Button onClick={() => this.props.onDeleteProject(id)}>
+                            <td><Button onClick={() => this.props.onDeleteProject(id)} className="addprojectbtn">
                             Удалить</Button>
                             </td>
                         </tr>              

@@ -7,6 +7,7 @@ import * as employeeService from '../../src/services/employeeService';
 import * as scheduleService from '../../src/services/scheduleService';
 import * as historyService from '../../src/services/participationHistoryService';
 import "../styles/ProjectManager.css";
+import Loading from './Loading';
 
 class ChangeProjectWorkForm extends Component{
     constructor(props){
@@ -238,7 +239,7 @@ class ChangeProjectWorkForm extends Component{
                     }
                 </FormControl>
             </FormGroup>
-            <Button type="submit">Добавить</Button>
+            <Button type="submit" className="change-btn">Добавить</Button>
             </Form>
     }
     validatePercent() {
@@ -294,7 +295,7 @@ class ChangeProjectWorkForm extends Component{
         this.props.onChangedDay();
     }
     renderWorkLoad(){
-        if(!this.state.percentOrScheduleId) return <div>Загрузка</div>
+        if(!this.state.percentOrScheduleId) return <Loading />
         if(this.state.percentOrScheduleId===1){
             return <Form onSubmit={this.onNewPercentSubmit}>
             <FormGroup validationState={this.validatePercent()}>
@@ -305,14 +306,14 @@ class ChangeProjectWorkForm extends Component{
                     onChange={this.onPercentChange} />
                 <FormControl.Feedback />
             </FormGroup>
-            <Button type="submit">Добавить</Button>
+            <Button type="submit" className="change-btn">Добавить</Button>
         </Form>
         }
         if(this.state.percentOrScheduleId===2){
             if(this.state.daysOnProject.length===0) return <div>Расписание не добавлено</div>
             return <div>
                 {this.renderFreeDays()}
-                <Table>
+                <Table id="schedule-table">
             <thead>
                 <tr>
                 <th>Дни</th>
@@ -333,7 +334,7 @@ class ChangeProjectWorkForm extends Component{
                         if(dayId===6){dayName="Суббота";}
                         return <tr key={id}>
                             <td>{dayName}</td>
-                            <td><Button onClick={() => this.onDayDelete(id)}>
+                            <td><Button onClick={() => this.onDayDelete(id)} className="change-btn">
                             Удалить</Button>
                             </td>
                         </tr>              
@@ -414,7 +415,7 @@ class ChangeProjectWorkForm extends Component{
     renderChangeForm(){
         if(this.state.percentOrScheduleId===0) return <tbody>
             <tr>
-                <td>Загрузка...</td>
+                <Loading />
                 </tr>
             </tbody>
         if(this.state.workLoad==="---"){
@@ -509,8 +510,8 @@ class ChangeProjectWorkForm extends Component{
         }
     }
     render(){
-        if(!this.state.roles) return <div>Загрузка...</div>
-        return <div>
+        if(!this.state.roles) return <Loading />
+        return <div id="change-pw">
             <div>
                 <h5><b>Проект:</b> {this.state.projectName}</h5>
                 <h5><b>Сотрудник:</b> {this.state.employeeName}</h5>
@@ -523,7 +524,7 @@ class ChangeProjectWorkForm extends Component{
                 <Modal show={this.state.changeRoleShow} onHide={this.changeRoleModalClose}>
                         <Modal.Header closeButton>Изменить роль</Modal.Header>
                         <Modal.Body>
-                            <Form onSubmit={this.onRoleSubmit}>
+                            <Form onSubmit={this.onRoleSubmit} >
                                 <FormGroup validationState={this.validateRole()}>
                                 <FormControl componentClass="select" onChange={this.onProjectRoleIdChange}>
                                 <option>Выберите роль</option>
@@ -538,7 +539,7 @@ class ChangeProjectWorkForm extends Component{
                                     }
                                 </FormControl>
                                 </FormGroup>
-                                <Button type="submit">Изменить</Button>
+                                <Button type="submit" className="change-btn">Изменить</Button>
                             </Form>
                         </Modal.Body>
                 </Modal>
@@ -553,7 +554,7 @@ class ChangeProjectWorkForm extends Component{
                 <Modal show={this.state.changeStartShow} onHide={this.changeStartModalClose}>
                         <Modal.Header closeButton>Изменить дату начала участия</Modal.Header>
                         <Modal.Body>
-                        <Form onSubmit={this.onStartSubmit}>
+                        <Form onSubmit={this.onStartSubmit} className="date-form">
                             <FormGroup controlId="formBasicStart"
                             validationState={this.validateStartDate()}>
                                 <ControlLabel>Новая дата начала</ControlLabel>
@@ -564,14 +565,14 @@ class ChangeProjectWorkForm extends Component{
                                     onChange={this.onStartDateChange} />
                                 <FormControl.Feedback />
                             </FormGroup>
-                            <Button type="submit">Изменить</Button>
+                            <Button type="submit" className="change-btn">Изменить</Button>
                         </Form> 
                         </Modal.Body>
                 </Modal>
                 <Modal show={this.state.changeEndShow} onHide={this.changeEndModalClose}>
                         <Modal.Header closeButton>Изменить дату окончания участия</Modal.Header>
                         <Modal.Body>
-                        <Form onSubmit={this.onEndSubmit}>
+                        <Form onSubmit={this.onEndSubmit} className="date-form">
                             <FormGroup controlId="formBasicEnd"
                             validationState={this.validateEndDate()}>
                                 <ControlLabel>Новая дата окончания</ControlLabel>
@@ -582,7 +583,7 @@ class ChangeProjectWorkForm extends Component{
                                     onChange={this.onEndDateChange} />
                                 <FormControl.Feedback />
                             </FormGroup>
-                            <Button type="submit">Изменить</Button>
+                            <Button type="submit" className="change-btn">Изменить</Button>
                         </Form> 
                         </Modal.Body>
                 </Modal>

@@ -4,6 +4,7 @@ import * as tokenService from '../../src/services/tokenService';
 import * as employeeService from '../services/employeeService';
 import {Table, Button, Modal, Form, FormControl, FormGroup} from 'react-bootstrap';
 import '../styles/Settings.css'
+import Loading from './Loading';
 
 class SettingsPage extends Component{
     constructor(props){
@@ -283,9 +284,9 @@ class SettingsPage extends Component{
     }
     }
     render(){
-       if(!this.state.employee) return <div>Загрузка...</div>
+       if(!this.state.employee) return <Loading />
        return <div id="settings">
-       <h3>Настройки</h3>
+       <h2>Настройки</h2>
        <br></br>
            <Table>
            <tbody>
@@ -333,13 +334,10 @@ class SettingsPage extends Component{
                         Удалить</Button>
                     </td>
                 </tr>
-                <tr>
-                    <td><Button onClick={() => this.onChangePassword()}>
-                        Изменить пароль</Button>
-                    </td>
-                </tr>
             </tbody> 
        </Table>
+       <Button onClick={() => this.onChangePassword()} id="change-password-btn">
+                        Изменить пароль</Button>
        <Modal show={this.state.changeSurnameShow} onHide={this.changeSurnameModalClose}>
             <Modal.Header closeButton>Изменить фамилию</Modal.Header>
                 <Modal.Body>

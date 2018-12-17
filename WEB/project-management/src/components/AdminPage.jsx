@@ -10,16 +10,16 @@ class AdminPage extends Component{
           return(
             <Grid>
             <Row>
-              <Col xs={3} md={3}>{<Menu/>}</Col>
-              <Col xs={15} md={9}>
+              <Col sm={3}>{<Menu/>}</Col>
+              <Col sm={9}>
               <div className="span10" id="homepage">
               <h1>Добро пожаловать!</h1>
                   <div id="buttons">
-                    <div className="button" id="staffButton">
-                        <Button bsSize="large" href="/staff">Добавить сотрудника</Button>
+                    <div className="button" >
+                        <Button bsSize="large" href="/staff" id="staffButton">Добавить сотрудника</Button>
                     </div>
-                    <div className="button" id="projectsButton">
-                        <Button bsSize="large" href="/projects">Добавить проект</Button>
+                    <div className="button" >
+                        <Button bsSize="large" href="/projects" id="projectsButton">Добавить проект</Button>
                     </div>
                   </div>
               </div>

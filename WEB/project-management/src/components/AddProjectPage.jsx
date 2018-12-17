@@ -177,9 +177,9 @@ class AddProjectPage extends Component{
     }
     renderProjectList(){
         if(this.state.projects.length===0){
-            return <div>Проекты не найдены</div>     
+            return <div id="notfound">Проекты не найдены</div>     
         }
-        else return <div>
+        else return <div id="projectList">
             <Form id="sortProjectsSelect">
                     <FormGroup>
                         <FormControl componentClass="select" value={this.state.sortId}
@@ -231,19 +231,19 @@ class AddProjectPage extends Component{
     render(){ 
         return <Grid>
                     <Row>
-                    <Col xs={3} md={3}>{<Menu/>}</Col>
-                    <Col xs={15} md={9}>
+                    <Col sm={3}>{<Menu/>}</Col>
+                    <Col sm={9}>
                     <div>
                         <h2>Добавить проект</h2>
                         <div>
-                            <Button  bsSize="large" id="addprojectbtn" onClick={() => this.onClick()}>Новый проект</Button>
+                            <Button  bsSize="large" className="addprojectbtn" onClick={() => this.onClick()}>Новый проект</Button>
                         </div>
                         <div>
                             <h3>Проекты</h3>
                         {this.renderProjectList()}
                         </div>
                             <Modal show={this.state.show} onHide={this.handleClose}>
-                                <Modal.Header closeButton></Modal.Header>
+                                <Modal.Header closeButton>Новый проект</Modal.Header>
                                 <Modal.Body>
                                     <AddProjectForm onProjectSubmit={this.onAddProject}/>
                                 </Modal.Body>

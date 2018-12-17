@@ -42,12 +42,12 @@ class EmployeeList extends Component{
                         data.EmployeeName;
                         return <tr key={id}>
                             <td>
-                            <Button onClick={() => this.props.onShowInformation(id, name)}>
+                            <Button onClick={() => this.props.onShowInformation(id, name)} className="employee-btn">
                             {fullname}</Button>
                             </td>
                             <td>{data.Email}</td>
                             <td>{role}</td>
-                            <td><Button onClick={() => this.props.onDeleteEmployee(id)}>
+                            <td><Button onClick={() => this.props.onDeleteEmployee(id)} className="addemployee-btn">
                             Удалить</Button>
                             </td>
                         </tr>              

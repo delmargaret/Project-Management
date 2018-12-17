@@ -4,6 +4,7 @@ import * as projectWorkService from '../../src/services/projectWorkService';
 import * as scheduleService from '../../src/services/scheduleService';
 import ScheduleDayList from './ScheduleDayList';
 import "../styles/ProjectManager.css";
+import Loading from './Loading';
 
 class AddWorkLoadForm extends Component{
     constructor(props){
@@ -84,7 +85,7 @@ class AddWorkLoadForm extends Component{
         if(this.state.freeDays.length===0){
             return(<div>Свободных дней нет</div> );
             } 
-            else return <Form onSubmit={this.onScheduleSubmit}>
+            else return <Form onSubmit={this.onScheduleSubmit} >
             <FormGroup id="ScheduleSelect" validationState={this.validateDay()}>
                 <FormControl componentClass="select" onChange={this.onDayChange}>
                 <option>Выберите день</option>
@@ -129,8 +130,8 @@ class AddWorkLoadForm extends Component{
         
     }
     renderPercent(){
-        return <div>
-            <h3>Добавить процент</h3>
+        return <div id="percent">
+            <h5>Добавить процент</h5>
             <Form onSubmit={this.onSubmit}>
                 <FormGroup controlId="formBasicPercent"
                 validationState={this.validatePercent()}>
@@ -146,13 +147,14 @@ class AddWorkLoadForm extends Component{
         </div>   
     }
     render() {
-        if(!this.state.workLoadType||!this.state.daysOnProject) return <div>Загрузка...</div>
+        if(!this.state.workLoadType) return <Loading />
         if(this.state.workLoadType===3){
+            if(!this.state.daysOnProject) return <Loading />
             return(
                 <div>
                 {this.renderPercent()}
-                    <div>
-                    <h4>Добавить расписание</h4>
+                    <div className="freedays"> 
+                    <h5>Добавить расписание</h5>
                         <div>
                             {this.renderFreeDays()}
                             {this.renderDaysOnProject()}
@@ -166,13 +168,16 @@ class AddWorkLoadForm extends Component{
                 <div>{this.renderPercent()}</div>
             )
         }
-        if(this.state.workLoadType===2) return <div>
-        <h4>Добавить расписание</h4>
-           <div>
-               {this.renderFreeDays()}
-               {this.renderDaysOnProject()}
-           </div>
-        </div>
+        if(this.state.workLoadType===2) {
+            if(!this.state.daysOnProject) return <Loading />
+            return <div className="freedays">
+            <h5>Добавить расписание</h5>
+            <div>
+                {this.renderFreeDays()}
+                {this.renderDaysOnProject()}
+            </div>
+            </div>
+        }
     }
 }
 

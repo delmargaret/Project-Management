@@ -97,9 +97,10 @@ class RegistrationPage extends Component {
                             onChange={this.onConfirmedPassword} />
                         <FormControl.Feedback />
                     </FormGroup>
-                <Button type="submit">Зарегистрироваться</Button>
+                <Button type="submit" id="button">Зарегистрироваться</Button>
                     </Form>  
-            <Modal show={this.state.errorShow} onHide={this.errorModalClose}>
+            <Modal show={this.state.errorShow} onHide={this.errorModalClose}
+            backdropClassName="registration-error">
                 <Modal.Header closeButton>Ошибка</Modal.Header>
                     <Modal.Body>
                         <div>Неверный e-mail</div>
@@ -114,9 +115,12 @@ class RegistrationPage extends Component {
             <Modal show={this.state.successShow} onHide={this.successModalClose}>
                 <Modal.Header closeButton></Modal.Header>
                     <Modal.Body>
-                        <div>Вы успешно зарегистрированы!</div>
-                        <div>Для того, чтобы продолжить, войдите в систему</div>
-                        <a href="/login">Войти</a>
+                        <div id="registration">
+                            <div>Вы успешно зарегистрированы!</div>
+                            <div>Для того, чтобы продолжить, войдите в систему</div>
+                            <hr />
+                            <a href="/">Войти</a>
+                        </div>
                     </Modal.Body>
             </Modal>     
       </div>

@@ -6,6 +6,7 @@ import EmployeeList from './EmployeeList';
 import AddEmployeeForm from './AddEmployeeForm';
 import Menu from './Menu';
 import {Grid, Row, Col} from 'react-bootstrap';
+import Loading from './Loading';
 
 import {Table, Button, Modal, FormGroup, FormControl, Form} from 'react-bootstrap';
 import "../styles/AddEmployee.css";
@@ -109,11 +110,11 @@ class AddEmployeePage extends Component{
         });
     }
     renderEmployeeList(employees){
-        if(this.state.employees.length===0) return <div>Сотрудники не найдены</div>
-        if(this.state.employees.length===1) return <div>Сотрудники не найдены</div>
-            else return <div>
-                <Form id="SortSelect">
-                    <FormGroup>
+        if(this.state.employees.length===0) return <Loading />
+        if(this.state.employees.length===1) return <div id="notfound">Сотрудники не найдены</div>
+            else return <div id="employeelist">
+                <Form >
+                    <FormGroup id="SortSelect">
                         <FormControl componentClass="select" value={this.state.sortId}
                         onChange={this.onSortChange} onClick={() => this.onSort()}>
                         <option value={0}>Сортировать по</option>
@@ -178,11 +179,11 @@ class AddEmployeePage extends Component{
         if(activerole===2){addrolename="Добавить проектного менеджера";}
         if(activerole===3){addrolename="Добавить разработчика";}
         const roledata = this.state.roles;
-        if (!roledata) return <div>Загрузка...</div>; 
+        if (!roledata) return <Loading />; 
             return <Grid>
             <Row>
-              <Col xs={3} md={3}>{<Menu/>}</Col>
-              <Col xs={15} md={9}>
+              <Col sm={3}>{<Menu/>}</Col>
+              <Col sm={9}>
                 <div>
                     <h2>Сотрудники</h2>
                     <div>
@@ -193,9 +194,9 @@ class AddEmployeePage extends Component{
                             var data = JSON.parse(role); 
                             var id = data.Id;  
                             return <tr key={id}>
-                                <td>{data.Id}.</td>
-                                <td>{data.RoleName}</td>
-                                <td><Button onClick={() => this.onClick(id)}>
+                                <td className="tablefield">{data.Id}.</td>
+                                <td className="tablefield">{data.RoleName}</td>
+                                <td><Button onClick={() => this.onClick(id)} className="addemployee-btn">
                                     Добавить</Button>
                                 </td>
                             </tr>              

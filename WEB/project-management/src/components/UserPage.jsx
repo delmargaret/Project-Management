@@ -4,6 +4,7 @@ import * as tokenService from '../../src/services/tokenService';
 import * as projectWorkService from '../services/projectWorkService';
 import {Table, Button, Modal, OverlayTrigger, Popover} from 'react-bootstrap';
 import '../styles/UserPage.css';
+import Loading from './Loading';
 
 class Workload extends Component{
     constructor(props){
@@ -42,8 +43,8 @@ class NamesAndLoadList extends Component{
         });
     }
     render(){
-        if(!this.state.namesList) return <div>Загрузка...</div>
-        return <div>
+        if(!this.state.namesList) return <Loading />
+        return <div id="namesandloadscroll">
             <Table>
             <thead>
                 <tr>
@@ -93,8 +94,8 @@ class NamesList extends Component{
         })
     }
     render(){
-        if(!this.state.namesList) return <div>Загрузка...</div>
-        return <div>
+        if(!this.state.namesList) return <Loading />
+        return <div id="namesscroll">
             <Table>
             <thead>
                 <tr>
@@ -183,9 +184,11 @@ class UserPage extends Component{
     }
     renderProjects(){
         if(this.state.projects.length===0) return <div>Проекты не найдены</div>
-        else return <div id="scrolluserpage">
-            <h4>Проекты</h4>
-            <Table>
+        else return <div >
+            <h4 id="projects-h4">Проекты</h4>
+            <div id="projectList">
+            <div id="scrolluserpage"> 
+            <Table >
             <thead>
                 <tr>
                 <th>Проект</th>
@@ -213,11 +216,13 @@ class UserPage extends Component{
                     }
                         </tbody>
                 </Table>
+            </div>
+            </div>
         </div>
     }
     render(){
-       if(!this.state.employee) return <div>Загрузка...</div>
-       if(!this.state.roleId) return <div>Загрузка...</div>
+       if(!this.state.employee) return <Loading />
+       if(!this.state.roleId) return <Loading />
        var employee = JSON.parse(this.state.employee);
        var git = "";
         var phone = "";
@@ -231,9 +236,9 @@ class UserPage extends Component{
         }
         else phone = employee.PhoneNumber;
        return <div id="userpage">
-           <h3>{employee.EmployeeSurname + " " + employee.EmployeeName}</h3>
+           <h2>{employee.EmployeeSurname + " " + employee.EmployeeName}</h2>
            <br></br>
-       <div>
+       <div id="information">
        <h5>E-mail: {employee.Email}</h5>
        <h5>Git: {git}</h5>
        <h5>Телефон: {phone}</h5>

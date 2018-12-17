@@ -44,7 +44,7 @@ class LogInPage extends Component {
     render(){
       return <div id="logindiv">
           <Form  onSubmit={this.onSubmit} id="loginform">
-                    <FormGroup>
+                    <FormGroup >
                         <FormControl
                             type="email"
                             placeholder="E-mail"
@@ -53,7 +53,7 @@ class LogInPage extends Component {
                         <FormControl.Feedback />
                     </FormGroup>
 
-                    <FormGroup>
+                    <FormGroup >
                         <FormControl
                             type="password"
                             placeholder="Пароль" 
@@ -61,9 +61,9 @@ class LogInPage extends Component {
                             onChange={this.onPasswordChange} />
                         <FormControl.Feedback />
                     </FormGroup>
-                <Button type="submit">Войти</Button>
+                <Button type="submit" id="button">Войти</Button>
                     </Form>  
-                    <Modal show={this.state.show} onHide={this.handleClose}>
+                    <Modal show={this.state.show} onHide={this.handleClose} >
                         <Modal.Header closeButton>Ошибка</Modal.Header>
                             <Modal.Body>
                                 <div>Неверно введен логин или пароль!</div>

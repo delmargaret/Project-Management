@@ -1,0 +1,14 @@
+#navmenu{
+    font-weight: 800;
+    text-transform: uppercase;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    position: relative;
+    font-size: 15px;
+}
+
+#navmenu a{
+    color: rgb(160, 160, 160);
+}
+#navmenu a:hover{
+    color: rgb(0, 0, 0);
+}

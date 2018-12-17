@@ -65,7 +65,7 @@ class ProjectManagerPage extends Component{
     }
     renderProjectList(){
         if(this.state.projects.length===0){
-            return <div>Проекты не найдены</div>     
+            return <div className="notfound">Проекты не найдены</div>     
         }
         else return <OpenProjectList proj={this.state.projects} onCl={this.onCloseProject} 
             openModal={this.onOpenModal}/>
@@ -74,9 +74,7 @@ class ProjectManagerPage extends Component{
         this.loadEmployeesOnProject(this.state.Project.Id);
     }
     renderEmployeeList(){
-        if(this.state.employees.length===0){
-            return <div>Участники отсутствуют</div>     
-        }
+        if(this.state.employees.length===0) return <div className="notfound">Сотрудники не найдены</div>
         else return <NamesAndLoadList works={this.state.employees} projectId={this.state.Project.Id} 
         changed={this.changeWorkLoad} onDeleteEmployeeFromProject={this.deleteProjectWork}
         changeDay={this.changeDay}/>
@@ -124,24 +122,24 @@ class ProjectManagerPage extends Component{
         projId = this.state.Project.Id;}
         return <Grid>
                 <Row>
-                <Col xs={3} md={3}>{<Menu/>}</Col>
-                <Col xs={15} md={9}>
+                <Col sm={3}>{<Menu/>}</Col>
+                <Col sm={9}>
                     <div>
-                        <h3>Проекты</h3>
+                        <h2>Проекты</h2>
                     {this.renderProjectList()}
                     <Modal bsSize="large" show={this.state.show} onHide={this.handleClose}>
                             <Modal.Header closeButton>{projName}</Modal.Header>
                             <Modal.Body>
-                                <Button onClick={() => this.onOpenAddEmployeeModal()}>
+                                <Button onClick={() => this.onOpenAddEmployeeModal()} className="simple-btn">
                                     Добавить участника
                                 </Button>
-                                <div>
+                                <div id="pm-div">
                                 {this.renderEmployeeList()}
                                 </div>
                             </Modal.Body>
                         </Modal>
 
-                        <Modal  show={this.state.addEmployeeShow} onHide={this.addEmployeeModalClose}>
+                        <Modal show={this.state.addEmployeeShow} onHide={this.addEmployeeModalClose}>
                             <Modal.Header closeButton></Modal.Header>
                             <Modal.Body>
                                 <AddEmployeeForm projId={projId} onEmployeeSubmit={this.onAddEmployee}/>

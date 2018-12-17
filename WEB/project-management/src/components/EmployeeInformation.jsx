@@ -3,6 +3,7 @@ import * as employeeService from '../../src/services/employeeService';
 import * as projectWorkService from '../../src/services/projectWorkService';
 import {Table} from 'react-bootstrap';
 import "../styles/AddEmployee.css";
+import Loading from './Loading';
 
 class EmployeeInformation extends Component{
     constructor(props){
@@ -62,7 +63,7 @@ class EmployeeInformation extends Component{
         </div>
     }
     render(){
-        if(!this.state.employee) return <div>Загрузка...</div>
+        if(!this.state.employee) return <Loading />
         var employee = JSON.parse(this.state.employee);
         var git = "";
         var phone = "";
@@ -75,7 +76,7 @@ class EmployeeInformation extends Component{
             phone = "---";
         }
         else phone = employee.PhoneNumber;
-        return <div>
+        return <div id="emp-info">
             <div>
             <h5>E-mail: {employee.Email}</h5>
             <h5>Git: {git}</h5>

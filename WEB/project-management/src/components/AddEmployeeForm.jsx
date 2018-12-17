@@ -67,7 +67,7 @@ class AddEmployeeForm extends Component{
     }
     render() {
         return (
-          <form onSubmit={this.onSubmit}>
+          <form onSubmit={this.onSubmit} id="addemployee"> 
                 <FormGroup controlId="formBasicText"
                     validationState={this.validateSurname()}>
                 <FormControl
@@ -106,7 +106,7 @@ class AddEmployeeForm extends Component{
                     onChange={this.onEmailChange} />
                 <FormControl.Feedback />
                 </FormGroup>
-            <Button type="submit">Добавить</Button>
+            <Button type="submit" id="employee-form-btn">Добавить</Button>
           </form>
         );
     }

@@ -3,6 +3,7 @@ import {Button, FormGroup, FormControl} from 'react-bootstrap';
 import * as projectRoleService from '../../src/services/projectRoleService';
 import * as employeeService from '../../src/services/employeeService';
 import "../styles/ProjectManager.css";
+import Loading from './Loading';
 
 class AddEmployeeForm extends Component{
     constructor(props){
@@ -65,9 +66,9 @@ class AddEmployeeForm extends Component{
             this.setState({employeeId: 0, projectId: 0, projectRoleId: 0});
     } 
     renderEmployeeSelect(){
-        if (this.state.employees.length===0) return <div>Сотрудники не найдены</div>
-        if (this.state.employees.length===1) return <div>Сотрудники не найдены</div>
-        else return <form onSubmit={this.onSubmit}>
+        if (this.state.employees.length===0) return <Loading />
+        if (this.state.employees.length===1) return <div className="notfound">Сотрудники не найдены</div>
+        else return <form onSubmit={this.onSubmit} id="add-emp-form">
                 <FormGroup id="formControlsSelect1" validationState={this.validateEmployee()}>
                 <FormControl componentClass="select" onChange={this.onEmployeeIdChange}>
                 <option>Выберите сотрудника</option>
@@ -98,7 +99,7 @@ class AddEmployeeForm extends Component{
                     }
                 </FormControl>
             </FormGroup>
-        <Button type="submit">Добавить</Button>
+        <Button type="submit" id="add-emp-button">Добавить</Button>
         </form>     
     }
     render() {

@@ -3,6 +3,7 @@ import {Button, FormGroup, FormControl, Form, ControlLabel} from 'react-bootstra
 import * as projectService from '../../src/services/projectService';
 import * as projectWorkService from '../../src/services/projectWorkService';
 import "../styles/ProjectManager.css";
+import Loading from './Loading';
 
 class AddHistoryForm extends Component{
     constructor(props){
@@ -65,11 +66,11 @@ class AddHistoryForm extends Component{
         });      
     }
     render(){
-        if(!this.state.start) return <div>Загрузка...</div>
-        return <Form  onSubmit={this.onSubmit}>
+        if(!this.state.start) return <Loading />
+        return <Form  onSubmit={this.onSubmit} id="addhistory-form">
         <FormGroup controlId="formBasicStart"
          validationState={this.validateStartDate()}>
-            <ControlLabel>Дата начала</ControlLabel>
+            <ControlLabel className="label">Дата начала</ControlLabel>
             <FormControl
                 type="date"
                 placeholder="Дата начала"
@@ -80,7 +81,7 @@ class AddHistoryForm extends Component{
 
         <FormGroup controlId="formBasicEnd"
          validationState={this.validateEndDate()}>
-            <ControlLabel>Дата окончания</ControlLabel>
+            <ControlLabel className="label">Дата окончания</ControlLabel>
             <FormControl
                 type="date"
                 placeholder="Дата окончания"

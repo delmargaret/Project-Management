@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {Table, Button, FormGroup, FormControl, Form, Modal, ControlLabel} from 'react-bootstrap';
 import * as projectService from '../../src/services/projectService';
 import "../styles/AddProject.css";
+import Loading from './Loading';
 
 class ChangeProjectForm extends Component{
     _isMounted = false;
@@ -183,36 +184,34 @@ class ChangeProjectForm extends Component{
     }
     render(){ 
         var project = this.state.project;
-        if(!project) return <div>Загрузка...</div>
+        if(!project) return <Loading />
         var id = project.Id;
         var start = this.state.startDate.replace(/^(\d+)-(\d+)-(\d+)\D.+$/, '$3.$2.$1'); 
         var end = this.state.endDate.replace(/^(\d+)-(\d+)-(\d+)\D.+$/, '$3.$2.$1'); 
-        return <div>
+        return <div id="change-project">
             <Table>
-            <thead>
-            </thead>
                 <tbody>
                         <tr>
                             <td>{this.state.name}</td>
-                            <td><Button onClick={() => this.onChangeProjectName()}>
+                            <td><Button onClick={() => this.onChangeProjectName()} className="change-project-btn">
                             Изменить</Button>
                             </td>
                         </tr>
                         <tr>
                             <td>{this.state.description}</td>
-                            <td><Button onClick={() => this.onChangeProjectDescription()}>
+                            <td><Button onClick={() => this.onChangeProjectDescription()} className="change-project-btn">
                             Изменить</Button>
                             </td>
                         </tr>
                         <tr>
                             <td>{start}</td>
-                            <td><Button onClick={() => this.onChangeProjectStartDate()}>
+                            <td><Button onClick={() => this.onChangeProjectStartDate()} className="change-project-btn">
                             Изменить</Button>
                             </td>
                         </tr>
                         <tr>
                             <td>{end}</td>
-                            <td><Button onClick={() => this.onChangeProjectEndDate(id)}>
+                            <td><Button onClick={() => this.onChangeProjectEndDate(id)} className="change-project-btn">
                             Изменить</Button>
                             </td>
                         </tr>
@@ -231,7 +230,7 @@ class ChangeProjectForm extends Component{
                                     onChange={this.onNameChange} />
                                     <FormControl.Feedback />
                                 </FormGroup>
-                                <Button type="submit">Изменить</Button>
+                                <Button type="submit" className="change-project-btn">Изменить</Button>
                             </Form>
                         </Modal.Body>
                 </Modal>
@@ -248,7 +247,7 @@ class ChangeProjectForm extends Component{
                                     onChange={this.onDescriptionChange} />
                                     <FormControl.Feedback />
                                 </FormGroup>
-                                <Button type="submit">Изменить</Button>
+                                <Button type="submit" className="change-project-btn">Изменить</Button>
                             </Form>
                         </Modal.Body>
                 </Modal>
@@ -265,7 +264,7 @@ class ChangeProjectForm extends Component{
                                     onChange={this.onStartDateChange} />
                                     <FormControl.Feedback />
                                 </FormGroup>
-                                <Button type="submit">Изменить</Button>
+                                <Button type="submit" className="change-project-btn">Изменить</Button>
                             </Form>
                         </Modal.Body>
                 </Modal>
@@ -282,7 +281,7 @@ class ChangeProjectForm extends Component{
                                     onChange={this.onEndDateChange} />
                                     <FormControl.Feedback />
                                 </FormGroup>
-                                <Button type="submit">Изменить</Button>
+                                <Button type="submit" className="change-project-btn">Изменить</Button>
                             </Form>
                         </Modal.Body>
                 </Modal>
